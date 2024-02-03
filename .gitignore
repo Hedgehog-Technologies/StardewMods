@@ -1,0 +1,9 @@
+# Metadata
+.vs/
+
+# Build Directories
+obj/
+bin/
+
+# Specific Files
+manifest.json
