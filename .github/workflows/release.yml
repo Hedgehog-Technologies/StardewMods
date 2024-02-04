@@ -40,8 +40,12 @@ jobs:
         working-directory: src
 
       - name: Build
-        run: dotnet build ${{ steps.split.outputs._0 }} -c Release -p:BuildConfig=GITHUB
+        run: dotnet build --force ${{ steps.split.outputs._0 }} -c Release -p:BuildConfig=GITHUB
         working-directory: src
+
+      - name: Test output
+        run: |
+          echo 'src/${{ steps.split.outputs._0 }}/bin/Release/net6.0/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip'
 
       - name: Create GitHub Release
         uses: 'marvinpinto/action-automatic-releases@v1.2.1'
