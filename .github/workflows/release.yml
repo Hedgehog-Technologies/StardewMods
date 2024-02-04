@@ -21,8 +21,8 @@ jobs:
 
       - name: Test split
         run: |
+          echo ${{ steps.split.outputs._0 }}
           echo ${{ steps.split.outputs._1 }}
-          echo ${{ steps.split.outputs._2 }}
 
 
       # - name: Checkout source code
