@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  push:
+    tags-ignore:
+      - 'v*.*.*'
+
+jobs:
+  create-releae:
+    name: Build and created tagged release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install archive tool
+        run: sudo apt install zip
+
+      - name: Checkout source code
+        uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+          ref: ${{ github.events.repository.default_branch }}
+
+      - name: Setup dotnet 6.0.x
+        uses: actions/setup-dotnet@v4.0.0
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build ${{ env.github.ref_name }} --configuration Release
