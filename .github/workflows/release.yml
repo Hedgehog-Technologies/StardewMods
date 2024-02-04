@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    tags-ignore:
-      - 'v*.*.*'
+    tags:
+      - '*/v*.*.*'
 
 jobs:
   create-releae:
@@ -11,8 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install archive tool
-        run: sudo apt install zip
+      - name: Split tag
+        run: .github/actions/split-tag.js
+        with:
+          tag: ${{ github.ref_name }}
 
       - name: Checkout source code
         uses: actions/checkout@v4.1.1
