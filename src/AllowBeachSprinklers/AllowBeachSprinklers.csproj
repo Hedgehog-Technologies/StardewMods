@@ -19,6 +19,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(BuildConfig)' == 'GITHUB' ">
+    <GamePath>../ref</GamePath>
+    <EnableModDeploy>false</EnableModDeploy>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
