@@ -4,7 +4,7 @@ run-name: "Release Tag: ${{ github.ref_name }}"
 on:
   push:
     tags:
-      - '*/v*.*.*'
+      - '*/*.*.*'
 
 jobs:
   create-releae:
@@ -42,3 +42,16 @@ jobs:
       - name: Build
         run: dotnet build ${{ steps.split.outputs._0 }} -c Release -p:BuildConfig=GITHUB
         working-directory: src
+
+      - name: Create GitHub Release
+        uses: 'marvinpinto/action-automation-releases@v1.2.1'
+        id: auto_release
+        with:
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          title: '${{ steps.split.outputs._0 }} @ v${{ steps.split.outputs._1 }}'
+          prerelease: false
+          files: 'src/${{ steps.split.outputs._0 }}/bin/Release/net6.0/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip'
+
+        env:
+          CI: false
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
