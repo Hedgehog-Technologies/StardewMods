@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using AllowBeachSprinklers.Helpers;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using xTile.Tiles;
+using AllowBeachSprinklers.Helpers;
 
 namespace AllowBeachSprinklers
 {
