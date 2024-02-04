@@ -37,6 +37,9 @@ jobs:
 
       - name: Install dependencies
         run: dotnet restore ${{ steps.split.outputs._0 }}
+        working-directory: src
+
 
       - name: Build
         run: dotnet build ${{ steps.split.outputs._0 }} --configuration Release
+        working-directory: src
