@@ -40,5 +40,5 @@ jobs:
         working-directory: src
 
       - name: Build
-        run: dotnet build ${{ steps.split.outputs._0 }} -c Release -p:EnableModDeploy=false -p:GamePath='/ref'
+        run: dotnet build ${{ steps.split.outputs._0 }} -c Release -p:EnableModDeploy=false;GamePath=/ref
         working-directory: src
