@@ -13,12 +13,10 @@ jobs:
 
     steps:
       - name: Split tag
-        env:
-          TAG: ${{ github.ref_name }}
         id: split
         run: |
-          echo "::set-output name=project::${TAG##/*}"
-          echo "::set-output name=version::${TAG##*/}"
+          echo "project=${{ env.ref_name##/* }}" >> $GITHUB_OUTPUT
+          echo "version=${TAG##*/}" >> $GITHUB_OUTPUT
 
       - name: Test tag split
         run: |
