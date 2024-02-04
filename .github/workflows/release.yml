@@ -13,17 +13,17 @@ jobs:
 
     steps:
       - name: Split tag
-        env:
-          TAG: ${{ github.ref_name }}
+        uses: jungwinter/split@2.1.0
         id: split
-        run: |
-          echo "project=${{ TAG##/* }}" >> $GITHUB_OUTPUT
-          echo "version=${{ TAG##*/ }}" >> $GITHUB_OUTPUT
+        with:
+          msg: ${{ github.ref_name }}
+          separator: '/'
 
-      - name: Test tag split
+      - name: Test split
         run: |
-          echo ${{ steps.split.outputs.project }}
-          echo ${{ steps.split.outputs.verison }}
+          echo ${{ steps.split.outputs._1 }}
+          echo ${{ steps.split.outputs._2 }}
+
 
       # - name: Checkout source code
       #   uses: actions/checkout@v4.1.1
