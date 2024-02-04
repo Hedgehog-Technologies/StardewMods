@@ -19,25 +19,24 @@ jobs:
           msg: ${{ github.ref_name }}
           separator: '/'
 
-      - name: Test split
-        run: |
-          echo ${{ steps.split.outputs._0 }}
-          echo ${{ steps.split.outputs._1 }}
+      # - name: Test split
+      #   run: |
+      #     echo ${{ steps.split.outputs._0 }}
+      #     echo ${{ steps.split.outputs._1 }}
 
+      - name: Checkout source code
+        uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+          ref: ${{ github.events.repository.default_branch }}
 
-      # - name: Checkout source code
-      #   uses: actions/checkout@v4.1.1
-      #   with:
-      #     fetch-depth: 0
-      #     ref: ${{ github.events.repository.default_branch }}
+      - name: Setup dotnet 6.0.x
+        uses: actions/setup-dotnet@v4.0.0
+        with:
+          dotnet-version: '6.0.x'
 
-      # - name: Setup dotnet 6.0.x
-      #   uses: actions/setup-dotnet@v4.0.0
-      #   with:
-      #     dotnet-version: '6.0.x'
+      - name: Install dependencies
+        run: dotnet restore ${{ steps.split.outputs._0 }}
 
-      # - name: Install dependencies
-      #   run: dotnet restore ${{ github.ref_name }}
-
-      # - name: Build
-      #   run: dotnet build ${{ github.ref_name }} --configuration Release
+      - name: Build
+        run: dotnet build ${{ steps.split.outputs._0 }} --configuration Release
