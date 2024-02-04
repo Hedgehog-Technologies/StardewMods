@@ -1,6 +1,6 @@
 const core = require("@actions/core");
 
-const tag = core.getInput('tag', { required: true });
+const tag = process.env.tag;
 const splitTag = tag.split('/');
 
 console.log(tag);
