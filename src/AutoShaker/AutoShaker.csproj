@@ -8,7 +8,7 @@
     <Authors>Jag3Dagster</Authors>
     <Description>Automatically shake bushes and trees as you walk by.</Description>
     <Version>1.6.0</Version>
-    <UpdateKeys>Nexus:7736;github:Hedgehog-Technologies/StardewMods</UpdateKeys>
+    <UpdateKeys>Nexus:7736</UpdateKeys>
 
     <MinimumApiVersion>auto</MinimumApiVersion>
     <MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
