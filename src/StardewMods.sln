@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AllowBeachSprinklers", "AllowBeachSprinklers\AllowBeachSprinklers.csproj", "{965CEE22-9B66-4885-8A43-ACA4243D7D78}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoShaker", "AutoShaker\AutoShaker.csproj", "{E2E65BA0-EDF0-4DD1-BCF1-524B92C2377C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{965CEE22-9B66-4885-8A43-ACA4243D7D78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{965CEE22-9B66-4885-8A43-ACA4243D7D78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{965CEE22-9B66-4885-8A43-ACA4243D7D78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2E65BA0-EDF0-4DD1-BCF1-524B92C2377C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2E65BA0-EDF0-4DD1-BCF1-524B92C2377C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2E65BA0-EDF0-4DD1-BCF1-524B92C2377C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2E65BA0-EDF0-4DD1-BCF1-524B92C2377C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
