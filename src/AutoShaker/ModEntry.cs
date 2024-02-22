@@ -15,7 +15,7 @@ namespace AutoShaker
     /// </summary>
     public class ModEntry : Mod
     {
-        private ModConfig _config;
+        private ModConfig _config = new();
 
         private readonly HashSet<Bush> _shakenBushes = new();
 
@@ -37,7 +37,7 @@ namespace AutoShaker
             helper.Events.GameLoop.GameLaunched += (_, _) => _config.RegisterModConfigMenu(helper, ModManifest);
         }
 
-        private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
+        private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
             if (!Context.IsWorldReady) return;
             if (!_config.IsShakerActive || (!_config.ShakeRegularTrees && !_config.ShakeFruitTrees && !_config.ShakeBushes)) return;
@@ -134,7 +134,7 @@ namespace AutoShaker
             }
         }
 
-        private void OnDayEnding(object sender, DayEndingEventArgs e)
+        private void OnDayEnding(object? sender, DayEndingEventArgs e)
         {
             if (_config.IsShakerActive)
             {
@@ -166,7 +166,7 @@ namespace AutoShaker
             }
         }
 
-        private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
+        private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
         {
             if (Game1.activeClickableMenu == null)
             {
