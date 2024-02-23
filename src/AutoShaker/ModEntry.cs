@@ -150,19 +150,19 @@ namespace AutoShaker
 
                     if (_config.ShakeRegularTrees)
                     {
-                        var treesShakenString = $"\n\t[{_treesShaken}] Trees shaken";
+                        var treesShakenString = string.Format("\n\t[{0}] Trees shaken", _treesShaken);
                         statMessage.Append(treesShakenString);
                     }
 
                     if (_config.ShakeFruitTrees)
                     {
-                        var fruitTreesShakenString = $"\n\t[{_fruitTreesShaken}] Fruit Trees shaken";
+                        var fruitTreesShakenString = string.Format("\n\t[{0}] Fruit Trees shaken", _fruitTreesShaken);
                         statMessage.Append(fruitTreesShakenString);
                     }
 
                     if (_config.ShakeBushes)
                     {
-                        var bushesShakenString = $"\n\t[{_shakenBushes.Count}] Bushes shaken";
+                        var bushesShakenString = string.Format("\n\t[{0}] Bushes shaken", _shakenBushes.Count);
                         statMessage.Append(bushesShakenString);
                     }
 
