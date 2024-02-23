@@ -20,7 +20,7 @@ namespace AutoShaker
         private readonly HashSet<Bush> _shakenBushes = new();
 
         private int _treesShaken;
-        private int _fruitTressShaken;
+        private int _fruitTreesShaken;
 
         /// <summary>
         /// The mod entry point, called after the mod is first loaded.
@@ -89,7 +89,7 @@ namespace AutoShaker
                                 continue;
                             case FruitTree fruitTree:
                                 fruitTree.performUseAction(featureTileLocation, Game1.player.currentLocation);
-                                _fruitTressShaken += 1;
+                                _fruitTreesShaken += 1;
                                 break;
 
                             case Bush _ when !_config.ShakeTeaBushes:
@@ -141,21 +141,35 @@ namespace AutoShaker
                 StringBuilder statMessage = new(Utility.getDateString());
                 statMessage.Append(':');
 
-                if (_treesShaken == 0 && _fruitTressShaken == 0 && _shakenBushes.Count == 0)
+                if (_treesShaken == 0 && _fruitTreesShaken == 0 && _shakenBushes.Count == 0)
                 {
                     statMessage.Append("Nothing shaken today.");
                 }
                 else
                 {
 
-                    if (_config.ShakeRegularTrees) statMessage.Append($"\n\t[{_treesShaken}] Trees shaken");
-                    if (_config.ShakeFruitTrees) statMessage.Append($"\n\t[{_fruitTressShaken}] Fruit Trees shaken");
-                    if (_config.ShakeBushes) statMessage.Append($"\n\t[{_shakenBushes.Count}] Bushes shaken");
+                    if (_config.ShakeRegularTrees)
+                    {
+                        var treesShakenString = $"\n\t[{_treesShaken}] Trees shaken";
+                        statMessage.Append(treesShakenString);
+                    }
+
+                    if (_config.ShakeFruitTrees)
+                    {
+                        var fruitTreesShakenString = $"\n\t[{_fruitTreesShaken}] Fruit Trees shaken";
+                        statMessage.Append(fruitTreesShakenString);
+                    }
+
+                    if (_config.ShakeBushes)
+                    {
+                        var bushesShakenString = $"\n\t[{_shakenBushes.Count}] Bushes shaken";
+                        statMessage.Append(bushesShakenString);
+                    }
 
                     Monitor.Log("Resetting daily counts...");
                     _shakenBushes.Clear();
                     _treesShaken = 0;
-                    _fruitTressShaken = 0;
+                    _fruitTreesShaken = 0;
                 }
 
                 Monitor.Log(statMessage.ToString(), LogLevel.Info);
