@@ -1,45 +1,39 @@
-**AutoShaker** is an open-source mod for [Stardew Valley](https://stardewvalley.net) that allows players to automatically shake trees and bushes simply by moving nearby to them.
+﻿**AutoForager** (previously AutoShaker) is an open-source mod for [Stardew Valley](https://stardewvalley.net) that allows players to automatically forage items simply by moving near them.
 
 ## Documentation
 ### Overview
 This mod checks for:
 - Bushes that are currently blooming with berries or tea leaves
+    - NOTE: This includes Golden Walnut bushes
 - Fruit trees that currently have fruit on them
 - Trees that have a seed available to be shaken down
-
-NOTE: This includes trees with hazelnuts, coconuts, and golden coconuts
+    - NOTE: This includes trees with hazelnuts, coconuts, and golden coconuts
+- Forageables throughout Stardew Valley
 
 ### Config
-- IsShakerActive
-    - Whether or not the AutoShaker will shake bushes / trees
-    - *Default* - true
-- ToggleShaker
-    - Which button will toggle the AutoShaker on and off when pressed while holding either Alt key
-    - *Default* - LeftAlt + H, RightAlt + H
-- ShakeRegularTrees
-    - Whether or not the AutoShaker should try and shake regular trees for seeds
-    - *Default* - true
-- ShakeFruitTrees
-    - Whether or not the AutoShaker should try and shake fruit trees for fruit
-    - *Default* - true
-- FruitsReadyToShake
-    - Number of fruits (1-3) that need to be on a fruit tree before it is shaken
-    - *Default* - 1
-- ShakeTeaBushes
-    - Whether or not the AutoShaker should try and shake tea bushes
-    - *Default* - true
-- ShakeBushes
-    - Whether or not the AutoShaker should try and shake bushes
-    - *Default* - true
-- UsePlayerMagnetism
-    - Whether or not to use the players current magnetism distance when looking for things to shake
-    - This overrides the *ShakeDistance* config value
-    - *Default* - false
-- ShakeDistance
-    - Distance in tiles that the AutoShaker will look for things to shake
-    - This value is ignored if *UsePlayerMagnetism* is set to **true**
-    - *Default* - 2
+You can find a breakdown of the config values [here](./docs/config.md)
 
+### Extensibility
+- Custom Trees and Fruit Trees should automatically get picked up and recognized by the AutoForager
+- If you are a mod maker working on custom Forageable items, to have your item regonized by the AutoForager all you need to do is add the context tag `forage_item` to the item definition
+
+### Translation
+&nbsp;     | No Translation  | Partial Translation  | Full Translation
+:--------- | :-------------: | :------------------: | :---------------:
+Chinese    | ✔              | ❌                   | ❌
+French     | ✔              | ❌                   | ❌
+German     | ✔              | ❌                   | ❌
+Hungarian  | ✔              | ❌                   | ❌
+Italian    | ✔              | ❌                   | ❌
+Japanese   | ✔              | ❌                   | ❌
+Korean     | ✔              | ❌                   | ❌
+Polish     | ✔              | ❌                   | ❌
+Portuguese | ✔              | ❌                   | ❌
+Russian    | ✔              | ❌                   | ❌
+Spanish    | ✔              | ❌                   | ❌
+Thai       | ✔              | ❌                   | ❌
+Turkish    | ✔              | ❌                   | ❌
+Ukrainian  | ✔              | ❌                   | ❌
 
 ### Install
 1. Install the latest version of [SMAPI](https://smapi.io)
@@ -52,18 +46,22 @@ NOTE: This includes trees with hazelnuts, coconuts, and golden coconuts
 
 ### Compatibility
 - Compatible with...
-    - Stardew Valley 1.5 or later
-    - SMAPI 3.15.0 or later
+    - Stardew Valley 1.6 or later
+    - SMAPI 4.0.0 or later
 - No known mod conflicts
-    - If you find one please feel free to notify me here or on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site
+    - If you find one, please feel free to notify me here or on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site
 
 ## Limitations
 ### Solo + Multiplayer
 - This mod is player specific, each player that wants to utilize it must have it installed
-- Any bushes that have the potential to have berries on them will be shaken during berry seasons whether or not they have berries on them
 
 ## Releases
-Releases can be found on [GitHub](https://github.com/jag3dagster/AutoShaker/releases) and on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site
+Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases) and on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site
+### 2.0.0
+- Rebranded to **AutoForager**
+- Extended functionality to include options to forage seasonal items
+- Update to SDV 1.6 compatibility
+- Update to SMAPI 4.0.0 compatibiliy
 ### 1.6.0
 - Moved to new repository
 - Updated to use Khloe Leclair's [Mod Manifest Builder](https://github.com/KhloeLeclair/Stardew-ModManifestBuilder)
