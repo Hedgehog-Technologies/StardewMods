@@ -38,9 +38,11 @@ Ukrainian  | ✔              | ❌                   | ❌
 ### Install
 1. Install the latest version of [SMAPI](https://smapi.io)
     1. [Nexus Mirror](https://www.nexusmods.com/stardewvalley/mods/2400)
-    2. [GitHub Mirror](https://github.com/Pathoschild/SMAPI/releases)
+    2. [CurseForge Mirror](https://www.curseforge.com/stardewvalley/utility/smapi)
+    3. [GitHub Mirror](https://github.com/Pathoschild/SMAPI/releases)
 2. *OPTIONAL* Install the latest version of [Generic Mod Config Menu](https://spacechase0.com/mods/stardew-valley/generic-mod-config-menu/)
     1. [Nexus Mirror](https://www.nexusmods.com/stardewvalley/mods/5098)
+    2. [CurseForge Mirror](https://www.curseforge.com/stardewvalley/mods/generic-mod-config-menu)
 3. Install this mod by unzipping the mod folder into 'Stardew Valley/Mods'
 4. Launch the game using SMAPI
 
@@ -49,14 +51,19 @@ Ukrainian  | ✔              | ❌                   | ❌
     - Stardew Valley 1.6 or later
     - SMAPI 4.0.0 or later
 - No known mod conflicts
-    - If you find one, please feel free to notify me here or on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site
+    - If you find one, please feel free to notify me here on Github, on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, or on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
 
 ## Limitations
 ### Solo + Multiplayer
 - This mod is player specific, each player that wants to utilize it must have it installed
 
 ## Releases
-Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases) and on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site
+Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 2.1.0
+- Added ability to forage for truffles found by pigs
+- Wild Trees added in 1.6 are now shaken as expected
+- Config settings no longer reset on game launch when content patch mods are present
+  - Special shoutout to DromedarySpitz, babayagah07, and galedekarios for reporting and helping me investigate this issue
 ### 2.0.0
 - Rebranded to **AutoForager**
 - Extended functionality to include options to forage seasonal items
