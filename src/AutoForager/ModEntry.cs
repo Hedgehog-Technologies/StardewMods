@@ -151,7 +151,8 @@ namespace AutoForager
             _overrideItemIds = new()
             {
                 "(O)152", // Seaweed
-                "(O)416", // Snow Yam 
+                "(O)416", // Snow Yam
+                "(O)430", // Truffle
                 "(O)851"  // Magma Cap
             };
 

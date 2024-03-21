@@ -177,6 +177,7 @@ namespace AutoForager.Helpers
 
             { "829", "Special" },   // Ginger
             { "399", "Special" },   // Sping Onion
+            { "430", "Special" },   // Truffle
         };
         public static Dictionary<string, string> KnownCategoryLookup => _knownCategoryLookup;
     }
