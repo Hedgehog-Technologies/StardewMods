@@ -297,7 +297,7 @@ namespace AutoForager
                             if (!tree.isActionable()) continue;
 
                             var seedItemIds = tree.GetSeedAndSeedItemIds();
-                            if (_forageableTracker.WildTreeForageables.Any(i => seedItemIds.Contains(i.QualifiedItemId) && i.IsEnabled))
+                            if (_forageableTracker.WildTreeForageables.Any(i => (seedItemIds.Contains(i.QualifiedItemId) || seedItemIds.Contains(i.ItemId)) && i.IsEnabled))
                             {
                                 tree.performUseAction(tree.Tile);
                                 Monitor.Log($"Tree shaken: {string.Join(", ", seedItemIds)}", LogLevel.Debug);
