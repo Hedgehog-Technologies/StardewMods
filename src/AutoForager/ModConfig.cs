@@ -13,7 +13,6 @@ namespace AutoForager
     internal class ModConfig
     {
         private readonly ForageableItemTracker _forageableTracker;
-        private bool _isRegistered = false;
 
         #region General Properties
 
@@ -112,11 +111,11 @@ namespace AutoForager
             var gmcmApi = helper.ModRegistry.GetApi<IGenericModConfigMenu>("spacechase0.GenericModConfigMenu");
             if (gmcmApi is null) return;
 
-            if (_isRegistered)
+            try
             {
                 gmcmApi.Unregister(manifest);
-                _isRegistered = false;
             }
+            catch { }
 
             gmcmApi.Register(manifest, ResetToDefault, () => helper.WriteConfig(this));
 
@@ -392,8 +391,6 @@ namespace AutoForager
                         });
                 }
             }
-
-            _isRegistered = true;
         }
 
         public void UpdateEnabled(IModHelper? helper = null)

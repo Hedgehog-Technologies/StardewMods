@@ -57,7 +57,7 @@ namespace AutoForager.Classes
             : this(data.ItemId, data.QualifiedItemId, data.InternalName, data.DisplayName, customFields, enabled)
         { }
 
-        public static IEnumerable<ForageableItem> Parse(IDictionary<string, FruitTreeData> data)
+        public static IEnumerable<ForageableItem> Parse(IDictionary<string, FruitTreeData> data, IDictionary<string, bool>? configValues = null)
         {
             var forageItems = new List<ForageableItem>();
 
@@ -68,14 +68,22 @@ namespace AutoForager.Classes
                     var customFields = kvp.Value.CustomFields;
                     if (customFields == null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
 
-                    forageItems.AddDistinct(new ForageableItem(ItemRegistry.GetData(fruit.ItemId), customFields, true));
+                    var enabled = true;
+                    var seedData = ItemRegistry.GetData(fruit.ItemId);
+
+                    if (configValues != null && configValues.TryGetValue(seedData.InternalName, out var configEnabled))
+                    {
+                        enabled = configEnabled;
+                    }
+
+                    forageItems.AddDistinct(new ForageableItem(seedData, customFields, enabled));
                 }
             }
 
             return forageItems;
         }
 
-        public static IEnumerable<ForageableItem> Parse(IDictionary<string, WildTreeData> data)
+        public static IEnumerable<ForageableItem> Parse(IDictionary<string, WildTreeData> data, IDictionary<string, bool>? configValues = null)
         {
             var forageItems = new List<ForageableItem>();
 
@@ -93,14 +101,22 @@ namespace AutoForager.Classes
 
                 foreach (var seedItem in seedAndSeedItemIds)
                 {
-                    forageItems.AddDistinct(new ForageableItem(ItemRegistry.GetData(seedItem), customFields, true));
+                    var enabled = true;
+                    var seedData = ItemRegistry.GetData(seedItem);
+
+                    if (configValues != null && configValues.TryGetValue(seedData.InternalName, out var configEnabled))
+                    {
+                        enabled = configEnabled;
+                    }
+
+                    forageItems.AddDistinct(new ForageableItem(seedData, customFields, enabled));
                 }
             }
 
             return forageItems;
         }
 
-        public static IEnumerable<ForageableItem> Parse(IDictionary<string, ObjectData> data)
+        public static IEnumerable<ForageableItem> Parse(IDictionary<string, ObjectData> data, IDictionary<string, bool>? configValues = null)
         {
             var forageItems = new List<ForageableItem>();
 
@@ -110,13 +126,21 @@ namespace AutoForager.Classes
                 if (customFields == null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
 
                 var qualifiedItemId = "(O)" + kvp.Key;
-                forageItems.AddDistinct(new ForageableItem(ItemRegistry.GetData(qualifiedItemId), customFields, false));
+                var enabled = false;
+                var itemData = ItemRegistry.GetData(qualifiedItemId);
+
+                if (configValues != null && configValues.TryGetValue(itemData.InternalName, out var configEnabled))
+                {
+                    enabled = configEnabled;
+                }
+
+                forageItems.AddDistinct(new ForageableItem(itemData, customFields, enabled));
             }
 
             return forageItems;
         }
 
-        public static IEnumerable<ForageableItem> Parse(IDictionary<string, ObjectData> oData, IDictionary<string, LocationData> lData)
+        public static IEnumerable<ForageableItem> Parse(IDictionary<string, ObjectData> oData, IDictionary<string, LocationData> lData, IDictionary<string, bool>? configValues = null)
         {
             var forageItems = new List<ForageableItem>();
 
@@ -150,7 +174,15 @@ namespace AutoForager.Classes
                         var objData = oData[artifactId];
                         if (objData == null || objData.CustomFields == null || !objData.CustomFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
 
-                        forageItems.AddDistinct(new ForageableItem(ItemRegistry.GetData(itemId), objData.CustomFields, false));
+                        var enabled = false;
+                        var itemData = ItemRegistry.GetData(itemId);
+
+                        if (configValues != null && configValues.TryGetValue(itemData.InternalName, out var configEnabled))
+                        {
+                            enabled = configEnabled;
+                        }
+
+                        forageItems.AddDistinct(new ForageableItem(itemData, objData.CustomFields, enabled));
                     }
                 }
             }
