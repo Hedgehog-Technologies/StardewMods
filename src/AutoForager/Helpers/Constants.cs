@@ -178,7 +178,38 @@ namespace AutoForager.Helpers
             { "829", "Special" },   // Ginger
             { "399", "Special" },   // Sping Onion
             { "430", "Special" },   // Truffle
+
+            // Stardew Valley Expanded
+            { "FlashShifter.StardewValleyExpandedCP_Bearberrys", "Stardew Valley Expanded" },             // Bearberry
+            { "FlashShifter.StardewValleyExpandedCP_Big_Conch", "Stardew Valley Expanded" },              // Conch
+            { "FlashShifter.StardewValleyExpandedCP_Dried_Sand_Dollar", "Stardew Valley Expanded" },      // Sand Dollar
+            { "FlashShifter.StardewValleyExpandedCP_Ferngill_Primrose", "Stardew Valley Expanded" },      // Ferngill Primrose
+            { "FlashShifter.StardewValleyExpandedCP_Goldenrod", "Stardew Valley Expanded" },              // Goldenrod
+            { "FlashShifter.StardewValleyExpandedCP_Lucky_Four_Leaf_Clover", "Stardew Valley Expanded" }, // Four Leaf Clover
+            { "FlashShifter.StardewValleyExpandedCP_Mushroom_Colony", "Stardew Valley Expanded" },        // Mushroom Colony
+            { "FlashShifter.StardewValleyExpandedCP_Poison_Mushroom", "Stardew Valley Expanded" },        // Poison Mushroom
+            { "FlashShifter.StardewValleyExpandedCP_Red_Baneberry", "Stardew Valley Expanded" },          // Red Baneberry
+            { "FlashShifter.StardewValleyExpandedCP_Smelly_Rafflesia", "Stardew Valley Expanded" },       // Rafflesia
+            { "FlashShifter.StardewValleyExpandedCP_Thistle", "Stardew Valley Expanded" },                // Thistle
+            { "FlashShifter.StardewValleyExpandedCP_Winter_Star_Rose", "Stardew Valley Expanded" },       // Winter Star Rose
         };
         public static Dictionary<string, string> KnownCategoryLookup => _knownCategoryLookup;
+
+        private static readonly List<string> _sveForageables = new()
+        {
+            "(O)FlashShifter.StardewValleyExpandedCP_Bearberrys",
+            "(O)FlashShifter.StardewValleyExpandedCP_Big_Conch",
+            "(O)FlashShifter.StardewValleyExpandedCP_Dried_Sand_Dollar",
+            "(O)FlashShifter.StardewValleyExpandedCP_Ferngill_Primrose",
+            "(O)FlashShifter.StardewValleyExpandedCP_Goldenrod",
+            "(O)FlashShifter.StardewValleyExpandedCP_Lucky_Four_Leaf_Clover",
+            "(O)FlashShifter.StardewValleyExpandedCP_Mushroom_Colony",
+            "(O)FlashShifter.StardewValleyExpandedCP_Poison_Mushroom",
+            "(O)FlashShifter.StardewValleyExpandedCP_Red_Baneberry",
+            "(O)FlashShifter.StardewValleyExpandedCP_Smelly_Rafflesia",
+            "(O)FlashShifter.StardewValleyExpandedCP_Thistle",
+            "(O)FlashShifter.StardewValleyExpandedCP_Winter_Star_Rose"
+        };
+        public static List<string> SVEForageables => _sveForageables;
     }
 }

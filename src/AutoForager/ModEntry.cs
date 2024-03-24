@@ -182,6 +182,11 @@ namespace AutoForager
             _config = helper.ReadConfig<ModConfig>();
             _config.UpdateEnabled(helper);
 
+            if (Helper.ModRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP"))
+            {
+                _overrideItemIds.AddRange(Constants.SVEForageables);
+            }
+
             helper.Events.Content.AssetReady += OnAssetReady;
             helper.Events.Content.AssetRequested += OnAssetRequested;
             helper.Events.GameLoop.DayEnding += OnDayEnding;
@@ -216,6 +221,7 @@ namespace AutoForager
             }
         }
 
+        [EventPriority(EventPriority.Low)]
         private void OnAssetRequested(object? sender, AssetRequestedEventArgs e)
         {
             var assetName = e.Name.BaseName;
@@ -668,10 +674,10 @@ namespace AutoForager
 
             foreach (var obj in objectData.Data)
             {
-                if (_ignoreItemIds.Any(i => obj.Key.Equals(i.Substring(3)))) continue;
+                if (_ignoreItemIds.Any(i => obj.Key.IEquals(i.Substring(3)))) continue;
 
                 if ((obj.Value.ContextTags?.Contains("forage_item") ?? false)
-                    || _overrideItemIds.Any(i => obj.Key.Equals(i.Substring(3))))
+                    || _overrideItemIds.Any(i => obj.Key.IEquals(i.Substring(3))))
                 {
                     obj.Value.CustomFields ??= new();
                     obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldForageableKey, "true");
