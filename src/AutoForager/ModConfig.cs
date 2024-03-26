@@ -13,6 +13,7 @@ namespace AutoForager
     internal class ModConfig
     {
         private readonly ForageableItemTracker _forageableTracker;
+        private IMonitor? _monitor;
 
         #region General Properties
 
@@ -21,6 +22,7 @@ namespace AutoForager
         public bool UsePlayerMagnetism { get; set; }
         public int ShakeDistance { get; set; }
         public bool RequireHoe { get; set; }
+        public bool RequireToolMoss { get; set; }
 
         private int _fruitsReadyToShake;
         public int FruitsReadyToShake
@@ -63,6 +65,11 @@ namespace AutoForager
             ResetToDefault();
         }
 
+        public void UpdateMonitor(IMonitor monitor)
+        {
+            _monitor = monitor;
+        }
+
         public void ResetToDefault()
         {
             IsForagerActive = true;
@@ -73,12 +80,11 @@ namespace AutoForager
             UsePlayerMagnetism = false;
             ShakeDistance = 2;
             RequireHoe = true;
+            RequireToolMoss = true;
             FruitsReadyToShake = Constants.MinFruitsReady;
 
             foreach (var toggleDict in ForageToggles)
             {
-                toggleDict.Value.Clear();
-
                 if (_forageableTracker is not null || toggleDict.Key == Constants.BushToggleKey)
                 {
                     if (toggleDict.Key.Equals(Constants.BushToggleKey))
@@ -169,6 +175,15 @@ namespace AutoForager
                 tooltip: I18n.Option_RequireHoe_Tooltip,
                 getValue: () => RequireHoe,
                 setValue: val => RequireHoe = val);
+
+            // RequireToolMoss
+            gmcmApi.AddBoolOption(
+                mod: manifest,
+                fieldId: Constants.RequireToolMossId,
+                name: () => I18n.Option_RequireToolMoss_Name(Environment.NewLine),
+                tooltip: I18n.Option_RequireToolMoss_Tooltip,
+                getValue: () => RequireToolMoss,
+                setValue: val => RequireToolMoss = val);
 
             /* Page Links Section */
 
@@ -355,29 +370,33 @@ namespace AutoForager
             var groupedItems = _forageableTracker.ObjectForageables
                 .GroupBy(f =>
                 {
-                    if (!(f.CustomFields?.TryGetValue(Constants.CustomFieldCategoryKey, out var category) ?? false))
+                    string? category = null;
+
+                    if (!(f.CustomFields?.TryGetValue(Constants.CustomFieldCategoryKey, out category) ?? false))
                     {
-                        category = "Other";
+                        foreach (var prefix in Constants.KnownModPrefixes)
+                        {
+                            if (f.ItemId.StartsWith(prefix.Key))
+                            {
+                                category = prefix.Value;
+                                break;
+                            }
+                        }
+
+                        category ??= "Other";
                     }
 
                     return category;
                 })
-                .OrderBy(g => g.Key, new CategoryComparer())
-                .Select(g => g.ToList())
-                .ToList();
+                .OrderBy(g => g.Key, new CategoryComparer());
 
-            foreach (var group in groupedItems)
+            foreach (var currentGroup in groupedItems)
             {
-                if (!group.First().CustomFields.TryGetValue(Constants.CustomFieldCategoryKey, out var category))
-                {
-                    category = "Other";
-                }
-
                 gmcmApi.AddSectionTitle(
                     mod: manifest,
-                    text: () => category);
+                    text: () => currentGroup.Key);
 
-                foreach (var item in group)
+                foreach (var item in currentGroup)
                 {
                     gmcmApi.AddBoolOption(
                         mod: manifest,

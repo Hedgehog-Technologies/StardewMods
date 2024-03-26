@@ -153,7 +153,8 @@ namespace AutoForager
                 "(O)152", // Seaweed
                 "(O)416", // Snow Yam
                 "(O)430", // Truffle
-                "(O)851"  // Magma Cap
+                "(O)851", // Magma Cap
+                "(O)Moss" // Moss
             };
 
             _ignoreItemIds = new()
@@ -181,6 +182,7 @@ namespace AutoForager
 
             _config = helper.ReadConfig<ModConfig>();
             _config.UpdateEnabled(helper);
+            _config.UpdateMonitor(Monitor);
 
             if (Helper.ModRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP"))
             {
@@ -191,12 +193,13 @@ namespace AutoForager
             helper.Events.Content.AssetRequested += OnAssetRequested;
             helper.Events.GameLoop.DayEnding += OnDayEnding;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
-            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.Input.ButtonsChanged += OnButtonsChanged; // Maybe change this to pressed or released?
             helper.Events.Player.Warped += OnPlayerWarped;
         }
 
+        [EventPriority(EventPriority.Low)]
         private void OnAssetReady(object? sender, AssetReadyEventArgs e)
         {
             if (!_gameStarted) return;
@@ -273,7 +276,10 @@ namespace AutoForager
             _previousTilePosition = Game1.player.Tile;
         }
 
-        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
+        // We are using OneSecondUpdateTicked instead of GameStart because we don't want to block other events during game start
+        // but need to more or less blind wait ~1 second before loading assets to give time for various cache's to catch up with
+        // mods being loaded.
+        private void OnOneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
         {
             FruitTreeCache = Game1.content.Load<Dictionary<string, FruitTreeData>>(Constants.FruitTreesAssetName);
             WildTreeCache = Game1.content.Load<Dictionary<string, WildTreeData>>(Constants.WildTreesAssetName);
@@ -284,6 +290,8 @@ namespace AutoForager
             _config.UpdateEnabled(Helper);
 
             _gameStarted = true;
+
+            Helper.Events.GameLoop.OneSecondUpdateTicked -= OnOneSecondUpdateTicked;
         }
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
@@ -305,13 +313,11 @@ namespace AutoForager
                     {
                         case Tree tree:
                             if (tree.stump.Value) continue;
-                            if (tree.wasShakenToday.Value) continue;
-                            if (tree.growthStage.Value < 5 || !tree.hasSeed.Value) continue;
-                            if (!Game1.IsMultiplayer && Game1.player.ForagingLevel < 1) continue;
-                            if (!tree.isActionable()) continue;
+                            if (tree.growthStage.Value < 5 || (!tree.hasSeed.Value && !tree.hasMoss.Value)) continue;
 
                             var seedItemIds = tree.GetSeedAndSeedItemIds();
-                            if (_forageableTracker.WildTreeForageables.Any(i => (seedItemIds.Contains(i.QualifiedItemId) || seedItemIds.Contains(i.ItemId)) && i.IsEnabled))
+                            if (!tree.wasShakenToday.Value && tree.hasSeed.Value && (Game1.IsMultiplayer || Game1.player.ForagingLevel >= 1) && tree.isActionable()
+                                && _forageableTracker.WildTreeForageables.Any(i => (seedItemIds.Contains(i.QualifiedItemId) || seedItemIds.Contains(i.ItemId)) && i.IsEnabled))
                             {
                                 tree.performUseAction(tree.Tile);
                                 Monitor.Log($"Tree shaken: {string.Join(", ", seedItemIds)}", LogLevel.Debug);
@@ -331,6 +337,33 @@ namespace AutoForager
                             else
                             {
                                 Monitor.Log($"Tree not shaken: {string.Join(",", seedItemIds)}", LogLevel.Debug);
+                            }
+
+                            if (tree.hasMoss.Value
+                                && _forageableTracker.ObjectForageables.TryGetItem("(O)Moss", out var mossItem)
+                                && (mossItem?.IsEnabled ?? false))
+                            {
+                                Tool? tool = new GenericTool();
+
+                                if (_config.RequireToolMoss)
+                                {
+                                    tool = Game1.player.CurrentTool;
+                                    tool ??= Game1.player.Items.FirstOrDefault(i => i is Tool, null) as Tool;
+
+                                    if (tool == null)
+                                    {
+                                        if (_nextErrorMessage < DateTime.UtcNow)
+                                        {
+                                            Game1.addHUDMessage(new HUDMessage(I18n.Message_MissingToolMoss(), HUDMessage.error_type));
+                                            _nextErrorMessage = DateTime.UtcNow.AddSeconds(10);
+                                        }
+
+                                        Monitor.LogOnce(I18n.Log_MissingToolMoss(I18n.Option_RequireToolMoss_Name(" ")), LogLevel.Debug);
+                                        continue;
+                                    }
+                                }
+
+                                tree.performToolAction(tool, -1, tree.Tile);
                             }
 
                             break;
