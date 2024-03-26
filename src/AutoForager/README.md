@@ -59,6 +59,12 @@ Ukrainian  | ✔              | ❌                   | ❌
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 2.2.0
+- Added compatibility with Stardew Valley Expanded forageable items
+- Added "Moss" as a forageable option
+  - Added option to toggle off requirement of having a tool in inventory for Auto Forager to forage for Moss
+- Custom Wild and Fruit trees are now properly recognized by the Auto Forager
+- Fixed a potential crash when running alongside the "Marry Morris" mod
 ### 2.1.0
 - Added ability to forage for truffles found by pigs
 - Wild Trees added in 1.6 are now shaken as expected
