@@ -364,6 +364,7 @@ namespace AutoForager
                                 }
 
                                 tree.performToolAction(tool, -1, tree.Tile);
+                                _trackingCounts[Constants.ForageableKey].AddOrIncrement(mossItem.DisplayName);
                             }
 
                             break;
