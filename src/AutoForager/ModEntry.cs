@@ -565,6 +565,8 @@ namespace AutoForager
 
         private void OnPlayerWarped(object? sender, WarpedEventArgs e)
         {
+            if (!e.IsLocalPlayer) return;
+
             _artifactPredictions.Clear();
 
             var mapLoc = e.NewLocation;
