@@ -18,15 +18,15 @@ namespace AutoForager.Helpers
             items.Sort((x, y) => string.CompareOrdinal(x.DisplayName, y.DisplayName));
         }
 
-        public static bool TryGetItem(this List<ForageableItem> items, string itemId, out ForageableItem? item)
+        public static bool TryGetItem(this List<ForageableItem> items, string qualifiedItemId, out ForageableItem? item)
         {
             item = null;
 
-            if (items is null || itemId is null) return false;
+            if (items is null || qualifiedItemId is null) return false;
 
             foreach (var fItem in items)
             {
-                if (fItem.QualifiedItemId.IEquals(itemId))
+                if (fItem.QualifiedItemId.IEquals(qualifiedItemId))
                 {
                     item = fItem;
                     return true;

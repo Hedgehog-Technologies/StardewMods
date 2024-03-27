@@ -31,7 +31,7 @@ namespace AutoForager.Helpers
         public static string ObjectsAssetName => _objectsAssetName;
 
         private const string _wildTreesAssetName = "Data/WildTrees";
-        public static string WildTreesAssetName = _wildTreesAssetName;
+        public static string WildTreesAssetName => _wildTreesAssetName;
 
         #endregion Asset Properties
 
@@ -97,6 +97,9 @@ namespace AutoForager.Helpers
 
         private const string _requireHoeId = _fieldIdPrefix + "RequireHoe";
         public static string RequireHoeId => _requireHoeId;
+
+        private const string _requireToolMossId = _fieldIdPrefix + "RequireToolMoss";
+        public static string RequireToolMossId => _requireToolMossId;
 
         private const string _bushesPageId = _fieldIdPrefix + "BushesPage";
         public static string BushesPageId => _bushesPageId;
@@ -176,9 +179,36 @@ namespace AutoForager.Helpers
             { "88", "Desert" },     // Coconut
 
             { "829", "Special" },   // Ginger
+            { "Moss", "Special" },  // Moss
             { "399", "Special" },   // Sping Onion
             { "430", "Special" },   // Truffle
         };
         public static Dictionary<string, string> KnownCategoryLookup => _knownCategoryLookup;
+
+        private static readonly List<string> _sveForageables = new()
+        {
+            "(O)FlashShifter.StardewValleyExpandedCP_Bearberrys",
+            "(O)FlashShifter.StardewValleyExpandedCP_Big_Conch",
+            "(O)FlashShifter.StardewValleyExpandedCP_Dried_Sand_Dollar",
+            "(O)FlashShifter.StardewValleyExpandedCP_Ferngill_Primrose",
+            "(O)FlashShifter.StardewValleyExpandedCP_Goldenrod",
+            "(O)FlashShifter.StardewValleyExpandedCP_Lucky_Four_Leaf_Clover",
+            "(O)FlashShifter.StardewValleyExpandedCP_Mushroom_Colony",
+            "(O)FlashShifter.StardewValleyExpandedCP_Poison_Mushroom",
+            "(O)FlashShifter.StardewValleyExpandedCP_Red_Baneberry",
+            "(O)FlashShifter.StardewValleyExpandedCP_Smelly_Rafflesia",
+            "(O)FlashShifter.StardewValleyExpandedCP_Thistle",
+            "(O)FlashShifter.StardewValleyExpandedCP_Winter_Star_Rose"
+        };
+        public static List<string> SVEForageables => _sveForageables;
+
+        private static readonly Dictionary<string, string> _knownModPrefixes = new()
+        {
+            { "Cornucopia", "Cornucopia" },
+            { "FlashShifter.StardewValleyExpandedCP", "Stardew Valley Expanded" },
+            { "FlashShifter.SVE-FTM", "Stardew Valley Expanded" },
+            { "FlashShifter.SVECode", "Stardew Valley Expanded" }
+        };
+        public static Dictionary<string, string> KnownModPrefixes => _knownModPrefixes;
     }
 }

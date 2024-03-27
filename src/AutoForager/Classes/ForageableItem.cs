@@ -10,6 +10,8 @@ using StardewValley.ItemTypeDefinitions;
 using StardewValley.TokenizableStrings;
 using AutoForager.Helpers;
 
+using Constants = AutoForager.Helpers.Constants;
+
 namespace AutoForager.Classes
 {
     public class ForageableItem : IComparable
@@ -127,14 +129,23 @@ namespace AutoForager.Classes
 
                 var qualifiedItemId = "(O)" + kvp.Key;
                 var enabled = false;
-                var itemData = ItemRegistry.GetData(qualifiedItemId);
+                var itemData = ItemRegistry.GetData(qualifiedItemId) ?? ItemRegistry.GetData(kvp.Key);
+                var internalName = itemData?.InternalName ?? kvp.Value.Name;
 
-                if (configValues != null && configValues.TryGetValue(itemData.InternalName, out var configEnabled))
+                if (configValues != null && configValues.TryGetValue(internalName, out var configEnabled))
                 {
                     enabled = configEnabled;
                 }
 
-                forageItems.AddDistinct(new ForageableItem(itemData, customFields, enabled));
+                if (itemData != null)
+                {
+                    forageItems.AddDistinct(new ForageableItem(itemData, customFields, enabled));
+                }
+                else
+                {
+                    var kvpValue = kvp.Value;
+                    forageItems.AddDistinct(new ForageableItem(kvp.Key, qualifiedItemId, kvpValue.Name, kvpValue.DisplayName, kvpValue.CustomFields, enabled));
+                }
             }
 
             return forageItems;
