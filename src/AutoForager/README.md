@@ -63,6 +63,8 @@ Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/Stard
 - Added compatibility with Stardew Valley Expanded forageable items
 - Added "Moss" as a forageable option
   - Added option to toggle off requirement of having a tool in inventory for Auto Forager to forage for Moss
+- Added partial compatibility for the Cornucopia mod
+  - Additional work is needed to added compatibility with the "Custom Bush" mod
 - Custom Wild and Fruit trees are now properly recognized by the Auto Forager
 - Fixed a potential crash when running alongside the "Marry Morris" mod
 ### 2.1.0
