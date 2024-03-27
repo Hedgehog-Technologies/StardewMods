@@ -74,14 +74,18 @@ namespace AutoForager.Classes
                         if (customFields == null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
 
                         var enabled = true;
-                        var seedData = ItemRegistry.GetData(fruit.ItemId);
+                        var fruitData = ItemRegistry.GetData(fruit.ItemId);
+                        fruitData ??= ItemRegistry.GetData("(O)" + fruit.ItemId);
 
-                        if (configValues != null && configValues.TryGetValue(seedData.InternalName, out var configEnabled))
+                        if (fruitData != null)
                         {
-                            enabled = configEnabled;
-                        }
+                            if (configValues != null && configValues.TryGetValue(fruitData.InternalName, out var configEnabled))
+                            {
+                                enabled = configEnabled;
+                            }
 
-                        forageItems.AddDistinct(new ForageableItem(seedData, customFields, enabled));
+                            forageItems.AddDistinct(new ForageableItem(fruitData, customFields, enabled));
+                        }
                     }
                     catch (Exception ex)
                     {
