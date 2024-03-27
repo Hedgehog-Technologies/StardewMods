@@ -13,6 +13,10 @@ namespace AutoForager.Helpers
             }
 
             if (x.Equals(y)) return 0;
+            if (x.Equals("Lumisteria - Mt. Vapius")) return 1;
+            if (y.Equals("Lumisteria - Mt. Vapius")) return -1;
+            if (x.Equals("Lumisteria - Serene Meadow")) return 1;
+            if (y.Equals("Lumisteria - Serene Meadow")) return -1;
             if (x.Equals("Stardew Valley Expanded")) return 1;
             if (y.Equals("Stardew Valley Expanded")) return -1;
             if (x.Equals("Other")) return 1;

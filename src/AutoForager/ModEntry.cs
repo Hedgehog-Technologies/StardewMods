@@ -94,7 +94,7 @@ namespace AutoForager
             if (data is Dictionary<string, FruitTreeData> fruitTreeData)
             {
                 _forageableTracker.FruitTreeForageables.Clear();
-                _forageableTracker.FruitTreeForageables.AddRange(ForageableItem.Parse(fruitTreeData, _config?.ForageToggles[Constants.FruitTreeToggleKey]));
+                _forageableTracker.FruitTreeForageables.AddRange(ForageableItem.ParseFruitTreeData(fruitTreeData, _config?.ForageToggles[Constants.FruitTreeToggleKey], Monitor));
                 _forageableTracker.FruitTreeForageables.SortByDisplayName();
                 Monitor.Log("Parsing Fruit Tree Data", LogLevel.Debug);
             }
@@ -107,21 +107,21 @@ namespace AutoForager
                 }
 
                 _forageableTracker.ArtifactForageables.Clear();
-                _forageableTracker.ArtifactForageables.AddRange(ForageableItem.Parse(ObjectCache, locationData, _config?.ForageToggles[Constants.ForagingToggleKey]));
+                _forageableTracker.ArtifactForageables.AddRange(ForageableItem.ParseLocationData(ObjectCache, locationData, _config?.ForageToggles[Constants.ForagingToggleKey]));
                 _forageableTracker.ArtifactForageables.SortByDisplayName();
                 Monitor.Log("Parsing Location Data", LogLevel.Debug);
             }
             else if (data is Dictionary<string, ObjectData> objectData)
             {
                 _forageableTracker.ObjectForageables.Clear();
-                _forageableTracker.ObjectForageables.AddRange(ForageableItem.Parse(objectData, _config?.ForageToggles[Constants.ForagingToggleKey]));
+                _forageableTracker.ObjectForageables.AddRange(ForageableItem.ParseObjectData(objectData, _config?.ForageToggles[Constants.ForagingToggleKey], Monitor));
                 _forageableTracker.ObjectForageables.SortByDisplayName();
                 Monitor.Log("Parsing Object Data", LogLevel.Debug);
 
                 if (LocationCache is not null && LocationCache.Count > 0)
                 {
                     _forageableTracker.ArtifactForageables.Clear();
-                    _forageableTracker.ArtifactForageables.AddRange(ForageableItem.Parse(objectData, LocationCache, _config?.ForageToggles[Constants.ForagingToggleKey]));
+                    _forageableTracker.ArtifactForageables.AddRange(ForageableItem.ParseLocationData(objectData, LocationCache, _config?.ForageToggles[Constants.ForagingToggleKey]));
                     _forageableTracker.ArtifactForageables.SortByDisplayName();
                     Monitor.Log("Sub-Object: Parsing Location Data", LogLevel.Debug);
                 }
@@ -129,7 +129,7 @@ namespace AutoForager
             else if (data is Dictionary<string, WildTreeData> wildTreeData)
             {
                 _forageableTracker.WildTreeForageables.Clear();
-                _forageableTracker.WildTreeForageables.AddRange(ForageableItem.Parse(wildTreeData, _config?.ForageToggles[Constants.WildTreeToggleKey]));
+                _forageableTracker.WildTreeForageables.AddRange(ForageableItem.ParseWildTreeData(wildTreeData, _config?.ForageToggles[Constants.WildTreeToggleKey], Monitor));
                 _forageableTracker.WildTreeForageables.SortByDisplayName();
                 Monitor.Log("Parsing Wild Tree Data", LogLevel.Debug);
             }

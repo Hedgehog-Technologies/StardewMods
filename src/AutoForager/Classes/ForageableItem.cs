@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.Locations;
@@ -59,7 +60,7 @@ namespace AutoForager.Classes
             : this(data.ItemId, data.QualifiedItemId, data.InternalName, data.DisplayName, customFields, enabled)
         { }
 
-        public static IEnumerable<ForageableItem> Parse(IDictionary<string, FruitTreeData> data, IDictionary<string, bool>? configValues = null)
+        public static IEnumerable<ForageableItem> ParseFruitTreeData(IDictionary<string, FruitTreeData> data, IDictionary<string, bool>? configValues = null, IMonitor? monitor = null)
         {
             var forageItems = new List<ForageableItem>();
 
@@ -67,25 +68,33 @@ namespace AutoForager.Classes
             {
                 foreach (var fruit in kvp.Value.Fruit)
                 {
-                    var customFields = kvp.Value.CustomFields;
-                    if (customFields == null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
-
-                    var enabled = true;
-                    var seedData = ItemRegistry.GetData(fruit.ItemId);
-
-                    if (configValues != null && configValues.TryGetValue(seedData.InternalName, out var configEnabled))
+                    try
                     {
-                        enabled = configEnabled;
+                        var customFields = kvp.Value.CustomFields;
+                        if (customFields == null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
+
+                        var enabled = true;
+                        var seedData = ItemRegistry.GetData(fruit.ItemId);
+
+                        if (configValues != null && configValues.TryGetValue(seedData.InternalName, out var configEnabled))
+                        {
+                            enabled = configEnabled;
+                        }
+
+                        forageItems.AddDistinct(new ForageableItem(seedData, customFields, enabled));
+                    }
+                    catch (Exception ex)
+                    {
+                        monitor?.Log($"{kvp.Key} - {fruit?.ItemId} - {fruit?.ObjectInternalName}{Environment.NewLine}{ex.Message}{Environment.NewLine}{ex.StackTrace}", LogLevel.Error);
                     }
 
-                    forageItems.AddDistinct(new ForageableItem(seedData, customFields, enabled));
                 }
             }
 
             return forageItems;
         }
 
-        public static IEnumerable<ForageableItem> Parse(IDictionary<string, WildTreeData> data, IDictionary<string, bool>? configValues = null)
+        public static IEnumerable<ForageableItem> ParseWildTreeData(IDictionary<string, WildTreeData> data, IDictionary<string, bool>? configValues = null, IMonitor? monitor = null)
         {
             var forageItems = new List<ForageableItem>();
 
@@ -103,55 +112,72 @@ namespace AutoForager.Classes
 
                 foreach (var seedItem in seedAndSeedItemIds)
                 {
-                    var enabled = true;
-                    var seedData = ItemRegistry.GetData(seedItem);
-
-                    if (configValues != null && configValues.TryGetValue(seedData.InternalName, out var configEnabled))
+                    try
                     {
-                        enabled = configEnabled;
-                    }
+                        if (seedItem == null) continue;
 
-                    forageItems.AddDistinct(new ForageableItem(seedData, customFields, enabled));
+                        var enabled = true;
+                        var seedData = ItemRegistry.GetData(seedItem);
+
+                        if (configValues != null && configValues.TryGetValue(seedData.InternalName, out var configEnabled))
+                        {
+                            enabled = configEnabled;
+                        }
+
+                        forageItems.AddDistinct(new ForageableItem(seedData, customFields, enabled));
+                    }
+                    catch (Exception ex)
+                    {
+                        monitor?.Log($"{kvp.Key} - {seedItem}{Environment.NewLine}{ex.Message}{Environment.NewLine}{ex.StackTrace}", LogLevel.Error);
+                    }
                 }
             }
 
             return forageItems;
         }
 
-        public static IEnumerable<ForageableItem> Parse(IDictionary<string, ObjectData> data, IDictionary<string, bool>? configValues = null)
+        public static IEnumerable<ForageableItem> ParseObjectData(IDictionary<string, ObjectData> data, IDictionary<string, bool>? configValues = null, IMonitor? monitor = null)
         {
             var forageItems = new List<ForageableItem>();
 
             foreach (var kvp in data)
             {
-                var customFields = kvp.Value.CustomFields;
-                if (customFields == null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
-
-                var qualifiedItemId = "(O)" + kvp.Key;
-                var enabled = false;
-                var itemData = ItemRegistry.GetData(qualifiedItemId) ?? ItemRegistry.GetData(kvp.Key);
-                var internalName = itemData?.InternalName ?? kvp.Value.Name;
-
-                if (configValues != null && configValues.TryGetValue(internalName, out var configEnabled))
+                try
                 {
-                    enabled = configEnabled;
+                    var customFields = kvp.Value.CustomFields;
+                    if (customFields == null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
+
+                    var qualifiedItemId = "(O)" + kvp.Key;
+                    var enabled = false;
+                    var itemData = ItemRegistry.GetData(qualifiedItemId) ?? ItemRegistry.GetData(kvp.Key);
+                    var internalName = itemData?.InternalName ?? kvp.Value.Name;
+
+                    if (configValues != null && configValues.TryGetValue(internalName, out var configEnabled))
+                    {
+                        enabled = configEnabled;
+                    }
+
+                    if (itemData != null)
+                    {
+                        forageItems.AddDistinct(new ForageableItem(itemData, customFields, enabled));
+                    }
+                    else
+                    {
+                        var kvpValue = kvp.Value;
+                        forageItems.AddDistinct(new ForageableItem(kvp.Key, qualifiedItemId, kvpValue.Name, kvpValue.DisplayName, kvpValue.CustomFields, enabled));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    monitor?.Log($"{kvp.Key} - {kvp.Value.Name}{Environment.NewLine}{ex.Message}{Environment.NewLine}{ex.StackTrace}", LogLevel.Error);
                 }
 
-                if (itemData != null)
-                {
-                    forageItems.AddDistinct(new ForageableItem(itemData, customFields, enabled));
-                }
-                else
-                {
-                    var kvpValue = kvp.Value;
-                    forageItems.AddDistinct(new ForageableItem(kvp.Key, qualifiedItemId, kvpValue.Name, kvpValue.DisplayName, kvpValue.CustomFields, enabled));
-                }
             }
 
             return forageItems;
         }
 
-        public static IEnumerable<ForageableItem> Parse(IDictionary<string, ObjectData> oData, IDictionary<string, LocationData> lData, IDictionary<string, bool>? configValues = null)
+        public static IEnumerable<ForageableItem> ParseLocationData(IDictionary<string, ObjectData> oData, IDictionary<string, LocationData> lData, IDictionary<string, bool>? configValues = null)
         {
             var forageItems = new List<ForageableItem>();
 

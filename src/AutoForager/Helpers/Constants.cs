@@ -207,7 +207,9 @@ namespace AutoForager.Helpers
             { "Cornucopia", "Cornucopia" },
             { "FlashShifter.StardewValleyExpandedCP", "Stardew Valley Expanded" },
             { "FlashShifter.SVE-FTM", "Stardew Valley Expanded" },
-            { "FlashShifter.SVECode", "Stardew Valley Expanded" }
+            { "FlashShifter.SVECode", "Stardew Valley Expanded" },
+            { "Lumisteria.MtVapius", "Lumisteria - Mt. Vapius" },
+            { "Lumisteria.SereneMeadow", "Lumisteria - Serene Meadow" }
         };
         public static Dictionary<string, string> KnownModPrefixes => _knownModPrefixes;
     }
