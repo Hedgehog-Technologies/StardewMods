@@ -18,22 +18,22 @@ You can find a breakdown of the config values [here](./docs/config.md)
 - If you are a mod maker working on custom Forageable items, to have your item regonized by the AutoForager all you need to do is add the context tag `forage_item` to the item definition
 
 ### Translation
-&nbsp;     | No Translation  | Partial Translation  | Full Translation
-:--------- | :-------------: | :------------------: | :---------------:
-Chinese    | ✔              | ❌                   | ❌
-French     | ✔              | ❌                   | ❌
-German     | ✔              | ❌                   | ❌
-Hungarian  | ✔              | ❌                   | ❌
-Italian    | ✔              | ❌                   | ❌
-Japanese   | ✔              | ❌                   | ❌
-Korean     | ✔              | ❌                   | ❌
-Polish     | ✔              | ❌                   | ❌
-Portuguese | ✔              | ❌                   | ❌
-Russian    | ✔              | ❌                   | ❌
-Spanish    | ✔              | ❌                   | ❌
-Thai       | ✔              | ❌                   | ❌
-Turkish    | ✔              | ❌                   | ❌
-Ukrainian  | ✔              | ❌                   | ❌
+&nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By
+:--------: | :-------------: | :------------------: | :---------------: | :------------:
+Chinese    | ✔              | ❌                   | ❌                | n/a
+French     | ✔              | ❌                   | ❌                | n/a
+German     | ✔              | ❌                   | ❌                | n/a
+Hungarian  | ✔              | ❌                   | ❌                | n/a
+Italian    | ✔              | ❌                   | ❌                | n/a
+Japanese   | ✔              | ❌                   | ❌                | n/a
+Korean     | ✔              | ❌                   | ❌                | n/a
+Polish     | ✔              | ❌                   | ❌                | n/a
+Portuguese | ✔              | ❌                   | ❌                | n/a
+Russian    | ✔              | ❌                   | ❌                | n/a
+Spanish    | ✔              | ❌                   | ❌                | n/a
+Thai       | ✔              | ❌                   | ❌                | n/a
+Turkish    | ✔              | ❌                   | ❌                | n/a
+Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ### Install
 1. Install the latest version of [SMAPI](https://smapi.io)
@@ -59,6 +59,8 @@ Ukrainian  | ✔              | ❌                   | ❌
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 2.2.3
+- Fix some translations not getting updated on locale change
 ### 2.2.2
 - Additional error checks and fallbacks when parsing Fruit Trees
 ### 2.2.1
