@@ -191,6 +191,7 @@ namespace AutoForager
 
             helper.Events.Content.AssetReady += OnAssetReady;
             helper.Events.Content.AssetRequested += OnAssetRequested;
+            helper.Events.Content.LocaleChanged += OnLocaleChanged;
             helper.Events.GameLoop.DayEnding += OnDayEnding;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
             helper.Events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
@@ -241,6 +242,19 @@ namespace AutoForager
             {
                 e.Edit(EditWildTrees);
             }
+        }
+
+        private void OnLocaleChanged(object? sender, LocaleChangedEventArgs e)
+        {
+            ItemRegistry.ResetCache();
+
+            FruitTreeCache = Game1.content.Load<Dictionary<string, FruitTreeData>>(Constants.FruitTreesAssetName);
+            WildTreeCache = Game1.content.Load<Dictionary<string, WildTreeData>>(Constants.WildTreesAssetName);
+            ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
+            LocationCache = Game1.content.Load<Dictionary<string, LocationData>>(Constants.LocationsAssetName);
+
+            _config.RegisterModConfigMenu(Helper, ModManifest);
+            _config.UpdateEnabled(Helper);
         }
 
         private void OnDayEnding(object? sender, DayEndingEventArgs e)
