@@ -23,7 +23,7 @@ on the wiki for help contributing translations.
 (❌ = untranslated, ❔ = partly translated, ✔ = fully translated)
 &nbsp;     | Allow Beach Sprinklers                | Auto Forager
 :--------: | :-----------------------------------: | :-----------:
-Chinese    | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)
+Chinese    | [❌](./src/AllowBeachSprinklers/i18n) | [✔](./src/AutoForager/i18n/zh.json)
 French     | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)
 German     | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)
 Hungarian  | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)

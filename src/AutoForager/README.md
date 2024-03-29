@@ -20,7 +20,7 @@ You can find a breakdown of the config values [here](./docs/config.md)
 ### Translation
 &nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By
 :--------: | :-------------: | :------------------: | :---------------: | :------------:
-Chinese    | ✔              | ❌                   | ❌                | n/a
+Chinese    | ✔              | ✔                    | ✔                | [Krobus](https://www.nexusmods.com/users/127351118)
 French     | ✔              | ❌                   | ❌                | n/a
 German     | ✔              | ❌                   | ❌                | n/a
 Hungarian  | ✔              | ❌                   | ❌                | n/a
