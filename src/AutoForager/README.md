@@ -61,6 +61,8 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
 ### 2.2.3
 - Fix some translations not getting updated on locale change
+- Added Chinese translations
+  - Thanks to [Krobus](https://www.nexusmods.com/users/127351118) for the provided translation
 ### 2.2.2
 - Additional error checks and fallbacks when parsing Fruit Trees
 ### 2.2.1
