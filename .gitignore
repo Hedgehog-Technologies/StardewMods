@@ -7,3 +7,6 @@ bin/
 
 # Specific Files
 manifest.json
+
+# File Exceptions
+!src/*AF*Content*Packs/**/manifest.json
