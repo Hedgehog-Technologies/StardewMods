@@ -28,7 +28,7 @@ Italian    | ✔              | ❌                   | ❌                | n/a
 Japanese   | ✔              | ❌                   | ❌                | n/a
 Korean     | ✔              | ❌                   | ❌                | n/a
 Polish     | ✔              | ❌                   | ❌                | n/a
-Portuguese | ✔              | ❌                   | ❌                | n/a
+Portuguese | ✔              | ✔                    | ✔                | [NARCOAZAZAL](https://www.nexusmods.com/users/200703680)
 Russian    | ✔              | ❌                   | ❌                | n/a
 Spanish    | ✔              | ❌                   | ❌                | n/a
 Thai       | ✔              | ❌                   | ❌                | n/a
@@ -59,6 +59,9 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 2.3.0
+- Add Portuguese translations
+  - Thanks to [NARCOAZAZAL](https://www.nexusmods.com/users/200703680) for the provided translation
 ### 2.2.3
 - Fix some translations not getting updated on locale change
 - Added Chinese translations
