@@ -9,4 +9,4 @@ bin/
 manifest.json
 
 # File Exceptions
-!src/*AF*Content*Packs/**/manifest.json
+!src/Content*Packs/**/manifest.json
