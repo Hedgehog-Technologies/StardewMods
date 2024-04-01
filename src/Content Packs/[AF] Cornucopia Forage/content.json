@@ -1,0 +1,56 @@
+{
+  "Category": "Cornucopia",
+  "Forageables": [
+    // More Crops
+    "Cornucopia_Peppercorn",
+    "Cornucopia_Raspberry"
+  ],
+  "FruitTrees": [
+    // More Crops
+    // Base Trees
+    "Cornucopia_AvocadoSapling",
+    "Cornucopia_CocoaPodSapling",
+    "Cornucopia_PearSapling",
+    "Cornucopia_PistachioSapling",
+
+    // Extended Trees
+    "Cornucopia_AlmondSapling",
+    "Cornucopia_BreadfruitSapling",
+    "Cornucopia_CashewSapling",
+    "Cornucopia_DragonFruitSapling",
+    "Cornucopia_DurianSapling",
+    "Cornucopia_FigSapling",
+    "Cornucopia_GrapefruitSapling",
+    "Cornucopia_LemonSapling",
+    "Cornucopia_LimeSapling",
+    "Cornucopia_LycheeSapling",
+    "Cornucopia_NectarineSapling",
+    "Cornucopia_PapayaSapling",
+    "Cornucopia_PecanSapling",
+    "Cornucopia_PersimmonSapling",
+    "Cornucopia_PlantainSapling",
+    "Cornucopia_PomeloSapling",
+    "Cornucopia_UmeSapling",
+    "Cornucopia_WalnutSapling",
+    "Cornucopia_YuzuSapling",
+
+    // Herb Trees
+    "Cornucopia_CamphorLeavesSapling",
+    "Cornucopia_CinnamonSticksSapling",
+    "Cornucopia_EucalyptusLeavesSapling",
+    "Cornucopia_MelaleucaLeavesSapling",
+    "Cornucopia_NutmegSapling",
+
+    // More Flowers
+    "Cornucopia_HibiscusSapling",
+    "Cornucopia_JasmineSapling",
+    "Cornucopia_MagnoliaSapling",
+    "Cornucopia_WisteriaSapling",
+    "Cornucopia_YlangYlangSapling"
+  ],
+  "WildTrees": [
+    // More Crops
+    // Extended Trees
+    "Cornucopia_SapodillaSeed"
+  ]
+}

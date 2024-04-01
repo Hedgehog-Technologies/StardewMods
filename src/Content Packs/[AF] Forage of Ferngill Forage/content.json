@@ -1,0 +1,51 @@
+{
+  "Category": "Forage of Ferngill",
+  "Forageables": [
+    // Coastal Forage
+    "FOF_Anisea_Weed",
+    "FOF_Blue_Coral",
+    "FOF_Ferngill_Scallop",
+    "FOF_Glass_Eye_Shell",
+    "FOF_Horn_Shell",
+    "FOF_Spysea_Weed",
+    "FOF_Yellow_Coral",
+    "FOF_White_Coral",
+
+    // Fruit and Nuts
+    "FOF_Bramble_Berry",
+    "FOF_Chestnut",
+    "FOF_Crackle_Apple",
+    "FOF_Fizzling_Berry",
+    "FOF_Nimbus_Berry",
+    "FOF_Rose_Pops",
+    "FOF_Sol_Berry",
+
+    // Mushrooms
+    // Vanilla
+    "FOF_Black_Mushroom",
+    "FOF_Dew_Cup_Mushroom",
+    "FOF_Muffin_Bell_Mushroom",
+    "FOF_Plump_Belly_Mushroom",
+    "FOF_Stalk_Cluster_Mushroom",
+    "FOF_White_Mushroom",
+    "FOF_Yellow_Mushroom",
+    // Mod Expansions
+    "FOF_Ridge_Puff_Mushroom",
+    "FOF_Spring_Cap_Mushroom",
+    "FOF_Tooting_Funnel_Mushroom",
+    "FOF_Woodland_Stool_Mushroom",
+
+    // Roots
+    "FOF_Bardic_Root",
+    "FOF_Gaelic_Root",
+    "FOF_Sabi_Root"
+  ],
+  "FruitTrees": [
+    // Fruit and Nuts
+    "FOF_Crackle_Apple_Sapling"
+  ],
+  "WildTrees": [
+    // Fruit and Nuts
+    "FOF_Chestnut_Tree"
+  ]
+}
