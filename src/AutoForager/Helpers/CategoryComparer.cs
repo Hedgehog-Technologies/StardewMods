@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using StardewModdingAPI;
+using AutoForager.Classes;
 
 namespace AutoForager.Helpers
 {
     internal class CategoryComparer : IComparer<string>
     {
-        public int Compare(string? x, string? y)
+        private readonly List<string> _packCategories = new();
+
+        int IComparer<string>.Compare(string? x, string? y)
         {
             if (x is null || y is null)
             {
@@ -13,18 +18,45 @@ namespace AutoForager.Helpers
             }
 
             if (x.Equals(y)) return 0;
-            if (x.Equals("Lumisteria - Mt. Vapius")) return 1;
-            if (y.Equals("Lumisteria - Mt. Vapius")) return -1;
-            if (x.Equals("Lumisteria - Serene Meadow")) return 1;
-            if (y.Equals("Lumisteria - Serene Meadow")) return -1;
-            if (x.Equals("Stardew Valley Expanded")) return 1;
-            if (y.Equals("Stardew Valley Expanded")) return -1;
+
+            // Push to bottom of grouping
             if (x.Equals("Other")) return 1;
             if (y.Equals("Other")) return -1;
+
+            var xIsPack = _packCategories.Contains(x);
+            var yIsPack = _packCategories.Contains(y);
+            if (xIsPack && yIsPack)
+            {
+                return string.Compare(x, y);
+            }
+            else if (xIsPack)
+            {
+                return 1;
+            }
+            else if (yIsPack)
+            {
+                return -1;
+            }
+
             if (x.Equals("Special")) return 1;
             if (y.Equals("Special")) return -1;
 
+            // Push to top of grouping
+            if (x.Equals("Vanilla")) return -1;
+            if (y.Equals("Vanilla")) return 1;
+
             return string.Compare(x, y);
         }
+
+        public CategoryComparer(IEnumerable<IContentPack> packs)
+        {
+            _packCategories = packs.Select(p => p?.ReadJsonFile<ContentEntry>("content.json"))
+                .Select(e => e?.Category ?? "Unknown")
+                .ToList();
+
+            _packCategories.Sort();
+        }
+
+        public CategoryComparer() { }
     }
 }

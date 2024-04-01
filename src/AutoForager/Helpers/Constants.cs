@@ -185,29 +185,41 @@ namespace AutoForager.Helpers
         };
         public static Dictionary<string, string> KnownCategoryLookup => _knownCategoryLookup;
 
-        private static readonly List<string> _sveForageables = new()
+        private static readonly List<string> _vanillaFruitTrees = new()
         {
-            "(O)FlashShifter.StardewValleyExpandedCP_Bearberrys",
-            "(O)FlashShifter.StardewValleyExpandedCP_Big_Conch",
-            "(O)FlashShifter.StardewValleyExpandedCP_Dried_Sand_Dollar",
-            "(O)FlashShifter.StardewValleyExpandedCP_Ferngill_Primrose",
-            "(O)FlashShifter.StardewValleyExpandedCP_Goldenrod",
-            "(O)FlashShifter.StardewValleyExpandedCP_Lucky_Four_Leaf_Clover",
-            "(O)FlashShifter.StardewValleyExpandedCP_Mushroom_Colony",
-            "(O)FlashShifter.StardewValleyExpandedCP_Poison_Mushroom",
-            "(O)FlashShifter.StardewValleyExpandedCP_Red_Baneberry",
-            "(O)FlashShifter.StardewValleyExpandedCP_Smelly_Rafflesia",
-            "(O)FlashShifter.StardewValleyExpandedCP_Thistle",
-            "(O)FlashShifter.StardewValleyExpandedCP_Winter_Star_Rose"
+            "628", // Cherry
+            "629", // Apricot
+            "630", // Orange
+            "631", // Peach
+            "632", // Pomegranate
+            "633", // Apple
+            "69",  // Banana
+            "835", // Mango
         };
-        public static List<string> SVEForageables => _sveForageables;
+        public static List<string> VanillaFruitTrees => _vanillaFruitTrees;
+
+        private static readonly List<string> _vanillaWildTrees = new()
+        {
+            "1",  // Acorn
+            "2",  // Maple
+            "3",  // Pine
+            "7",  // Mushroom
+            "8",  // Mahogany
+            "6",  // Coconut
+            "9",  // Coconut
+            "10", // Mossy
+            "11", // Mossy
+            "12", // Mossy
+            "13"  // Mystic
+        };
+        public static List<string> VanillaWildTrees => _vanillaWildTrees;
 
         private static readonly Dictionary<string, string> _knownModPrefixes = new()
         {
-            { "Cornucopia", "Cornucopia" },
-            { "FlashShifter.StardewValleyExpandedCP", "Stardew Valley Expanded" },
-            { "FlashShifter.SVE-FTM", "Stardew Valley Expanded" },
-            { "FlashShifter.SVECode", "Stardew Valley Expanded" },
+            //{ "Cornucopia", "Cornucopia" },
+            //{ "FlashShifter.StardewValleyExpandedCP", "Stardew Valley Expanded" },
+            //{ "FlashShifter.SVE-FTM", "Stardew Valley Expanded" },
+            //{ "FlashShifter.SVECode", "Stardew Valley Expanded" },
             { "Lumisteria.MtVapius", "Lumisteria - Mt. Vapius" },
             { "Lumisteria.SereneMeadow", "Lumisteria - Serene Meadow" }
         };

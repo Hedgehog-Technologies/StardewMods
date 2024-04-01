@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +43,10 @@ namespace AutoForager
         private readonly Dictionary<string, Dictionary<string, int>> _trackingCounts;
 
         private DateTime _nextErrorMessage;
+
+        private readonly Dictionary<string, string> _cpForageables;
+        private readonly Dictionary<string, string> _cpFruitTrees;
+        private readonly Dictionary<string, string> _cpWildTrees;
 
         #region Asset Cache
 
@@ -148,6 +153,10 @@ namespace AutoForager
             _config = new();
             _gameStarted = false;
 
+            _cpForageables = new();
+            _cpFruitTrees = new();
+            _cpWildTrees = new();
+
             _overrideItemIds = new()
             {
                 "(O)152", // Seaweed
@@ -179,15 +188,13 @@ namespace AutoForager
         public override void Entry(IModHelper helper)
         {
             I18n.Init(helper.Translation);
+            var packs = helper.ContentPacks.GetOwned();
 
             _config = helper.ReadConfig<ModConfig>();
             _config.UpdateEnabled(helper);
-            _config.UpdateMonitor(Monitor);
+            _config.UpdateUtilities(Monitor, packs);
 
-            if (Helper.ModRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP"))
-            {
-                _overrideItemIds.AddRange(Constants.SVEForageables);
-            }
+            ParseContentPacks(packs);
 
             helper.Events.Content.AssetReady += OnAssetReady;
             helper.Events.Content.AssetRequested += OnAssetRequested;
@@ -715,6 +722,15 @@ namespace AutoForager
             {
                 fruitTree.Value.CustomFields ??= new();
                 fruitTree.Value.CustomFields.AddOrUpdate(Constants.CustomFieldForageableKey, "true");
+
+                if (Constants.VanillaFruitTrees.Contains(fruitTree.Key))
+                {
+                    fruitTree.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCategoryKey, "Vanilla");
+                }
+                else if (_cpFruitTrees.TryGetValue(fruitTree.Key, out var category))
+                {
+                    fruitTree.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCategoryKey, category);
+                }
             }
         }
 
@@ -726,15 +742,33 @@ namespace AutoForager
             {
                 if (_ignoreItemIds.Any(i => obj.Key.IEquals(i.Substring(3)))) continue;
 
-                if ((obj.Value.ContextTags?.Contains("forage_item") ?? false)
+                string? category = null;
+
+                if (_cpForageables.TryGetValue(obj.Key, out var cpValue))
+                {
+                    category = cpValue;
+                }
+                else if ((obj.Value.ContextTags?.Contains("forage_item") ?? false)
                     || _overrideItemIds.Any(i => obj.Key.IEquals(i.Substring(3))))
+                {
+                    if (Constants.KnownCategoryLookup.TryGetValue(obj.Key, out var knownValue))
+                    {
+                        category = knownValue;
+                    }
+                    else
+                    {
+                        category = string.Empty;
+                    }
+                }
+
+                if (category is not null)
                 {
                     obj.Value.CustomFields ??= new();
                     obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldForageableKey, "true");
 
-                    if (Constants.KnownCategoryLookup.TryGetValue(obj.Key, out var value))
+                    if (category != string.Empty)
                     {
-                        obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCategoryKey, value);
+                        obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCategoryKey, category);
                     }
                 }
             }
@@ -751,10 +785,84 @@ namespace AutoForager
 
                 wildTree.Value.CustomFields ??= new();
                 wildTree.Value.CustomFields.AddOrUpdate(Constants.CustomFieldForageableKey, "true");
+
+                if (Constants.VanillaWildTrees.Contains(wildTree.Key))
+                {
+                    wildTree.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCategoryKey, "Vanilla");
+                }
+                else if (_cpWildTrees.TryGetValue(wildTree.Key, out var category))
+                {
+                    wildTree.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCategoryKey, category);
+                }
             }
         }
 
-        private void ForageItem(Object obj, Vector2 vec, Random random, int xpGained = 0, bool checkGatherer = false)
+        private void ParseContentPacks(IEnumerable<IContentPack> packs)
+        {
+            foreach (var pack in packs)
+            {
+                if (pack is not null)
+                {
+                    try
+                    {
+                        var content = pack.ReadJsonFile<ContentEntry>("content.json");
+                        Monitor.Log($"Found content pack: {pack.DirectoryPath}", LogLevel.Debug);
+
+                        if (content?.Forageables is not null)
+                        {
+                            foreach (var itemId in content.Forageables)
+                            {
+                                if (_cpForageables.ContainsKey(itemId))
+                                {
+                                    Monitor.Log($"Already found an item with ItemId [{itemId}] with category [{_cpForageables[itemId]}] when trying to add category [{content.Category}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+                                }
+                                else
+                                {
+                                    Monitor.Log($"Found content pack forageable: {itemId} - {content.Category}", LogLevel.Debug);
+                                    _cpForageables.Add(itemId, content.Category);
+                                }
+                            }
+                        }
+
+                        if (content?.FruitTrees is not null)
+                        {
+                            foreach (var treeId in content.FruitTrees)
+                            {
+                                if (_cpFruitTrees.ContainsKey(treeId))
+                                {
+                                    Monitor.Log($"Already found a Fruit Tree with Id [{treeId}] with category [{_cpFruitTrees[treeId]}] when trying to add category [{content.Category}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+                                }
+                                else
+                                {
+                                    _cpFruitTrees.Add(treeId, content.Category);
+                                }
+                            }
+                        }
+
+                        if (content?.WildTrees is not null)
+                        {
+                            foreach (var treeId in content.WildTrees)
+                            {
+                                if (_cpWildTrees.ContainsKey(treeId))
+                                {
+                                    Monitor.Log($"Already found a Wild Tree with Id [{treeId}] with category [{_cpWildTrees[treeId]}] when trying to add category [{content.Category}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+                                }
+                                else
+                                {
+                                    _cpWildTrees.Add(treeId, content.Category);
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        Monitor.Log($"Unable to load content pack: {Path.Combine(pack.DirectoryPath, "content.json")}. Review that file for syntax errors.", LogLevel.Error);
+                    }
+                }
+            }
+        }
+
+        private static void ForageItem(Object obj, Vector2 vec, Random random, int xpGained = 0, bool checkGatherer = false)
         {
             var foragingLevel = Game1.player.ForagingLevel;
             var professions = Game1.player.professions;

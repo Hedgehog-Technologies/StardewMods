@@ -13,6 +13,7 @@ namespace AutoForager
     internal class ModConfig
     {
         private readonly ForageableItemTracker _forageableTracker;
+        private IComparer<string> _comparer = new CategoryComparer();
         private IMonitor? _monitor;
 
         #region General Properties
@@ -65,9 +66,10 @@ namespace AutoForager
             ResetToDefault();
         }
 
-        public void UpdateMonitor(IMonitor monitor)
+        public void UpdateUtilities(IMonitor monitor, IEnumerable<IContentPack> packs)
         {
             _monitor = monitor;
+            _comparer = new CategoryComparer(packs);
         }
 
         public void ResetToDefault()
@@ -222,19 +224,27 @@ namespace AutoForager
                 mod: manifest,
                 text: I18n.Page_WildTrees_Description);
 
-            foreach (var item in _forageableTracker.WildTreeForageables)
+            foreach (var currentGroup in _forageableTracker.WildTreeForageables.GroupByCategory(_comparer))
             {
-                gmcmApi.AddBoolOption(
+                gmcmApi.AddSectionTitle(
                     mod: manifest,
-                    name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
-                    getValue: () => item.IsEnabled,
-                    setValue: val =>
-                    {
-                        item.IsEnabled = val;
-                        ForageToggles[Constants.WildTreeToggleKey].AddOrUpdate(item.InternalName, val);
-                        UpdateEnabled();
-                    });
+                    text: () => currentGroup.Key);
+
+                foreach (var item in currentGroup)
+                {
+                    gmcmApi.AddBoolOption(
+                        mod: manifest,
+                        name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
+                        getValue: () => item.IsEnabled,
+                        setValue: val =>
+                        {
+                            item.IsEnabled = val;
+                            ForageToggles[Constants.WildTreeToggleKey].AddOrUpdate(item.InternalName, val);
+                            UpdateEnabled();
+                        });
+                }
             }
+
 
             /* Fruit Trees */
 
@@ -262,18 +272,25 @@ namespace AutoForager
                 mod: manifest,
                 text: I18n.Page_FruitTrees_Description);
 
-            foreach (var item in _forageableTracker.FruitTreeForageables)
+            foreach (var currentGroup in _forageableTracker.FruitTreeForageables.GroupByCategory(_comparer))
             {
-                gmcmApi.AddBoolOption(
+                gmcmApi.AddSectionTitle(
                     mod: manifest,
-                    name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
-                    getValue: () => item.IsEnabled,
-                    setValue: val =>
-                    {
-                        item.IsEnabled = val;
-                        ForageToggles[Constants.FruitTreeToggleKey].AddOrUpdate(item.InternalName, val);
-                        UpdateEnabled();
-                    });
+                    text: () => currentGroup.Key);
+
+                foreach (var item in currentGroup)
+                {
+                    gmcmApi.AddBoolOption(
+                        mod: manifest,
+                        name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
+                        getValue: () => item.IsEnabled,
+                        setValue: val =>
+                        {
+                            item.IsEnabled = val;
+                            ForageToggles[Constants.FruitTreeToggleKey].AddOrUpdate(item.InternalName, val);
+                            UpdateEnabled();
+                        });
+                }
             }
 
             /* Bushes */
@@ -367,30 +384,7 @@ namespace AutoForager
                 mod: manifest,
                 text: I18n.Page_Forageables_Description);
 
-            var groupedItems = _forageableTracker.ObjectForageables
-                .GroupBy(f =>
-                {
-                    string? category = null;
-
-                    if (!(f.CustomFields?.TryGetValue(Constants.CustomFieldCategoryKey, out category) ?? false))
-                    {
-                        foreach (var prefix in Constants.KnownModPrefixes)
-                        {
-                            if (f.ItemId.StartsWith(prefix.Key))
-                            {
-                                category = prefix.Value;
-                                break;
-                            }
-                        }
-
-                        category ??= "Other";
-                    }
-
-                    return category;
-                })
-                .OrderBy(g => g.Key, new CategoryComparer());
-
-            foreach (var currentGroup in groupedItems)
+            foreach (var currentGroup in _forageableTracker.ObjectForageables.GroupByCategory(_comparer))
             {
                 gmcmApi.AddSectionTitle(
                     mod: manifest,
@@ -483,8 +477,8 @@ namespace AutoForager
     public interface IGenericModConfigMenu
     {
         /*********
-		** Methods
-		*********/
+        ** Methods
+        *********/
 
         /// <summary>Register a mod whose config can be edited through the UI.</summary>
         /// <param name="mod">The mod's manifest.</param>
@@ -495,8 +489,8 @@ namespace AutoForager
         void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
 
         /****
-		** Basic options
-		****/
+        ** Basic options
+        ****/
 
         /// <summary>Add a section title at the current position in the form.</summary>
         /// <param name="mod">The mod's manifest.</param>
@@ -542,8 +536,8 @@ namespace AutoForager
         void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, Func<string>? tooltip = null, string? fieldId = null);
 
         /****
-		** Multi-page management
-		****/
+        ** Multi-page management
+        ****/
 
         /// <summary>Start a new page in the mod's config UI, or switch to that page if it already exists. All options registered after this will be part of that page.</summary>
         /// <param name="mod">The mod's manifest.</param>
@@ -560,8 +554,8 @@ namespace AutoForager
         void AddPageLink(IManifest mod, string pageId, Func<string> text, Func<string>? tooltip = null);
 
         /****
-		** Advanced
-		****/
+        ** Advanced
+        ****/
 
         /// <summary>Register a method to notify when any option registered by this mod is edited through the config UI.</summary>
         /// <param name="mod">The mod's manifest.</param>

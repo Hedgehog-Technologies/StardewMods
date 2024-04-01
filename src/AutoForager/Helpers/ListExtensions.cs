@@ -13,6 +13,22 @@ namespace AutoForager.Helpers
             items.Add(newItem);
         }
 
+        public static IOrderedEnumerable<IGrouping<string, ForageableItem>> GroupByCategory(this List<ForageableItem> list, IComparer<string>? comparer = null)
+        {
+            return list.GroupBy(f =>
+            {
+                var category = "Other";
+
+                if (f.CustomFields?.TryGetValue(Constants.CustomFieldCategoryKey, out var customCategory) ?? false)
+                {
+                    category = customCategory;
+                }
+
+                return category;
+            })
+            .OrderBy(g => g.Key, comparer ?? new CategoryComparer());
+        }
+
         public static void SortByDisplayName(this List<ForageableItem> items)
         {
             items.Sort((x, y) => string.CompareOrdinal(x.DisplayName, y.DisplayName));
