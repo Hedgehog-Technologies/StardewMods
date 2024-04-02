@@ -1,0 +1,14 @@
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "Name": "[AF] Roots of Ferngill Forage",
+  "Description": "Forage added by Roots of Ferngill",
+  "Author": "Jag3Dagster",
+  "UniqueID": "HedgehogTechnologies.FoFRootsForageAF",
+  "Version": "1.0.0",
+  "MinimumApiVersion": "4.0",
+  "UpdateKeys": [ "Nexus:7736" ],
+  "ContentPackFor": {
+    "UniqueID": "HedgehogTechnologies.AutoForager",
+    "MinimumVersion": "3.0.0"
+  }
+}

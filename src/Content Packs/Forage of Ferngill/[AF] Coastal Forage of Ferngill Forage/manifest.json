@@ -1,9 +1,9 @@
 {
   "$schema": "https://smapi.io/schemas/manifest.json",
-  "Name": "[AF] Cornucopia Forage",
-  "Description": "Forage added by Cornucopia mods",
+  "Name": "[AF] Coastal Forage of Ferngill Forage",
+  "Description": "Forage added by Coastal Forage of Ferngill",
   "Author": "Jag3Dagster",
-  "UniqueID": "HedgehogTechnologies.CornucopiaForageAF",
+  "UniqueID": "HedgehogTechnologies.FoFCoastalForageAF",
   "Version": "1.0.0",
   "MinimumApiVersion": "4.0",
   "UpdateKeys": [ "Nexus:7736" ],

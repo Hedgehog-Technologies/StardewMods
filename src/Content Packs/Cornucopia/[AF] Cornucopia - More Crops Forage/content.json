@@ -1,12 +1,10 @@
 {
-  "Category": "Cornucopia",
+  "Category": "Cornucopia - More Crops",
   "Forageables": [
-    // More Crops
     "Cornucopia_Peppercorn",
     "Cornucopia_Raspberry"
   ],
   "FruitTrees": [
-    // More Crops
     // Base Trees
     "Cornucopia_AvocadoSapling",
     "Cornucopia_CocoaPodSapling",

@@ -1,9 +1,9 @@
 {
   "$schema": "https://smapi.io/schemas/manifest.json",
-  "Name": "[AF] Ridgeside Village Forage",
-  "Description": "Forage added by Forage of Ferngill",
+  "Name": "[AF] Cornucopia - More Flowers Forage",
+  "Description": "Forage added by Cornucopia - More Flowers",
   "Author": "Jag3Dagster",
-  "UniqueID": "HedgehogTechnologies.FoFForageAF",
+  "UniqueID": "HedgehogTechnologies.CMFlowersForageAF",
   "Version": "1.0.0",
   "MinimumApiVersion": "4.0",
   "UpdateKeys": [ "Nexus:7736" ],
