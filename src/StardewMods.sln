@@ -101,6 +101,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Cornucopia - More Flow
 		Content Packs\Cornucopia\[AF] Cornucopia - More Flowers Forage\manifest.json = Content Packs\Cornucopia\[AF] Cornucopia - More Flowers Forage\manifest.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Lumisteria - Serene Meadow Forage", "[AF] Lumisteria - Serene Meadow Forage", "{F6C7652A-2FEE-446A-9B31-9BC1FB8C5D79}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Lumisteria\[AF] Lumisteria - Serene Meadow Forage\content.json = Content Packs\Lumisteria\[AF] Lumisteria - Serene Meadow Forage\content.json
+		Content Packs\Lumisteria\[AF] Lumisteria - Serene Meadow Forage\manifest.json = Content Packs\Lumisteria\[AF] Lumisteria - Serene Meadow Forage\manifest.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Lumisteria - Visit Mount Vapius Forage", "[AF] Lumisteria - Visit Mount Vapius Forage", "{182E1E65-A6D6-4DE8-B17A-B201C9F8B81C}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Lumisteria\[AF] Lumisteria - Visit Mount Vapius Forage\content.json = Content Packs\Lumisteria\[AF] Lumisteria - Visit Mount Vapius Forage\content.json
+		Content Packs\Lumisteria\[AF] Lumisteria - Visit Mount Vapius Forage\manifest.json = Content Packs\Lumisteria\[AF] Lumisteria - Visit Mount Vapius Forage\manifest.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,6 +147,8 @@ Global
 		{423F3744-AE19-4061-947D-33D1E28F200B} = {74156DC2-8E4F-47D5-81D2-7ACD00002366}
 		{A61F8970-D7C3-4CB1-A54C-830FB5A8C34D} = {E179C223-A891-4CAB-B4B6-8FBD90D65054}
 		{883B28C6-CA76-4E2C-9AEB-D0975004CAC4} = {E179C223-A891-4CAB-B4B6-8FBD90D65054}
+		{F6C7652A-2FEE-446A-9B31-9BC1FB8C5D79} = {A59F6289-18E4-464E-A3C4-2070AF8AF980}
+		{182E1E65-A6D6-4DE8-B17A-B201C9F8B81C} = {A59F6289-18E4-464E-A3C4-2070AF8AF980}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A03CBE3-E271-4626-8494-2FB6A6D9647A}
