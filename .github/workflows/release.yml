@@ -51,7 +51,8 @@ jobs:
         if: ${{ steps.split.outputs._0 == 'AutoForager' }}
         run: |
           cd 'src/Content Packs'
-          for i in */; do zip -r '${i%/}.zip' '$i'; done
+          for i in */; do cd "$i"; for j in */; do zip -r "${j%/}.zip" "$j"; done; cd ..; done
+          cd ../..
 
       - name: Create GitHub Release
         uses: 'marvinpinto/action-automatic-releases@v1.2.1'
@@ -63,7 +64,7 @@ jobs:
           automatic_release_tag: ${{ steps.split.outputs._1 }}+${{ steps.split.outputs._0 }}
           files: |
             'src/${{ steps.split.outputs._0 }}/bin/Release/net6.0/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip'
-            'src/Content Packs/*.zip'
+            'src/Content Packs/**/*.zip'
 
         env:
           CI: false
