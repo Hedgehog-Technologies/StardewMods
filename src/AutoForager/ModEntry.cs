@@ -18,8 +18,9 @@ using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using AutoForager.Classes;
 using AutoForager.Helpers;
+using AutoForager.Integrations;
 
-using Object = StardewValley.Object;
+using SObject = StardewValley.Object;
 using Constants = AutoForager.Helpers.Constants;
 
 namespace AutoForager
@@ -47,6 +48,8 @@ namespace AutoForager
         private readonly Dictionary<string, string> _cpForageables;
         private readonly Dictionary<string, string> _cpFruitTrees;
         private readonly Dictionary<string, string> _cpWildTrees;
+
+        private BushBloomWrapper _bbw;
 
         #region Asset Cache
 
@@ -300,8 +303,12 @@ namespace AutoForager
         // We are using OneSecondUpdateTicked instead of GameStart because we don't want to block other events during game start
         // but need to more or less blind wait ~1 second before loading assets to give time for various cache's to catch up with
         // mods being loaded.
-        private void OnOneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
+        [EventPriority(EventPriority.Low)]
+        private async void OnOneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
         {
+            _bbw = new BushBloomWrapper(Monitor, Helper);
+            await _bbw.GetSchedules();
+
             FruitTreeCache = Game1.content.Load<Dictionary<string, FruitTreeData>>(Constants.FruitTreesAssetName);
             WildTreeCache = Game1.content.Load<Dictionary<string, WildTreeData>>(Constants.WildTreesAssetName);
             ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
@@ -371,7 +378,7 @@ namespace AutoForager
                                     tool = Game1.player.CurrentTool;
                                     tool ??= Game1.player.Items.FirstOrDefault(i => i is Tool, null) as Tool;
 
-                                    if (tool == null)
+                                    if (tool is null)
                                     {
                                         if (_nextErrorMessage < DateTime.UtcNow)
                                         {
@@ -455,7 +462,7 @@ namespace AutoForager
                                         var x = (int)tile.X;
                                         var y = (int)tile.Y;
 
-                                        ForageItem(ItemRegistry.Create<Object>("(O)399"), tile, Utility.CreateDaySaveRandom(x * 1000, y * 2000), 3);
+                                        ForageItem(ItemRegistry.Create<SObject>("(O)399"), tile, Utility.CreateDaySaveRandom(x * 1000, y * 2000), 3);
                                         hoeDirt.destroyCrop(false);
                                         Game1.playSound("harvest");
 
@@ -862,7 +869,7 @@ namespace AutoForager
             }
         }
 
-        private static void ForageItem(Object obj, Vector2 vec, Random random, int xpGained = 0, bool checkGatherer = false)
+        private static void ForageItem(SObject obj, Vector2 vec, Random random, int xpGained = 0, bool checkGatherer = false)
         {
             var foragingLevel = Game1.player.ForagingLevel;
             var professions = Game1.player.professions;

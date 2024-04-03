@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Required="false" />
+    <SMAPIDependency Include="NCarigon.BushBloomMod" Required="false" Version="1.1.8" />
   </ItemGroup>
 
   <PropertyGroup>

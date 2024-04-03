@@ -214,15 +214,14 @@ namespace AutoForager.Helpers
         };
         public static List<string> VanillaWildTrees => _vanillaWildTrees;
 
-        private static readonly Dictionary<string, string> _knownModPrefixes = new()
+        private static readonly List<string> _vanillaBushBlooms = new()
         {
-            //{ "Cornucopia", "Cornucopia" },
-            //{ "FlashShifter.StardewValleyExpandedCP", "Stardew Valley Expanded" },
-            //{ "FlashShifter.SVE-FTM", "Stardew Valley Expanded" },
-            //{ "FlashShifter.SVECode", "Stardew Valley Expanded" },
-            { "Lumisteria.MtVapius", "Lumisteria - Mt. Vapius" },
-            { "Lumisteria.SereneMeadow", "Lumisteria - Serene Meadow" }
+            "296", // Salmonberry
+            "410"  // Blackberry
         };
-        public static Dictionary<string, string> KnownModPrefixes => _knownModPrefixes;
+        public static List<string> VanillaBushBlooms => _vanillaBushBlooms;
+
+        private const string _bushBloomModUniqueId = "NCarigon.BushBloomMod";
+        public static string BushBloomModUniqueId => _bushBloomModUniqueId;
     }
 }
