@@ -45,6 +45,7 @@ namespace AutoForager
 
         private DateTime _nextErrorMessage;
 
+        private readonly Dictionary<string, string> _cpBushBlooms;
         private readonly Dictionary<string, string> _cpForageables;
         private readonly Dictionary<string, string> _cpFruitTrees;
         private readonly Dictionary<string, string> _cpWildTrees;
@@ -156,6 +157,7 @@ namespace AutoForager
             _config = new();
             _gameStarted = false;
 
+            _cpBushBlooms = new();
             _cpForageables = new();
             _cpFruitTrees = new();
             _cpWildTrees = new();
@@ -308,6 +310,13 @@ namespace AutoForager
         {
             _bbw = new BushBloomWrapper(Monitor, Helper);
             await _bbw.GetSchedules();
+
+            foreach (var sched in _bbw.Schedules)
+            {
+                // $TODO - Setup storing of bush blooms
+                // $TODO - Hook up bush bloom storage to config
+                // $TODO - Update bush check logic to check bush bloom storage
+            }
 
             FruitTreeCache = Game1.content.Load<Dictionary<string, FruitTreeData>>(Constants.FruitTreesAssetName);
             WildTreeCache = Game1.content.Load<Dictionary<string, WildTreeData>>(Constants.WildTreesAssetName);

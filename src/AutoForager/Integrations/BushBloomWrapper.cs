@@ -53,6 +53,14 @@ namespace AutoForager.Integrations
                     _schedules.Add(new BloomSchedule(sched));
                 }
             }
+            else
+            {
+                _schedules.AddRange(new BloomSchedule[]
+                {
+                    new BloomSchedule("296", new WorldDate(1, Season.Spring, 15), new WorldDate(1, Season.Spring, 18)),
+                    new BloomSchedule("410", new WorldDate(1, Season.Fall, 8), new WorldDate(1, Season.Fall, 11))
+                });
+            }
         }
     }
 
@@ -62,12 +70,16 @@ namespace AutoForager.Integrations
         public WorldDate StartDate { get; }
         public WorldDate EndDate { get; }
 
-        public BloomSchedule((string, WorldDate, WorldDate) schedule)
+        public BloomSchedule(string itemId, WorldDate startDate, WorldDate endDate)
         {
-            ItemId = schedule.Item1;
-            StartDate = schedule.Item2;
-            EndDate = schedule.Item3;
+            ItemId = itemId;
+            StartDate = startDate;
+            EndDate = endDate;
         }
+
+        public BloomSchedule((string, WorldDate, WorldDate) schedule)
+            : this(schedule.Item1, schedule.Item2, schedule.Item3)
+        { }
     }
 
     public interface IBushBloomModApi
