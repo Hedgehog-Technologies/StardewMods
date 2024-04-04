@@ -14,6 +14,12 @@ namespace AutoForager.Helpers
         private const string _customFieldCategoryKey = _customFieldPrefix + "Category";
         public static string CustomFieldCategoryKey => _customFieldCategoryKey;
 
+        private const string _customFieldBushKey = _customFieldPrefix + "Bush";
+        public static string CustomFieldBushKey => _customFieldBushKey;
+
+        private const string _customFieldBushCategory = _customFieldPrefix + "BushCategory";
+        public static string CustomFieldBushCategory => _customFieldBushCategory;
+
         #endregion Custom Field Properties
 
         #region Asset Properties
@@ -135,6 +141,9 @@ namespace AutoForager.Helpers
         public static int MaxFruitsReady => _maxFruitsReady;
 
         #endregion
+
+        private const string _bushBloomCategory = "Bush Blooms";
+        public static string BushBloomCategory => _bushBloomCategory;
 
         private static readonly Dictionary<string, string> _knownCategoryLookup = new()
         {

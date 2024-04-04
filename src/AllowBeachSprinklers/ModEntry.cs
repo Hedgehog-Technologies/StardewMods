@@ -28,7 +28,7 @@ namespace AllowBeachSprinklers
                 var tileList = farm.Map.GetLayer(_sandLayerName).Tiles.Array.Cast<Tile>().ToList();
 
                 var noSprinklerTiles = tileList
-                    .Where(tile => tile?.TileIndexProperties != null && tile.TileIndexProperties.ContainsKey(_noSprinklersKey))
+                    .Where(tile => tile?.TileIndexProperties is not null && tile.TileIndexProperties.ContainsKey(_noSprinklersKey))
                     .Distinct(new TileEqualityComparer())
                     .OrderBy(tile => tile.TileIndex);
 

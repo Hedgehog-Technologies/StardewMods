@@ -4,13 +4,13 @@ using System.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using AutoForager.Classes;
-using AutoForager.Helpers;
+using AutoForager.Extensions;
 
 using Constants = AutoForager.Helpers.Constants;
 
 namespace AutoForager
 {
-    internal class ModConfig
+    public class ModConfig
     {
         private readonly ForageableItemTracker _forageableTracker;
         private IComparer<string> _comparer = new CategoryComparer();
@@ -224,7 +224,7 @@ namespace AutoForager
                 mod: manifest,
                 text: I18n.Page_WildTrees_Description);
 
-            foreach (var currentGroup in _forageableTracker.WildTreeForageables.GroupByCategory(_comparer))
+            foreach (var currentGroup in _forageableTracker.WildTreeForageables.GroupByCategory(comparer: _comparer))
             {
                 gmcmApi.AddSectionTitle(
                     mod: manifest,
@@ -272,7 +272,7 @@ namespace AutoForager
                 mod: manifest,
                 text: I18n.Page_FruitTrees_Description);
 
-            foreach (var currentGroup in _forageableTracker.FruitTreeForageables.GroupByCategory(_comparer))
+            foreach (var currentGroup in _forageableTracker.FruitTreeForageables.GroupByCategory(comparer: _comparer))
             {
                 gmcmApi.AddSectionTitle(
                     mod: manifest,
@@ -308,37 +308,31 @@ namespace AutoForager
                 mod: manifest,
                 text: I18n.Page_Bushes_Description);
 
-            // ShakeSalmonberries
-            gmcmApi.AddBoolOption(
-                mod: manifest,
-                fieldId: Constants.ShakeSalmonberriesId,
-                name: () => I18n.Option_ToggleAction_Name(I18n.Subject_SalmonberryBushes()),
-                tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-                    I18n.Action_Shake_Future().ToLowerInvariant(),
-                    I18n.Subject_SalmonberryBushes(),
-                    I18n.Reward_Salmonberries()),
-                getValue: GetSalmonberryBushesEnabled,
-                setValue: val =>
-                {
-                    SetSalmonberryBushesEnabled(val);
-                    UpdateEnabled();
-                });
+            // Bush Blooms
+            foreach (var currentGroup in _forageableTracker.BushForageables.GroupByCategory(Constants.CustomFieldBushCategory, _comparer))
+            {
+                gmcmApi.AddSectionTitle(
+                    mod: manifest,
+                    text: () => currentGroup.Key);
 
-            // ShakeBlackberries
-            gmcmApi.AddBoolOption(
-                mod: manifest,
-                fieldId: Constants.ShakeBlackberriesId,
-                name: () => I18n.Option_ToggleAction_Name(I18n.Subject_BlackberryBushes()),
-                tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-                    I18n.Action_Shake_Future().ToLowerInvariant(),
-                    I18n.Subject_BlackberryBushes(),
-                    I18n.Reward_Blackberries()),
-                getValue: GetBlackberryBushesEnabled,
-                setValue: val =>
+                foreach (var item in currentGroup)
                 {
-                    SetBlackberryBushesEnabled(val);
-                    UpdateEnabled();
-                });
+                    gmcmApi.AddBoolOption(
+                        mod: manifest,
+                        name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
+                        tooltip: () => I18n.Option_ToggleAction_Description_Reward(
+                            I18n.Action_Shake_Future().ToLowerInvariant(),
+                            I18n.Subject_Bushes(),
+                            item.DisplayName),
+                        getValue: () => item.IsEnabled,
+                        setValue: val =>
+                        {
+                            item.IsEnabled = val;
+                            ForageToggles[Constants.BushToggleKey].AddOrUpdate(item.InternalName, val);
+                            UpdateEnabled();
+                        });
+                }
+            }
 
             // ShakeTeaBushes
             gmcmApi.AddBoolOption(
@@ -384,7 +378,7 @@ namespace AutoForager
                 mod: manifest,
                 text: I18n.Page_Forageables_Description);
 
-            foreach (var currentGroup in _forageableTracker.ObjectForageables.GroupByCategory(_comparer))
+            foreach (var currentGroup in _forageableTracker.ObjectForageables.GroupByCategory(comparer: _comparer))
             {
                 gmcmApi.AddSectionTitle(
                     mod: manifest,

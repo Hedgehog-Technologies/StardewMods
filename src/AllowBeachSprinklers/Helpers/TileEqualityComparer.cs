@@ -19,11 +19,11 @@ namespace AllowBeachSprinklers.Helpers
         {
             unchecked
             {
-                var hashCode = obj.Layer != null ? obj.Layer.GetHashCode() : 0;
+                var hashCode = obj.Layer is not null ? obj.Layer.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (int)obj.BlendMode;
-                hashCode = (hashCode * 397) ^ (obj.TileSheet != null ? obj.TileSheet.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (obj.TileSheet is not null ? obj.TileSheet.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ obj.TileIndex;
-                hashCode = (hashCode * 397) ^ (obj.TileIndexProperties != null ? obj.TileIndexProperties.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (obj.TileIndexProperties is not null ? obj.TileIndexProperties.GetHashCode() : 0);
                 return hashCode;
             }
         }

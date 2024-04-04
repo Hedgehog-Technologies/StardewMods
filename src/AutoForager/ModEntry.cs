@@ -17,11 +17,12 @@ using StardewValley.Internal;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using AutoForager.Classes;
-using AutoForager.Helpers;
+using AutoForager.Extensions;
 using AutoForager.Integrations;
 
 using SObject = StardewValley.Object;
 using Constants = AutoForager.Helpers.Constants;
+using Utilities = AutoForager.Helpers.Utilities;
 
 namespace AutoForager
 {
@@ -45,12 +46,12 @@ namespace AutoForager
 
         private DateTime _nextErrorMessage;
 
-        private readonly Dictionary<string, string> _cpBushBlooms;
         private readonly Dictionary<string, string> _cpForageables;
         private readonly Dictionary<string, string> _cpFruitTrees;
         private readonly Dictionary<string, string> _cpWildTrees;
 
         private BushBloomWrapper _bbw;
+        private readonly Dictionary<string, string> _bushBloomItems;
 
         #region Asset Cache
 
@@ -122,9 +123,16 @@ namespace AutoForager
             }
             else if (data is Dictionary<string, ObjectData> objectData)
             {
+                var parsedObjectForageableItems = ForageableItem.ParseObjectData(objectData, _config, Monitor);
+
                 _forageableTracker.ObjectForageables.Clear();
-                _forageableTracker.ObjectForageables.AddRange(ForageableItem.ParseObjectData(objectData, _config?.ForageToggles[Constants.ForagingToggleKey], Monitor));
+                _forageableTracker.ObjectForageables.AddRange(parsedObjectForageableItems.Item1);
                 _forageableTracker.ObjectForageables.SortByDisplayName();
+
+                _forageableTracker.BushForageables.Clear();
+                _forageableTracker.BushForageables.AddRange(parsedObjectForageableItems.Item2);
+                _forageableTracker.BushForageables.SortByDisplayName();
+
                 Monitor.Log("Parsing Object Data", LogLevel.Debug);
 
                 if (LocationCache is not null && LocationCache.Count > 0)
@@ -157,10 +165,10 @@ namespace AutoForager
             _config = new();
             _gameStarted = false;
 
-            _cpBushBlooms = new();
             _cpForageables = new();
             _cpFruitTrees = new();
             _cpWildTrees = new();
+            _bushBloomItems = new();
 
             _overrideItemIds = new()
             {
@@ -313,9 +321,29 @@ namespace AutoForager
 
             foreach (var sched in _bbw.Schedules)
             {
-                // $TODO - Setup storing of bush blooms
-                // $TODO - Hook up bush bloom storage to config
-                // $TODO - Update bush check logic to check bush bloom storage
+                var itemId = Utilities.GetItemIdFromName(sched.ItemId);
+
+                if (itemId is not null)
+                {
+                    if (_bushBloomItems.ContainsKey(itemId))
+                    {
+                        Monitor.Log($"Already found an item with ItemId [{itemId}] with category [{_bushBloomItems[itemId]}] when trying to add category [{Constants.BushBloomCategory}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+                    }
+                    else
+                    {
+                        Monitor.Log($"Found Bush Bloom Schedule for: [{itemId}]", LogLevel.Debug);
+                        _bushBloomItems.Add(itemId, Constants.BushBloomCategory);
+                    }
+                }
+
+                try
+                {
+                    Helper.GameContent.InvalidateCache(Constants.ObjectsAssetName);
+                }
+                catch (Exception ex)
+                {
+                    Monitor.Log($"{ex.Message}{Environment.NewLine}{ex.StackTrace}", LogLevel.Warn);
+                }
             }
 
             FruitTreeCache = Game1.content.Load<Dictionary<string, FruitTreeData>>(Constants.FruitTreesAssetName);
@@ -668,33 +696,22 @@ namespace AutoForager
 
             switch (bush.size.Value)
             {
-                // Forageable Bushes
+                // Blooming Bushes
                 case 0:
                 case 1:
                 case 2:
-                    var season = Game1.currentSeason;
-                    var isSpring = season.IEquals("spring");
-                    var isFall = season.IEquals("fall");
+                    var bloomItem = bush.GetShakeOffItem();
 
-                    if (!isSpring && !isFall) return false;
+                    if (bloomItem is null) return false;
 
-                    if (isSpring && !_config.GetSalmonberryBushesEnabled())
+                    if (!_forageableTracker.BushForageables.TryGetItem(bloomItem, out var item))
                     {
-                        Monitor.LogOnce(I18n.Log_DisabledConfig(I18n.Subject_SalmonberryBushes(), I18n.Option_ToggleAction_Name(I18n.Subject_SalmonberryBushes())), LogLevel.Debug);
-                        return false;
+                        _forageableTracker.BushForageables.TryGetItem("(O)" + bloomItem, out item);
                     }
 
-                    if (isFall && !_config.GetBlackberryBushesEnabled())
-                    {
-                        Monitor.LogOnce(I18n.Log_DisabledConfig(I18n.Subject_BlackberryBushes(), I18n.Option_ToggleAction_Name(I18n.Subject_BlackberryBushes())), LogLevel.Debug);
-                        return false;
-                    }
+                    if (item is null || !item.IsEnabled) return false;
 
-                    var subjectName = isSpring
-                        ? I18n.Subject_SalmonberryBushes()
-                        : I18n.Subject_BlackberryBushes();
-
-                    _trackingCounts[Constants.BushKey].AddOrIncrement(subjectName);
+                    _trackingCounts[Constants.BushKey].AddOrIncrement(item.DisplayName);
 
                     break;
 
@@ -760,16 +777,16 @@ namespace AutoForager
 
                 string? category = null;
 
-                if (_cpForageables.TryGetValue(obj.Key, out var cpValue))
+                if (_cpForageables.TryGetValue(obj.Key, out var cpCategory))
                 {
-                    category = cpValue;
+                    category = cpCategory;
                 }
                 else if ((obj.Value.ContextTags?.Contains("forage_item") ?? false)
                     || _overrideItemIds.Any(i => obj.Key.IEquals(i.Substring(3))))
                 {
-                    if (Constants.KnownCategoryLookup.TryGetValue(obj.Key, out var knownValue))
+                    if (Constants.KnownCategoryLookup.TryGetValue(obj.Key, out var knownCategory))
                     {
-                        category = knownValue;
+                        category = knownCategory;
                     }
                     else
                     {
@@ -786,6 +803,13 @@ namespace AutoForager
                     {
                         obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCategoryKey, category);
                     }
+                }
+
+                if (_bushBloomItems.TryGetValue(obj.Key, out var bushCategory))
+                {
+                    obj.Value.CustomFields ??= new();
+                    obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushKey, "true");
+                    obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushCategory, bushCategory);
                 }
             }
         }

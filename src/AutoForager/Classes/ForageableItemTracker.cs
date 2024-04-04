@@ -15,6 +15,9 @@ namespace AutoForager.Classes
         private readonly List<ForageableItem> _artifactForageables;
         public List<ForageableItem> ArtifactForageables => _artifactForageables;
 
+        private readonly List<ForageableItem> _bushForageables;
+        public List<ForageableItem> BushForageables => _bushForageables;
+
         private readonly List<ForageableItem> _caveForageables;
         public List<ForageableItem> CaveForageables => _caveForageables;
 
@@ -32,6 +35,7 @@ namespace AutoForager.Classes
         private ForageableItemTracker()
         {
             _artifactForageables = new();
+            _bushForageables = new();
             _caveForageables = new();
             _fruitTreeForageables = new();
             _objectForageables = new();
