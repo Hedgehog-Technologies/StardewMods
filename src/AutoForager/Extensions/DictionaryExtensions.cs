@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AutoForager.Helpers
+namespace AutoForager.Extensions
 {
     public static class DictionaryExtensions
     {

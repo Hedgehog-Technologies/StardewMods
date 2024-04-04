@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using StardewModdingAPI;
-using AutoForager.Classes;
 
-namespace AutoForager.Helpers
+namespace AutoForager.Classes
 {
     internal class CategoryComparer : IComparer<string>
     {

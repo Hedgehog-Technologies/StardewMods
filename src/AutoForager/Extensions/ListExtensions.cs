@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoForager.Classes;
+using AutoForager.Helpers;
 
-namespace AutoForager.Helpers
+namespace AutoForager.Extensions
 {
     public static class ListExtensions
     {
@@ -13,13 +14,15 @@ namespace AutoForager.Helpers
             items.Add(newItem);
         }
 
-        public static IOrderedEnumerable<IGrouping<string, ForageableItem>> GroupByCategory(this List<ForageableItem> list, IComparer<string>? comparer = null)
+        public static IOrderedEnumerable<IGrouping<string, ForageableItem>> GroupByCategory(this List<ForageableItem> list, string? categoryKey = null, IComparer<string>? comparer = null)
         {
+            categoryKey ??= Constants.CustomFieldCategoryKey;
+
             return list.GroupBy(f =>
             {
                 var category = "Other";
 
-                if (f.CustomFields?.TryGetValue(Constants.CustomFieldCategoryKey, out var customCategory) ?? false)
+                if (f.CustomFields?.TryGetValue(categoryKey, out var customCategory) ?? false)
                 {
                     category = customCategory;
                 }
