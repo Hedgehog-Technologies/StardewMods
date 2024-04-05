@@ -36,10 +36,6 @@ namespace AutoForager.Integrations
                     {
                         monitor.Log($"{cbName} mod found - Loading custom tea bushes", LogLevel.Info);
                         _customBushApi = helper.ModRegistry.GetApi<ICustomBushApi>(_cbUniqueId);
-
-                        var customBushes = helper.GameContent.Load<Dictionary<string, CustomBush>>(_dataPath);
-
-                        monitor.Log($"custom bush count {customBushes?.Count ?? -1}", LogLevel.Debug);
                     }
                     else
                     {
