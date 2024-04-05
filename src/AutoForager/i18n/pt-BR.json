@@ -1,21 +1,21 @@
 {
   "Action.Shake.Future": "Agite",
 
-  "Category.Beach": "Beach", // TODO
-  "Category.BushBlooms": "Bush Blooms", // TODO
-  "Category.CustomBushes": "Custom Bushes", // TODO
-  "Category.Desert": "Desert", // TODO
-  "Category.Fall": "Fall", // TODO
-  "Category.Mushrooms": "Mushrooms", // TODO
-  "Category.Other": "Other", // TODO
-  "Category.Special": "Special", // TODO
-  "Category.Spring": "Spring", // TODO
-  "Category.Summer": "Summer", // TODO
-  "Category.Unknown": "Unknown", // TODO
-  "Category.Vanilla": "Vanilla", // TODO
-  "Category.Winter": "Winter", // TODO
+  "Category.Beach": "Praia",
+  "Category.BushBlooms": "Flores de Arbustos",
+  "Category.CustomBushes": "Arbustos Personalizados",
+  "Category.Desert": "Deserto",
+  "Category.Fall": "Outono",
+  "Category.Mushrooms": "Cogumelos",
+  "Category.Other": "Outros",
+  "Category.Special": "Especial",
+  "Category.Spring": "Primavera",
+  "Category.Summer": "Verão",
+  "Category.Unknown": "Desconhecido",
+  "Category.Vanilla": "Básico",
+  "Category.Winter": "Inerno",
 
-  "Key.Bushes": "Bushes",
+  "Key.Bushes": "Arbustos",
   "Key.Forageables": "Forragem",
   "Key.FruitTrees": "Árvores frutíferas",
   "Key.WildTrees": "Árvores Selvagens",
@@ -25,16 +25,16 @@
   "Link.FruitTrees.Text": "Alternadores de árvores frutíferas >",
   "Link.WildTrees.Text": "Alternadores de árvore selvagem >",
 
-  "Log.ContentPack.LoadError": "Unable to load content pack: {{packPath}}. Review that file for syntax errors.", // TODO
+  "Log.ContentPack.LoadError": "Não foi possível carregar o pacote de conteúdo: {{packPath}}. Verifique se há erros de sintaxe nesse arquivo.",
   "Log.DisabledConfig": "{{Subjects}} não estão sendo interagidos porque a configuração [{{configName}}] está atualmente desativada.",
   "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
   "Log.Eod.TotalStat": "[{{amount}}]Forragem Total",
   "Log.FruitNotReady": "As árvores frutíferas não serão abaladas até que tenham {{quantidade}} de frutas disponíveis. Isso pode ser definido com a configuração {{configName}}.",
   "Log.MissingHoe": "{{Subject}} não será forrageado porque nenhuma enxada foi encontrada no inventário do jogador. Esta configuração pode ser desativada desativando {{configName}}",
   "Log.MissingToolMoss": "Musgo não será forrageado porque nenhuma Ferramenta foi encontrada no inventário do jogador. Esta configuração pode ser desativada desativando {{configName}}",
-  "Log.Wrapper.ManifestError": "Unable to retrieve manifest for {{name}} to verify installed version. Proceeding without {{name}} functionalities.", // TODO
-  "Log.Wrapper.ModFound": "{{name}} found - Loading {{subject}}", // TODO
-  "Log.Wrapper.OldVersion": "{{name}} is version {{currentVersion}}. Minimum version {{minimumVersion}} is needed for {{name}} functionalities, please consider updating.", // TODO
+  "Log.Wrapper.ManifestError": "Não foi possível recuperar o manifesto de {{name}} para verificar a versão instalada. Continuando sem funcionalidades de {{name}}.",
+  "Log.Wrapper.ModFound": "{{name}} encontrado - Carregando {{subject}}",
+  "Log.Wrapper.OldVersion": "{{name}} é a versão {{currentVersion}}. A versão mínima {{minimumVersion}} é necessária para os recursos do {{name}}, considere atualizar.",
 
   "Message.AutoForagerToggled": "AutoForagem tem sido {{state}}",
   "Message.MissingHoe": "Falta uma enxada. Você não pode forragear {{assunto}} sem um.",
@@ -83,8 +83,8 @@
   "State.Deactivated": "DESATIVADO",
 
   "Subject.BlackberryBushes": "Arbustos de amora",
-  "Subject.Bushes": "bushes", // TODO
-  "Subject.BushBloomSchedules": "bush bloom schedules", // TODO
+  "Subject.Bushes": "arbustos",
+  "Subject.BushBloomSchedules": "horários de floração do mato",
   "Subject.GingerRoots": "Raízes de gengibre",
   "Subject.SalmonberryBushes": "Arbustos de salmão",
   "Subject.TeaBushes": "Arbustos de chá",
