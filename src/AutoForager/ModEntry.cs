@@ -278,6 +278,7 @@ namespace AutoForager
             ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
             LocationCache = Game1.content.Load<Dictionary<string, LocationData>>(Constants.LocationsAssetName);
 
+            _config.UpdateUtilities(Monitor, Helper.ContentPacks.GetOwned());
             _config.RegisterModConfigMenu(Helper, ModManifest);
             _config.UpdateEnabled(Helper);
         }
@@ -329,12 +330,12 @@ namespace AutoForager
                 {
                     if (_bushBloomItems.ContainsKey(itemId))
                     {
-                        Monitor.Log($"Already found an item with ItemId [{itemId}] with category [{_bushBloomItems[itemId]}] when trying to add category [{Constants.BushBloomCategory}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+                        Monitor.Log($"Already found an item with ItemId [{itemId}] with category [{_bushBloomItems[itemId]}] when trying to add category [{I18n.Category_BushBlooms()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
                     }
                     else
                     {
                         Monitor.Log($"Found Bush Bloom Schedule for: [{itemId}]", LogLevel.Debug);
-                        _bushBloomItems.Add(itemId, Constants.BushBloomCategory);
+                        _bushBloomItems.Add(itemId, "Category_BushBlooms");
                     }
                 }
             }
@@ -434,7 +435,7 @@ namespace AutoForager
                                             _nextErrorMessage = DateTime.UtcNow.AddSeconds(10);
                                         }
 
-                                        Monitor.LogOnce(I18n.Log_MissingToolMoss(I18n.Option_RequireToolMoss_Name(" ")), LogLevel.Debug);
+                                        Monitor.LogOnce(I18n.Log_MissingToolMoss(I18n.Option_RequireToolMoss_Name(" ")), LogLevel.Info);
                                         continue;
                                     }
                                 }
@@ -532,7 +533,7 @@ namespace AutoForager
                                                 _nextErrorMessage = DateTime.UtcNow.AddSeconds(10);
                                             }
 
-                                            Monitor.LogOnce(I18n.Log_MissingHoe(I18n.Subject_GingerRoots(), I18n.Option_RequireHoe_Name(" ")), LogLevel.Debug);
+                                            Monitor.LogOnce(I18n.Log_MissingHoe(I18n.Subject_GingerRoots(), I18n.Option_RequireHoe_Name(" ")), LogLevel.Info);
                                             continue;
                                         }
 
@@ -585,7 +586,7 @@ namespace AutoForager
                                     _nextErrorMessage = DateTime.UtcNow.AddSeconds(10);
                                 }
 
-                                Monitor.LogOnce(I18n.Log_MissingHoe(objItem.DisplayName, I18n.Option_RequireHoe_Name(" ")), LogLevel.Debug);
+                                Monitor.LogOnce(I18n.Log_MissingHoe(objItem.DisplayName, I18n.Option_RequireHoe_Name(" ")), LogLevel.Info);
                                 continue;
                             }
 
@@ -730,7 +731,7 @@ namespace AutoForager
                 case 3:
                     if (!_config.GetTeaBushesEnabled())
                     {
-                        Monitor.LogOnce(I18n.Log_DisabledConfig(I18n.Subject_TeaBushes(), I18n.Option_ToggleAction_Name(I18n.Subject_TeaBushes())), LogLevel.Debug);
+                        Monitor.LogOnce(I18n.Log_DisabledConfig(I18n.Subject_TeaBushes(), I18n.Option_ToggleAction_Name(I18n.Subject_TeaBushes())), LogLevel.Info);
                         return false;
                     }
 
@@ -742,7 +743,7 @@ namespace AutoForager
                 case 4:
                     if (!_config.GetWalnutBushesEnabled())
                     {
-                        Monitor.LogOnce(I18n.Log_DisabledConfig(I18n.Subject_WalnutBushes(), I18n.Option_ToggleAction_Name(I18n.Subject_WalnutBushes())), LogLevel.Debug);
+                        Monitor.LogOnce(I18n.Log_DisabledConfig(I18n.Subject_WalnutBushes(), I18n.Option_ToggleAction_Name(I18n.Subject_WalnutBushes())), LogLevel.Info);
                         return false;
                     }
 
@@ -769,7 +770,7 @@ namespace AutoForager
 
                 if (Constants.VanillaFruitTrees.Contains(fruitTree.Key))
                 {
-                    fruitTree.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCategoryKey, "Vanilla");
+                    fruitTree.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCategoryKey, "Category.Vanilla");
                 }
                 else if (_cpFruitTrees.TryGetValue(fruitTree.Key, out var category))
                 {
@@ -820,7 +821,7 @@ namespace AutoForager
                 {
                     obj.Value.CustomFields ??= new();
                     obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushKey, "true");
-                    obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushCategory, bushCategory);
+                    obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushCategory, "Category.BushBlooms");
                 }
             }
         }
@@ -839,7 +840,7 @@ namespace AutoForager
 
                 if (Constants.VanillaWildTrees.Contains(wildTree.Key))
                 {
-                    wildTree.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCategoryKey, "Vanilla");
+                    wildTree.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCategoryKey, "Category.Vanilla");
                 }
                 else if (_cpWildTrees.TryGetValue(wildTree.Key, out var category))
                 {
@@ -857,7 +858,7 @@ namespace AutoForager
                     try
                     {
                         var content = pack.ReadJsonFile<ContentEntry>("content.json");
-                        Monitor.Log($"Found content pack: {pack.DirectoryPath}", LogLevel.Debug);
+                        Monitor.LogOnce($"Found content pack: {pack.DirectoryPath}", LogLevel.Debug);
 
                         if (content?.Forageables is not null)
                         {
@@ -865,11 +866,11 @@ namespace AutoForager
                             {
                                 if (_cpForageables.ContainsKey(itemId))
                                 {
-                                    Monitor.Log($"Already found an item with ItemId [{itemId}] with category [{_cpForageables[itemId]}] when trying to add category [{content.Category}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+                                    Monitor.LogOnce($"Already found an item with ItemId [{itemId}] with category [{_cpForageables[itemId]}] when trying to add category [{content.Category}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
                                 }
                                 else
                                 {
-                                    Monitor.Log($"Found content pack forageable: {itemId} - {content.Category}", LogLevel.Debug);
+                                    Monitor.LogOnce($"Found content pack forageable: {itemId} - {content.Category}", LogLevel.Debug);
                                     _cpForageables.Add(itemId, content.Category);
                                 }
                             }
@@ -881,7 +882,7 @@ namespace AutoForager
                             {
                                 if (_cpFruitTrees.ContainsKey(treeId))
                                 {
-                                    Monitor.Log($"Already found a Fruit Tree with Id [{treeId}] with category [{_cpFruitTrees[treeId]}] when trying to add category [{content.Category}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+                                    Monitor.LogOnce($"Already found a Fruit Tree with Id [{treeId}] with category [{_cpFruitTrees[treeId]}] when trying to add category [{content.Category}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
                                 }
                                 else
                                 {
@@ -896,7 +897,7 @@ namespace AutoForager
                             {
                                 if (_cpWildTrees.ContainsKey(treeId))
                                 {
-                                    Monitor.Log($"Already found a Wild Tree with Id [{treeId}] with category [{_cpWildTrees[treeId]}] when trying to add category [{content.Category}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+                                    Monitor.LogOnce($"Already found a Wild Tree with Id [{treeId}] with category [{_cpWildTrees[treeId]}] when trying to add category [{content.Category}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
                                 }
                                 else
                                 {
@@ -907,7 +908,7 @@ namespace AutoForager
                     }
                     catch
                     {
-                        Monitor.Log($"Unable to load content pack: {Path.Combine(pack.DirectoryPath, "content.json")}. Review that file for syntax errors.", LogLevel.Error);
+                        Monitor.Log(I18n.Log_ContentPack_LoadError(Path.Combine(pack.DirectoryPath, "content.json")), LogLevel.Error);
                     }
                 }
             }

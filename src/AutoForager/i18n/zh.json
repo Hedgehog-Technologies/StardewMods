@@ -1,6 +1,20 @@
 ﻿{
   "Action.Shake.Future": "摇晃",
 
+  "Category.Beach": "Beach", // TODO
+  "Category.BushBlooms": "Bush Blooms", // TODO
+  "Category.CustomBushes": "Custom Bushes", // TODO
+  "Category.Desert": "Desert", // TODO
+  "Category.Fall": "Fall", // TODO
+  "Category.Mushrooms": "Mushrooms", // TODO
+  "Category.Other": "Other", // TODO
+  "Category.Special": "Special", // TODO
+  "Category.Spring": "Spring", // TODO
+  "Category.Summer": "Summer", // TODO
+  "Category.Unknown": "Unknown", // TODO
+  "Category.Vanilla": "Vanilla", // TODO
+  "Category.Winter": "Winter", // TODO
+
   "Key.Bushes": "灌木丛",
   "Key.Forageables": "可觅食",
   "Key.FruitTrees": "果树",
@@ -11,12 +25,16 @@
   "Link.FruitTrees.Text": "果树 切换>",
   "Link.WildTrees.Text": "野生树木 切换>",
 
+  "Log.ContentPack.LoadError": "Unable to load content pack: {{packPath}}. Review that file for syntax errors.", // TODO
   "Log.DisabledConfig": "{{subjects}} 未进行交互,因为 [{{configName}}] 配置设置当前处于禁用状态",
   "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
   "Log.Eod.TotalStat": "[{{amount}}] Total Forages",
   "Log.FruitNotReady": "果树在有{{amount}}果实可用之前不会动摇.这可以通过 {{configName}} 配置设置进行设置.",
   "Log.MissingHoe": "{{subject}} 不会﻿被觅食,因为在玩家的物品栏中没有找到锄头.可以通过禁用 {{configName}}",
   "Log.MissingToolMoss": "苔藓不会被觅食,因为在玩家的物品栏中没有找到工具,因此可以关闭此设置.可以通过禁用 {{configName}}",
+  "Log.Wrapper.ManifestError": "Unable to retrieve manifest for {{name}} to verify installed version. Proceeding without {{name}} functionalities.", // TODO
+  "Log.Wrapper.ModFound": "{{name}} found - Loading {{subject}}", // TODO
+  "Log.Wrapper.OldVersion": "{{name}} is version {{currentVersion}}. Minimum version {{minimumVersion}} is needed for {{name}} functionalities, please consider updating.", // TODO
 
   "Message.AutoForagerToggled": "自动觅食 {{state}}",
   "Message.MissingHoe": "缺少锄头.",
@@ -65,6 +83,8 @@
   "State.Deactivated": "已停用",
 
   "Subject.BlackberryBushes": "黑莓灌木",
+  "Subject.Bushes": "bushes", // TODO
+  "Subject.BushBloomSchedules": "bush bloom schedules", // TODO
   "Subject.GingerRoots": "姜",
   "Subject.SalmonberryBushes": "树莓灌木",
   "Subject.TeaBushes": "茶苗",

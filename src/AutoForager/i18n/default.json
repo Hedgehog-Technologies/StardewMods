@@ -1,6 +1,20 @@
 ﻿{
   "Action.Shake.Future": "Shake",
 
+  "Category.Beach": "Beach",
+  "Category.BushBlooms": "Bush Blooms",
+  "Category.CustomBushes": "Custom Bushes",
+  "Category.Desert": "Desert",
+  "Category.Fall": "Fall",
+  "Category.Mushrooms": "Mushrooms",
+  "Category.Other": "Other",
+  "Category.Special": "Special",
+  "Category.Spring": "Spring",
+  "Category.Summer": "Summer",
+  "Category.Unknown": "Unknown",
+  "Category.Vanilla": "Vanilla",
+  "Category.Winter": "Winter",
+
   "Key.Bushes": "Bushes",
   "Key.Forageables": "Forageables",
   "Key.FruitTrees": "Fruit Trees",
@@ -11,12 +25,16 @@
   "Link.FruitTrees.Text": "Fruit Tree Toggles >",
   "Link.WildTrees.Text": "Wild Tree Toggles >",
 
+  "Log.ContentPack.LoadError": "Unable to load content pack: {{packPath}}. Review that file for syntax errors.",
   "Log.DisabledConfig": "{{subjects}} are not being interacted because the [{{configName}}] config setting is currently disabled.",
   "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
   "Log.Eod.TotalStat": "[{{amount}}] Total Forages",
   "Log.FruitNotReady": "Fruit trees will not be shaken until they have {{amount}} fruits available. This can be set with the {{configName}} config setting.",
   "Log.MissingHoe": "{{subject}} will not be foraged because no Hoe was found in the player's inventory. This setting can be turned off by disabling {{configName}}",
   "Log.MissingToolMoss": "Moss will not be foraged because no Tool was found in the player's inventory. This setting can be turned off by disabling {{configName}}",
+  "Log.Wrapper.ManifestError": "Unable to retrieve manifest for {{name}} to verify installed version. Proceeding without {{name}} functionalities.",
+  "Log.Wrapper.ModFound": "{{name}} found - Loading {{subject}}",
+  "Log.Wrapper.OldVersion": "{{name}} is version {{currentVersion}}. Minimum version {{minimumVersion}} is needed for {{name}} functionalities, please consider updating.",
 
   "Message.AutoForagerToggled": "AutoForager has been {{state}}",
   "Message.MissingHoe": "Missing a Hoe. You can't forage {{subject}} without one.",
@@ -66,6 +84,7 @@
 
   "Subject.BlackberryBushes": "Blackberry bushes",
   "Subject.Bushes": "bushes",
+  "Subject.BushBloomSchedules": "bush bloom schedules",
   "Subject.GingerRoots": "Ginger roots",
   "Subject.SalmonberryBushes": "Salmonberry bushes",
   "Subject.TeaBushes": "Tea bushes",

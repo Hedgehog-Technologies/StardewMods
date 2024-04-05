@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AutoForager.Helpers
 {
@@ -142,55 +143,52 @@ namespace AutoForager.Helpers
 
         #endregion
 
-        private const string _bushBloomCategory = "Bush Blooms";
-        public static string BushBloomCategory => _bushBloomCategory;
-
         private static readonly Dictionary<string, string> _knownCategoryLookup = new()
         {
-            { "18", "Spring" },     // Daffodil
-            { "22", "Spring" },     // Dandelion
-            { "20", "Spring" },     // Leek
-            { "16", "Spring" },     // Wild Horseradish
+            { "18", "Category.Spring" },     // Daffodil
+            { "22", "Category.Spring" },     // Dandelion
+            { "20", "Category.Spring" },     // Leek
+            { "16", "Category.Spring" },     // Wild Horseradish
 
-            { "259", "Summer" },    // Fiddlehead Fern
-            { "398", "Summer" },    // Grapes
-            { "396", "Summer" },    // Spice Berry
-            { "402", "Summer" },    // Sweet Pea
+            { "259", "Category.Summer" },    // Fiddlehead Fern
+            { "398", "Category.Summer" },    // Grapes
+            { "396", "Category.Summer" },    // Spice Berry
+            { "402", "Category.Summer" },    // Sweet Pea
 
-            { "410", "Fall" },      // Blackberry
-            { "408", "Fall" },      // Hazelnut
-            { "406", "Fall" },      // Wild Plum
+            { "410", "Category.Fall" },      // Blackberry
+            { "408", "Category.Fall" },      // Hazelnut
+            { "406", "Category.Fall" },      // Wild Plum
 
-            { "418", "Winter" },    // Crocus
-            { "414", "Winter" },    // Crystal Fruit
-            { "283", "Winter" },    // Holly
-            { "416", "Winter" },    // Snow Yam
-            { "412", "Winter" },    // Winter Root
+            { "418", "Category.Winter" },    // Crocus
+            { "414", "Category.Winter" },    // Crystal Fruit
+            { "283", "Category.Winter" },    // Holly
+            { "416", "Category.Winter" },    // Snow Yam
+            { "412", "Category.Winter" },    // Winter Root
 
-            { "281", "Mushrooms" }, // Chanterelle
-            { "404", "Mushrooms" }, // Common Mushrooms
-            { "851", "Mushrooms" }, // Magma Cap
-            { "257", "Mushrooms" }, // Morel
-            { "422", "Mushrooms" }, // Purple Mushroom
-            { "420", "Mushrooms" }, // Red Mushroom
+            { "281", "Category.Mushrooms" }, // Chanterelle
+            { "404", "Category.Mushrooms" }, // Common Mushrooms
+            { "851", "Category.Mushrooms" }, // Magma Cap
+            { "257", "Category.Mushrooms" }, // Morel
+            { "422", "Category.Mushrooms" }, // Purple Mushroom
+            { "420", "Category.Mushrooms" }, // Red Mushroom
 
-            { "372", "Beach" },     // Clam
-            { "718", "Beach" },     // Cockle
-            { "393", "Beach" },     // Coral
-            { "719", "Beach" },     // Mussel
-            { "392", "Beach" },     // Nautilus Shell
-            { "723", "Beach" },     // Oyster
-            { "394", "Beach" },     // Rainbow Shell
-            { "397", "Beach" },     // Sea Urchin
-            { "152", "Beach" },     // Seaweed
+            { "372", "Category.Beach" },     // Clam
+            { "718", "Category.Beach" },     // Cockle
+            { "393", "Category.Beach" },     // Coral
+            { "719", "Category.Beach" },     // Mussel
+            { "392", "Category.Beach" },     // Nautilus Shell
+            { "723", "Category.Beach" },     // Oyster
+            { "394", "Category.Beach" },     // Rainbow Shell
+            { "397", "Category.Beach" },     // Sea Urchin
+            { "152", "Category.Beach" },     // Seaweed
 
-            { "90", "Desert" },     // Cactus Fruit
-            { "88", "Desert" },     // Coconut
+            { "90", "Category.Desert" },     // Cactus Fruit
+            { "88", "Category.Desert" },     // Coconut
 
-            { "829", "Special" },   // Ginger
-            { "Moss", "Special" },  // Moss
-            { "399", "Special" },   // Sping Onion
-            { "430", "Special" },   // Truffle
+            { "829",  "Category.Special" },   // Ginger
+            { "Moss", "Category.Special" },  // Moss
+            { "399",  "Category.Special" },   // Sping Onion
+            { "430",  "Category.Special" },   // Truffle
         };
         public static Dictionary<string, string> KnownCategoryLookup => _knownCategoryLookup;
 

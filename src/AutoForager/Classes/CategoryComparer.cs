@@ -19,8 +19,8 @@ namespace AutoForager.Classes
             if (x.Equals(y)) return 0;
 
             // Push to bottom of grouping
-            if (x.Equals("Other")) return 1;
-            if (y.Equals("Other")) return -1;
+            if (x.Equals(I18n.Category_Other(), StringComparison.InvariantCultureIgnoreCase)) return 1;
+            if (y.Equals(I18n.Category_Other(), StringComparison.InvariantCultureIgnoreCase)) return -1;
 
             var xIsPack = _packCategories.Contains(x);
             var yIsPack = _packCategories.Contains(y);
@@ -37,12 +37,12 @@ namespace AutoForager.Classes
                 return -1;
             }
 
-            if (x.Equals("Special")) return 1;
-            if (y.Equals("Special")) return -1;
+            if (x.Equals(I18n.Category_Special(), StringComparison.InvariantCultureIgnoreCase)) return 1;
+            if (y.Equals(I18n.Category_Special(), StringComparison.InvariantCultureIgnoreCase)) return -1;
 
             // Push to top of grouping
-            if (x.Equals("Vanilla")) return -1;
-            if (y.Equals("Vanilla")) return 1;
+            if (x.Equals(I18n.Category_Vanilla(), StringComparison.InvariantCultureIgnoreCase)) return -1;
+            if (y.Equals(I18n.Category_Vanilla(), StringComparison.InvariantCultureIgnoreCase)) return 1;
 
             return string.Compare(x, y);
         }
@@ -50,7 +50,7 @@ namespace AutoForager.Classes
         public CategoryComparer(IEnumerable<IContentPack> packs)
         {
             _packCategories = packs.Select(p => p?.ReadJsonFile<ContentEntry>("content.json"))
-                .Select(e => e?.Category ?? "Unknown")
+                .Select(e => e?.Category ?? I18n.Category_Unknown())
                 .ToList();
 
             _packCategories.Sort();

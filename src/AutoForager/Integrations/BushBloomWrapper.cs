@@ -44,17 +44,17 @@ namespace AutoForager.Integrations
 
                     if (bbVersion.IsEqualToOrNewerThan(_minVersion))
                     {
-                        monitor.Log($"{bbName} found - Loading active bush schedules", LogLevel.Info);
+                        monitor.Log(I18n.Log_Wrapper_ModFound(bbName, I18n.Subject_BushBloomSchedules()), LogLevel.Info);
                         _bushBloomApi = helper.ModRegistry.GetApi<IBushBloomApi>(_bbUniqueId);
                     }
                     else
                     {
-                        monitor.Log($"{bbName} is version {bbVersion}. Minimum version {_minVersion} is required for {bbName} functionalities. Please consider updating.", LogLevel.Warn);
+                        monitor.Log(I18n.Log_Wrapper_OldVersion(bbName, bbVersion, _minVersion), LogLevel.Warn);
                     }
                 }
                 else
                 {
-                    monitor.Log($"Unable to retrieve Bush Bloom Mod's manfiest to verify version. Proceeding without Bush Bloom Mod functionalities", LogLevel.Warn);
+                    monitor.Log(I18n.Log_Wrapper_ManifestError("Bush Bloom Mod"), LogLevel.Warn);
                 }
             }
         }
@@ -70,7 +70,7 @@ namespace AutoForager.Integrations
                     await Task.Delay(500);
                 }
 
-                _monitor.Log($"{_bushBloomApi.IsReady()} - {tries}", LogLevel.Alert);
+                _monitor.Log($"Bush Bloom Mod status: {_bushBloomApi.IsReady()} - {tries}", LogLevel.Debug);
                 foreach (var sched in _bushBloomApi.GetAllSchedules())
                 {
                     _schedules.Add(new BloomSchedule(sched));

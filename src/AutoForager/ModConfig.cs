@@ -12,6 +12,8 @@ namespace AutoForager
 {
     public class ModConfig
     {
+        private const string _gmcmUniqueId = "spacechase0.GenericModConfigMenu";
+
         private readonly ForageableItemTracker _forageableTracker;
         private IComparer<string> _comparer = new CategoryComparer();
         private IMonitor? _monitor;
@@ -114,9 +116,9 @@ namespace AutoForager
 
         public void RegisterModConfigMenu(IModHelper helper, IManifest manifest)
         {
-            if (!helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu")) return;
+            if (!helper.ModRegistry.IsLoaded(_gmcmUniqueId)) return;
 
-            var gmcmApi = helper.ModRegistry.GetApi<IGenericModConfigMenu>("spacechase0.GenericModConfigMenu");
+            var gmcmApi = helper.ModRegistry.GetApi<IGenericModConfigMenu>(_gmcmUniqueId);
             if (gmcmApi is null) return;
 
             try
@@ -224,7 +226,7 @@ namespace AutoForager
                 mod: manifest,
                 text: I18n.Page_WildTrees_Description);
 
-            foreach (var currentGroup in _forageableTracker.WildTreeForageables.GroupByCategory(comparer: _comparer))
+            foreach (var currentGroup in _forageableTracker.WildTreeForageables.GroupByCategory(helper, comparer: _comparer))
             {
                 gmcmApi.AddSectionTitle(
                     mod: manifest,
@@ -272,7 +274,7 @@ namespace AutoForager
                 mod: manifest,
                 text: I18n.Page_FruitTrees_Description);
 
-            foreach (var currentGroup in _forageableTracker.FruitTreeForageables.GroupByCategory(comparer: _comparer))
+            foreach (var currentGroup in _forageableTracker.FruitTreeForageables.GroupByCategory(helper, comparer: _comparer))
             {
                 gmcmApi.AddSectionTitle(
                     mod: manifest,
@@ -309,7 +311,7 @@ namespace AutoForager
                 text: I18n.Page_Bushes_Description);
 
             // Bush Blooms
-            foreach (var currentGroup in _forageableTracker.BushForageables.GroupByCategory(Constants.CustomFieldBushCategory, _comparer))
+            foreach (var currentGroup in _forageableTracker.BushForageables.GroupByCategory(helper, Constants.CustomFieldBushCategory, _comparer))
             {
                 gmcmApi.AddSectionTitle(
                     mod: manifest,
@@ -378,7 +380,7 @@ namespace AutoForager
                 mod: manifest,
                 text: I18n.Page_Forageables_Description);
 
-            foreach (var currentGroup in _forageableTracker.ObjectForageables.GroupByCategory(comparer: _comparer))
+            foreach (var currentGroup in _forageableTracker.ObjectForageables.GroupByCategory(helper, comparer: _comparer))
             {
                 gmcmApi.AddSectionTitle(
                     mod: manifest,
@@ -556,12 +558,6 @@ namespace AutoForager
         /// <param name="onChange">The method to call with the option's unique field ID and new value.</param>
         /// <remarks>Options use a randomized ID by default; you'll likely want to specify the <c>fieldId</c> argument when adding options if you use this.</remarks>
         void OnFieldChanged(IManifest mod, Action<string, object> onChange);
-
-        /// <summary>Get the currently-displayed mod config menu, if any.</summary>
-        /// <param name="mod">The manifest of the mod whose config menu is being shown, or <c>null</c> if not applicable.</param>
-        /// <param name="page">The page ID being shown for the current config menu, or <c>null</c> if not applicable. This may be <c>null</c> even if a mod config menu is shown (e.g. because the mod doesn't have pages).</param>
-        /// <returns>Returns whether a mod config menu is being shown.</returns>
-        bool TryGetCurrentMenu(out IManifest mod, out string page);
 
         /// <summary>Remove a mod from the config UI and delete all its options and pages.</summary>
         /// <param name="mod">The mod's manifest.</param>

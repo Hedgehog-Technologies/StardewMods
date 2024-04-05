@@ -34,17 +34,17 @@ namespace AutoForager.Integrations
 
                     if (cbVersion.IsEqualToOrNewerThan(_minVersion))
                     {
-                        monitor.Log($"{cbName} mod found - Loading custom tea bushes", LogLevel.Info);
+                        monitor.Log(I18n.Log_Wrapper_ModFound(cbName, I18n.Category_CustomBushes()), LogLevel.Info);
                         _customBushApi = helper.ModRegistry.GetApi<ICustomBushApi>(_cbUniqueId);
                     }
                     else
                     {
-                        monitor.Log($"{cbName} is version {cbVersion}. Minimum version {_minVersion} is needed for {cbName} functionalities. Please consider updating.", LogLevel.Warn);
+                        monitor.Log(I18n.Log_Wrapper_OldVersion(cbName, cbVersion, _minVersion), LogLevel.Warn);
                     }
                 }
                 else
                 {
-                    monitor.Log($"Unable to retrieve Custom Bush's manifest to verify version. Proceeding without Custom Bush functionalities.", LogLevel.Warn);
+                    monitor.Log(I18n.Log_Wrapper_ManifestError("Custom Bush"), LogLevel.Warn);
                 }
             }
         }

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using StardewModdingAPI;
 using AutoForager.Classes;
-using AutoForager.Helpers;
+
+using Constants = AutoForager.Helpers.Constants;
 
 namespace AutoForager.Extensions
 {
@@ -14,17 +16,17 @@ namespace AutoForager.Extensions
             items.Add(newItem);
         }
 
-        public static IOrderedEnumerable<IGrouping<string, ForageableItem>> GroupByCategory(this List<ForageableItem> list, string? categoryKey = null, IComparer<string>? comparer = null)
+        public static IOrderedEnumerable<IGrouping<string, ForageableItem>> GroupByCategory(this List<ForageableItem> list, IModHelper helper, string? categoryKey = null, IComparer<string>? comparer = null)
         {
             categoryKey ??= Constants.CustomFieldCategoryKey;
 
             return list.GroupBy(f =>
             {
-                var category = "Other";
+                var category = I18n.Category_Other();
 
                 if (f.CustomFields?.TryGetValue(categoryKey, out var customCategory) ?? false)
                 {
-                    category = customCategory;
+                    category = helper.Translation.Get(customCategory);
                 }
 
                 return category;
