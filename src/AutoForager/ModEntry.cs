@@ -330,17 +330,36 @@ namespace AutoForager
                 {
                     if (_bushBloomItems.ContainsKey(itemId))
                     {
-                        Monitor.Log($"Already found an item with ItemId [{itemId}] with category [{_bushBloomItems[itemId]}] when trying to add category [{I18n.Category_BushBlooms()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+                        Monitor.LogOnce($"Already found an item with ItemId [{itemId}] with category [{_bushBloomItems[itemId]}] when trying to add category [{I18n.Category_BushBlooms()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
                     }
                     else
                     {
-                        Monitor.Log($"Found Bush Bloom Schedule for: [{itemId}]", LogLevel.Debug);
-                        _bushBloomItems.Add(itemId, "Category_BushBlooms");
+                        Monitor.LogOnce($"Found Bush Bloom Schedule for: [{itemId}]", LogLevel.Debug);
+                        _bushBloomItems.Add(itemId, "Category.BushBlooms");
                     }
                 }
             }
 
             _cbw = new CustomBushWrapper(Monitor, Helper);
+            var customBushDrops = await _cbw.GetDrops();
+
+            foreach (var drop in customBushDrops)
+            {
+                var itemId = Utilities.GetItemIdFromName(drop);
+
+                if (itemId is not null)
+                {
+                    if (_customTeaBushItems.ContainsKey(itemId))
+                    {
+                        Monitor.LogOnce($"Already found an item with ItemID [{itemId}] with category [{_customTeaBushItems[itemId]}] when trying to add category [{I18n.Category_CustomBushes()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+                    }
+                    else
+                    {
+                        Monitor.LogOnce($"Found Custom Bush for: [{itemId}]", LogLevel.Debug);
+                        _customTeaBushItems.Add(itemId, "Category.Custombushes");
+                    }
+                }
+            }
 
             try
             {
@@ -821,7 +840,14 @@ namespace AutoForager
                 {
                     obj.Value.CustomFields ??= new();
                     obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushKey, "true");
-                    obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushCategory, "Category.BushBlooms");
+                    obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushBloomCategory, bushCategory);
+                }
+
+                if (_customTeaBushItems.TryGetValue(obj.Key, out var customBushCategory))
+                {
+                    obj.Value.CustomFields ??= new();
+                    obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushKey, "true");
+                    obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCustomBushCategory, customBushCategory);
                 }
             }
         }

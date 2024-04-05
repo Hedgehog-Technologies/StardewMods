@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace AutoForager.Helpers
 {
@@ -18,8 +17,11 @@ namespace AutoForager.Helpers
         private const string _customFieldBushKey = _customFieldPrefix + "Bush";
         public static string CustomFieldBushKey => _customFieldBushKey;
 
-        private const string _customFieldBushCategory = _customFieldPrefix + "BushCategory";
-        public static string CustomFieldBushCategory => _customFieldBushCategory;
+        private const string _customFieldBushBloomCategory = _customFieldPrefix + "BushBloomCategory";
+        public static string CustomFieldBushBloomCategory => _customFieldBushBloomCategory;
+
+        private const string _customFieldCustomBushCategory = _customFieldPrefix + "CustomBushCategory";
+        public static string CustomFieldCustomBushCategory => _customFieldCustomBushCategory;
 
         #endregion Custom Field Properties
 

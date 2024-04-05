@@ -27,6 +27,11 @@ namespace AutoForager.Extensions
                 if (f.CustomFields?.TryGetValue(categoryKey, out var customCategory) ?? false)
                 {
                     category = helper.Translation.Get(customCategory);
+
+                    if (category.StartsWith("(no translation:"))
+                    {
+                        category = customCategory;
+                    }
                 }
 
                 return category;

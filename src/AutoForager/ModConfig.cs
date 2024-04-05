@@ -311,7 +311,9 @@ namespace AutoForager
                 text: I18n.Page_Bushes_Description);
 
             // Bush Blooms
-            foreach (var currentGroup in _forageableTracker.BushForageables.GroupByCategory(helper, Constants.CustomFieldBushCategory, _comparer))
+            foreach (var currentGroup in _forageableTracker.BushForageables
+                .Where(b => b.CustomFields.ContainsKey(Constants.CustomFieldBushBloomCategory)).ToList()
+                .GroupByCategory(helper, Constants.CustomFieldBushBloomCategory, _comparer))
             {
                 gmcmApi.AddSectionTitle(
                     mod: manifest,
@@ -335,6 +337,38 @@ namespace AutoForager
                         });
                 }
             }
+
+            // Custom Bushes
+            foreach (var currentGroup in _forageableTracker.BushForageables
+                .Where(b => b.CustomFields.ContainsKey(Constants.CustomFieldCustomBushCategory)).ToList()
+                .GroupByCategory(helper, Constants.CustomFieldCustomBushCategory, _comparer))
+            {
+                gmcmApi.AddSectionTitle(
+                    mod: manifest,
+                    text: () => currentGroup.Key);
+
+                foreach (var item in currentGroup)
+                {
+                    gmcmApi.AddBoolOption(
+                        mod: manifest,
+                        name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
+                        tooltip: () => I18n.Option_ToggleAction_Description_Reward(
+                            I18n.Action_Shake_Future().ToLowerInvariant(),
+                            I18n.Subject_Bushes(),
+                            item.DisplayName),
+                        getValue: () => item.IsEnabled,
+                        setValue: val =>
+                        {
+                            item.IsEnabled = val;
+                            ForageToggles[Constants.BushToggleKey].AddOrUpdate(item.InternalName, val);
+                            UpdateEnabled();
+                        });
+                }
+            }
+
+            gmcmApi.AddSectionTitle(
+                mod: manifest,
+                text: I18n.Category_Vanilla);
 
             // ShakeTeaBushes
             gmcmApi.AddBoolOption(

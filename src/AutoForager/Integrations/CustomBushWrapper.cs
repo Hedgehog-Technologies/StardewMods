@@ -4,26 +4,30 @@ using StardewValley.GameData;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using AutoForager.Extensions;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace AutoForager.Integrations
 {
     internal class CustomBushWrapper
     {
-        private const string _minVersion = "1.0.3";
+        private const string _minVersion = "1.0.4";
         private const string _cbUniqueId = "furyx639.CustomBush";
+        private const string _cpUniqueId = "Pathoschild.ContentPatcher";
         public const string _dataPath = _cbUniqueId + "/Data";
 
         private readonly IMonitor _monitor;
         private readonly IModHelper _helper;
 
         private readonly ICustomBushApi? _customBushApi;
+        private readonly IContentPatcherApi? _contentPatcherApi;
 
         public CustomBushWrapper(IMonitor monitor, IModHelper helper)
         {
             _monitor = monitor;
             _helper = helper;
 
-            if (helper.ModRegistry.IsLoaded(_cbUniqueId))
+            if (helper.ModRegistry.IsLoaded(_cbUniqueId) && helper.ModRegistry.IsLoaded(_cpUniqueId))
             {
                 var customBush = helper.ModRegistry.Get(_cbUniqueId);
 
@@ -36,6 +40,7 @@ namespace AutoForager.Integrations
                     {
                         monitor.Log(I18n.Log_Wrapper_ModFound(cbName, I18n.Category_CustomBushes()), LogLevel.Info);
                         _customBushApi = helper.ModRegistry.GetApi<ICustomBushApi>(_cbUniqueId);
+                        _contentPatcherApi = helper.ModRegistry.GetApi<IContentPatcherApi>(_cpUniqueId);
                     }
                     else
                     {
@@ -51,15 +56,92 @@ namespace AutoForager.Integrations
 
         public bool IsCustomBush(Bush bush) => _customBushApi?.IsCustomBush(bush) ?? false;
 
-        public bool TryGetDrops(Bush bush, out IEnumerable<(GenericSpawnItemDataWithCondition, Season? season, float change)>? drops)
+        //public IEnumerable<string> GetDrops()
+        public async Task<IEnumerable<string>> GetDrops()
         {
-            drops = null;
-            return _customBushApi?.TryGetDrops(bush, out drops) ?? false;
+            var customDrops = new List<string>();
+
+            if (_customBushApi is not null && _contentPatcherApi is not null)
+            {
+                var tries = 10;
+
+                while (!_contentPatcherApi.IsConditionsApiReady && tries-- > 0)
+                {
+                    await Task.Delay(500);
+                }
+
+                _monitor.Log($"Custom Bush status: {_contentPatcherApi.IsConditionsApiReady} - {tries}", LogLevel.Debug);
+                var bushes = _customBushApi.GetData();
+
+                foreach (var bush in bushes)
+                {
+                    _monitor.Log(bush.Id, LogLevel.Debug);
+
+                    if (_customBushApi.TryGetDrops(bush.Id, out var drops))
+                    {
+                        customDrops.AddRange(drops?.Select(d => d.ItemId) ?? new List<string>());
+                    }
+                }
+            }
+
+            return customDrops;
         }
+    }
+
+    public interface ICustomBushDrop : ISpawnItemData
+    {
+        /// <summary>Gets the specific season when the item can be produced.</summary>
+        public Season? Season { get; }
+
+        /// <summary>Gets the probability that the item will be produced.</summary>
+        public float Chance { get; }
+
+        /// <summary>A game state query which indicates whether the item should be added. Defaults to always added.</summary>
+        public string? Condition { get; }
+
+        /// <summary>An ID for this entry within the current list (not the item itself, which is <see cref="P:StardewValley.GameData.GenericSpawnItemData.ItemId" />). This only needs to be unique within the current list. For a custom entry, you should use a globally unique ID which includes your mod ID like <c>ExampleMod.Id_ItemName</c>.</summary>
+        public string? Id { get; }
+    }
+
+    public interface ICustomBush
+    {
+        /// <summary>Gets the age needed to produce.</summary>
+        public int AgeToProduce { get; }
+
+        /// <summary>Gets the day of month to begin producing.</summary>
+        public int DayToBeginProducing { get; }
+
+        /// <summary>Gets the description of the bush.</summary>
+        public string Description { get; }
+
+        /// <summary>Gets the display name of the bush.</summary>
+        public string DisplayName { get; }
+
+        /// <summary>Gets the default texture used when planted indoors.</summary>
+        public string IndoorTexture { get; }
+
+        /// <summary>Gets the season in which this bush will produce its drops.</summary>
+        public List<Season> Seasons { get; }
+
+        /// <summary>Gets the rules which override the locations that custom bushes can be planted in.</summary>
+        public List<PlantableRule> PlantableLocationRules { get; }
+
+        /// <summary>Gets the texture of the tea bush.</summary>
+        public string Texture { get; }
+
+        /// <summary>Gets the row index for the custom bush's sprites.</summary>
+        public int TextureSpriteRow { get; }
+
+        /// <summary>Retrieves the items produced by the custom bush.</summary>
+        /// <returns>An enumerable collection of objects implementing the ICustomBushDrop interface. Each object represents an item produced by the custom bush.</returns>
+        //public IEnumerable<ICustomBushDrop> GetItemsProduced();
     }
 
     public interface ICustomBushApi
     {
+        /// <summary>Gets the data model for all Custom Bush.</summary>
+        public IEnumerable<(string Id, ICustomBush Data)> GetData();
+
         /// <summary>Determines if the given Bush instance is a custom bush.</summary>
         /// <param name="bush">The bush instance to check.</param>
         /// <returns>True if the bush is a custom bush, otherwise false.</returns>
@@ -71,84 +153,20 @@ namespace AutoForager.Integrations
         /// <returns>true if the custom bush associated with the given bush is found; otherwise, false.</returns>
         public bool TryGetCustomBush(Bush bush, out ICustomBush? customBush);
 
-        /// <summary>Tries to get the drops from a bush.</summary>
-        /// <param name="bush">The bush to get the drops from.</param>
-        /// <param name="drops">When this method returns, contains the drops from the bush, or null if there are no drops available. This parameter is passed uninitialized.</param>
-        /// <returns>true if the drops were successfully retrieved; otherwise, false.</returns>
-        public bool TryGetDrops(
-            Bush bush,
-            out IEnumerable<(GenericSpawnItemDataWithCondition, Season? Season, float Chance)>? drops);
+        /// <summary>Tries to get the custom bush drop associated with the given bush id.</summary>
+        /// <param name="id">The id of the bush.</param>
+        /// <param name="drops">When this method returns, contains the items produced by the custom bush.</param>
+        /// <returns>true if the drops associated with the given id is found; otherwise, false.</returns>
+        public bool TryGetDrops(string id, out IList<ICustomBushDrop>? drops);
     }
 
-    public class CustomBushDrop : GenericSpawnItemDataWithCondition
+    public interface IContentPatcherApi
     {
-        /// <summary>Gets or sets the specific season when the item can be produced.</summary>
-        public Season? Season { get; set; }
-
-        /// <summary>Gets or sets the probability that the item will be produced.</summary>
-        public float Chance { get; set; } = 1f;
-    }
-
-    public class CustomBush : ICustomBush
-    {
-        /// <summary>Gets or sets the items produced by this custom bush.</summary>
-        public List<CustomBushDrop> ItemsProduced { get; set; } = new();
-
-        /// <inheritdoc />
-        public int AgeToProduce { get; set; } = 20;
-
-        /// <inheritdoc />
-        public int DayToBeginProducing { get; set; } = 22;
-
-        /// <inheritdoc />
-        public string Description { get; set; } = string.Empty;
-
-        /// <inheritdoc />
-        public string DisplayName { get; set; } = string.Empty;
-
-        /// <inheritdoc />
-        public string IndoorTexture { get; set; } = string.Empty;
-
-        /// <inheritdoc />
-        public List<Season> Seasons { get; set; } = new();
-
-        /// <inheritdoc />
-        public List<PlantableRule> PlantableLocationRules { get; set; } = new();
-
-        /// <inheritdoc />
-        public string Texture { get; set; } = string.Empty;
-
-        /// <inheritdoc />
-        public int TextureSpriteRow { get; set; }
-    }
-
-    public interface ICustomBush
-    {
-        /// <summary>Gets or sets the age needed to produce.</summary>
-        public int AgeToProduce { get; set; }
-
-        /// <summary>Gets or sets the day of month to begin producing.</summary>
-        public int DayToBeginProducing { get; set; }
-
-        /// <summary>Gets or sets the description of the bush.</summary>
-        public string Description { get; set; }
-
-        /// <summary>Gets or sets the display name of the bush.</summary>
-        public string DisplayName { get; set; }
-
-        /// <summary>Gets or sets the default texture used when planted indoors.</summary>
-        public string IndoorTexture { get; set; }
-
-        /// <summary>Gets or sets the season in which this bush will produce its drops.</summary>
-        public List<Season> Seasons { get; set; }
-
-        /// <summary>Gets or sets the rules which override the locations that custom bushes can be planted in.</summary>
-        public List<PlantableRule> PlantableLocationRules { get; set; }
-
-        /// <summary>Gets or sets the texture of the tea bush.</summary>
-        public string Texture { get; set; }
-
-        /// <summary>Gets or sets the row index for the custom bush's sprites.</summary>
-        public int TextureSpriteRow { get; set; }
+        /*********
+        ** Accessors
+        *********/
+        /// <summary>Whether the conditions API is initialized and ready for use.</summary>
+        /// <remarks>Due to the Content Patcher lifecycle, the conditions API becomes available roughly two ticks after the <see cref="IGameLoopEvents.GameLaunched"/> event.</remarks>
+        bool IsConditionsApiReady { get; }
     }
 }
