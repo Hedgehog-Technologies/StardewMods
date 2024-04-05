@@ -1,18 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using AutoForager.Extensions;
+
 using Constants = AutoForager.Helpers.Constants;
 
 namespace AutoForager.Integrations
 {
     internal class BushBloomWrapper
     {
+        private const string _minVersion = "1.1.9";
+        private const string _bbUniqueId = "NCarigon.BushBloomMod";
+
         private readonly IMonitor _monitor;
         private readonly IModHelper _helper;
 
-        private readonly IBushBloomModApi? _bbm;
+        private readonly IBushBloomApi? _bushBloomApi;
 
         private readonly List<string> _knownShakeOffItems;
         public List<string> KnownShakeOffItems => _knownShakeOffItems;
@@ -29,26 +33,45 @@ namespace AutoForager.Integrations
             _knownShakeOffItems.AddRange(Constants.VanillaBushBlooms);
             _schedules = new();
 
-            if (helper.ModRegistry.IsLoaded(Constants.BushBloomModUniqueId))
+            if (helper.ModRegistry.IsLoaded(_bbUniqueId))
             {
-                monitor.Log("Bush Bloom Mod found - Loading active bush schedules", LogLevel.Info);
-                _bbm = helper.ModRegistry.GetApi<IBushBloomModApi>(Constants.BushBloomModUniqueId);
+                var bushBloom = helper.ModRegistry.Get(_bbUniqueId);
+
+                if (bushBloom is not null)
+                {
+                    var bbName = bushBloom.Manifest.Name;
+                    var bbVersion = bushBloom.Manifest.Version;
+
+                    if (bbVersion.IsEqualToOrNewerThan(_minVersion))
+                    {
+                        monitor.Log($"{bbName} found - Loading active bush schedules", LogLevel.Info);
+                        _bushBloomApi = helper.ModRegistry.GetApi<IBushBloomApi>(_bbUniqueId);
+                    }
+                    else
+                    {
+                        monitor.Log($"{bbName} is version {bbVersion}. Minimum version {_minVersion} is required for {bbName} functionalities. Please consider updating.", LogLevel.Warn);
+                    }
+                }
+                else
+                {
+                    monitor.Log($"Unable to retrieve Bush Bloom Mod's manfiest to verify version. Proceeding without Bush Bloom Mod functionalities", LogLevel.Warn);
+                }
             }
         }
 
-        public async Task GetSchedules()
+        public async Task<List<BloomSchedule>> UpdateSchedules()
         {
-            if (_bbm is not null)
+            if (_bushBloomApi is not null)
             {
                 var tries = 10;
 
-                while (!_bbm.IsReady() && tries-- > 0)
+                while (!_bushBloomApi.IsReady() && tries-- > 0)
                 {
                     await Task.Delay(500);
                 }
 
-                _monitor.Log($"{_bbm.IsReady()} - {tries}", LogLevel.Alert);
-                foreach (var sched in _bbm.GetAllSchedules())
+                _monitor.Log($"{_bushBloomApi.IsReady()} - {tries}", LogLevel.Alert);
+                foreach (var sched in _bushBloomApi.GetAllSchedules())
                 {
                     _schedules.Add(new BloomSchedule(sched));
                 }
@@ -61,6 +84,8 @@ namespace AutoForager.Integrations
                     new BloomSchedule("410", new WorldDate(1, Season.Fall, 8), new WorldDate(1, Season.Fall, 11))
                 });
             }
+
+            return Schedules;
         }
     }
 
@@ -82,11 +107,16 @@ namespace AutoForager.Integrations
         { }
     }
 
-    public interface IBushBloomModApi
+    public interface IBushBloomApi
     {
+        /// <summary>
+        /// Specifies whether BBM successfully parsed all schedules.
+        /// </summary>
         bool IsReady();
-        void ReloadSchedules();
-        (string, WorldDate, WorldDate)[] GetActiveSchedules(string season, int dayOfMonth, int? year = null, GameLocation? location = null, Vector2? tile = null);
+
+        /// <summary>
+        /// Returns an array of (item_id, first_day, last_day) for all blooming schedules.
+        /// </summary>
         (string, WorldDate, WorldDate)[] GetAllSchedules();
     }
 }

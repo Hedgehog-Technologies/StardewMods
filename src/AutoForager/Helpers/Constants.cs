@@ -229,8 +229,5 @@ namespace AutoForager.Helpers
             "410"  // Blackberry
         };
         public static List<string> VanillaBushBlooms => _vanillaBushBlooms;
-
-        private const string _bushBloomModUniqueId = "NCarigon.BushBloomMod";
-        public static string BushBloomModUniqueId => _bushBloomModUniqueId;
     }
 }
