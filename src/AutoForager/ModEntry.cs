@@ -53,6 +53,9 @@ namespace AutoForager
         private BushBloomWrapper _bbw;
         private readonly Dictionary<string, string> _bushBloomItems;
 
+        private CustomBushWrapper _cbw;
+        private readonly Dictionary<string, string> _customTeaBushItems;
+
         #region Asset Cache
 
         private Dictionary<string, FruitTreeData> _fruitTreeCache = new();
@@ -169,6 +172,7 @@ namespace AutoForager
             _cpFruitTrees = new();
             _cpWildTrees = new();
             _bushBloomItems = new();
+            _customTeaBushItems = new();
 
             _overrideItemIds = new()
             {
@@ -204,8 +208,8 @@ namespace AutoForager
             var packs = helper.ContentPacks.GetOwned();
 
             _config = helper.ReadConfig<ModConfig>();
-            _config.UpdateEnabled(helper);
             _config.UpdateUtilities(Monitor, packs);
+            _config.UpdateEnabled(helper);
 
             ParseContentPacks(packs);
 
@@ -214,6 +218,7 @@ namespace AutoForager
             helper.Events.Content.LocaleChanged += OnLocaleChanged;
             helper.Events.GameLoop.DayEnding += OnDayEnding;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
             helper.Events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.Input.ButtonsChanged += OnButtonsChanged; // Maybe change this to pressed or released?
@@ -310,16 +315,13 @@ namespace AutoForager
             _previousTilePosition = Game1.player.Tile;
         }
 
-        // We are using OneSecondUpdateTicked instead of GameStart because we don't want to block other events during game start
-        // but need to more or less blind wait ~1 second before loading assets to give time for various cache's to catch up with
-        // mods being loaded.
         [EventPriority(EventPriority.Low)]
-        private async void OnOneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
+        private async void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
         {
             _bbw = new BushBloomWrapper(Monitor, Helper);
-            await _bbw.GetSchedules();
+            var schedules = await _bbw.UpdateSchedules();
 
-            foreach (var sched in _bbw.Schedules)
+            foreach (var sched in schedules)
             {
                 var itemId = Utilities.GetItemIdFromName(sched.ItemId);
 
@@ -335,17 +337,26 @@ namespace AutoForager
                         _bushBloomItems.Add(itemId, Constants.BushBloomCategory);
                     }
                 }
-
-                try
-                {
-                    Helper.GameContent.InvalidateCache(Constants.ObjectsAssetName);
-                }
-                catch (Exception ex)
-                {
-                    Monitor.Log($"{ex.Message}{Environment.NewLine}{ex.StackTrace}", LogLevel.Warn);
-                }
             }
 
+            _cbw = new CustomBushWrapper(Monitor, Helper);
+
+            try
+            {
+                Helper.GameContent.InvalidateCache(Constants.ObjectsAssetName);
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"{ex.Message}{Environment.NewLine}{ex.StackTrace}", LogLevel.Warn);
+            }
+        }
+
+        // We are using OneSecondUpdateTicked instead of GameStart because we don't want to block other events during game start
+        // but need to more or less blind wait ~1 second before loading assets to give time for various cache's to catch up with
+        // mods being loaded.
+        [EventPriority(EventPriority.Low)]
+        private void OnOneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
+        {
             FruitTreeCache = Game1.content.Load<Dictionary<string, FruitTreeData>>(Constants.FruitTreesAssetName);
             WildTreeCache = Game1.content.Load<Dictionary<string, WildTreeData>>(Constants.WildTreesAssetName);
             ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
