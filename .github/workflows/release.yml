@@ -53,6 +53,7 @@ jobs:
           cd 'src/Content Packs'
           for i in */; do cd "$i"; for j in */; do zip -r "${j%/}.zip" "$j"; done; cd ..; done
           cd ../..
+          pwd
 
       - name: Create GitHub Release
         uses: 'marvinpinto/action-automatic-releases@v1.2.1'
