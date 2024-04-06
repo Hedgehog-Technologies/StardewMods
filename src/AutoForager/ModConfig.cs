@@ -127,7 +127,10 @@ namespace AutoForager
             }
             catch { }
 
-            gmcmApi.Register(manifest, ResetToDefault, () => helper.WriteConfig(this));
+            gmcmApi.Register(
+                mod: manifest,
+                reset: ResetToDefault,
+                save: () => helper.WriteConfig(this));
 
             /* General */
 
@@ -246,7 +249,6 @@ namespace AutoForager
                         });
                 }
             }
-
 
             /* Fruit Trees */
 
@@ -430,6 +432,10 @@ namespace AutoForager
                         {
                             item.IsEnabled = val;
                             ForageToggles[Constants.ForagingToggleKey].AddOrUpdate(item.InternalName, val);
+                            if (_forageableTracker.ArtifactForageables.TryGetItem(item.QualifiedItemId, out var artifact) && artifact is not null)
+                            {
+                                artifact.IsEnabled = val;
+                            }
                             UpdateEnabled();
                         });
                 }
