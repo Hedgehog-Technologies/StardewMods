@@ -63,6 +63,8 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.0.1
+- Fix Spring Onions and Ginger not being foraged
 ### 3.0.0
 - Added [content pack format](./docs/ContentPack.md) to allow for easier extensibility for various content mods
   - Content Packs for 2.2.3 compatibility parity provided as optional files
