@@ -37,17 +37,9 @@
     "Cornucopia_CinnamonSticksSapling",
     "Cornucopia_EucalyptusLeavesSapling",
     "Cornucopia_MelaleucaLeavesSapling",
-    "Cornucopia_NutmegSapling",
-
-    // More Flowers
-    "Cornucopia_HibiscusSapling",
-    "Cornucopia_JasmineSapling",
-    "Cornucopia_MagnoliaSapling",
-    "Cornucopia_WisteriaSapling",
-    "Cornucopia_YlangYlangSapling"
+    "Cornucopia_NutmegSapling"
   ],
   "WildTrees": [
-    // More Crops
     // Extended Trees
     "Cornucopia_SapodillaSeed"
   ]
