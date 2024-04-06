@@ -54,6 +54,9 @@ jobs:
           for i in */; do cd "$i"; for j in */; do zip -r "${j%/}.zip" "$j"; done; cd ..; done
           ls
           cd ../..
+          ls
+          ls "src/${{ steps.split.outputs._0 }}/bin/Release/net6.0/"
+
 
       - name: Create GitHub Release
         uses: 'marvinpinto/action-automatic-releases@v1.2.1'
