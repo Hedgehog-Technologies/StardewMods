@@ -4,9 +4,8 @@
   "Description": "Forage added by Stardew Valley Expanded",
   "Author": "Jag3Dagster",
   "UniqueID": "HedgehogTechnologies.SVEForageAF",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "MinimumApiVersion": "4.0",
-  "UpdateKeys": [ "Nexus:7736" ],
   "ContentPackFor": {
     "UniqueID": "HedgehogTechnologies.AutoForager",
     "MinimumVersion": "3.0.0"
