@@ -1,19 +1,19 @@
 ﻿{
   "Action.Shake.Future": "摇晃",
 
-  "Category.Beach": "海滩",
-  "Category.BushBlooms": "布什绽放",
-  "Category.CustomBushes": "定制灌木丛",
-  "Category.Desert": "沙漠",
-  "Category.Fall": "秋天",
-  "Category.Mushrooms": "蘑菇",
-  "Category.Other": "其他",
-  "Category.Special": "特别的",
-  "Category.Spring": "春天",
-  "Category.Summer": "夏天",
-  "Category.Unknown": "未知",
-  "Category.Vanilla": "基本的",
-  "Category.Winter": "冬天",
+  "Category.Beach": "海滩", // Google Translate - Feel free to update
+  "Category.BushBlooms": "布什绽放", // Google Translate - Feel free to update
+  "Category.CustomBushes": "定制灌木丛", // Google Translate - Feel free to update
+  "Category.Desert": "沙漠", // Google Translate - Feel free to update
+  "Category.Fall": "秋天", // Google Translate - Feel free to update
+  "Category.Mushrooms": "蘑菇", // Google Translate - Feel free to update
+  "Category.Other": "其他", // Google Translate - Feel free to update
+  "Category.Special": "特别的", // Google Translate - Feel free to update
+  "Category.Spring": "春天", // Google Translate - Feel free to update
+  "Category.Summer": "夏天", // Google Translate - Feel free to update
+  "Category.Unknown": "未知", // Google Translate - Feel free to update
+  "Category.Vanilla": "基本的", // Google Translate - Feel free to update
+  "Category.Winter": "冬天", // Google Translate - Feel free to update
 
   "Key.Bushes": "灌木丛",
   "Key.Forageables": "可觅食",
@@ -25,16 +25,16 @@
   "Link.FruitTrees.Text": "果树 切换>",
   "Link.WildTrees.Text": "野生树木 切换>",
 
-  "Log.ContentPack.LoadError": "无法加载内容包：{{packPath}}。 检查该文件是否存在语法错误。",
+  "Log.ContentPack.LoadError": "无法加载内容包：{{packPath}}。 检查该文件是否存在语法错误。", // Google Translate - Feel free to update
   "Log.DisabledConfig": "{{subjects}} 未进行交互,因为 [{{configName}}] 配置设置当前处于禁用状态",
   "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
   "Log.Eod.TotalStat": "[{{amount}}] Total Forages",
   "Log.FruitNotReady": "果树在有{{amount}}果实可用之前不会动摇.这可以通过 {{configName}} 配置设置进行设置.",
   "Log.MissingHoe": "{{subject}} 不会﻿被觅食,因为在玩家的物品栏中没有找到锄头.可以通过禁用 {{configName}}",
   "Log.MissingToolMoss": "苔藓不会被觅食,因为在玩家的物品栏中没有找到工具,因此可以关闭此设置.可以通过禁用 {{configName}}",
-  "Log.Wrapper.ManifestError": "无法检索 {{name}} 的清单来验证安装的版本。 不使用 {{name}} 功能继续。",
-  "Log.Wrapper.ModFound": "找到 {{name}} - 正在加载 {{subject}}",
-  "Log.Wrapper.OldVersion": "{{name}} 是版本 {{currentVersion}}。 {{name}} 功能需要最低版本 {{minimumVersion}}，请考虑更新。",
+  "Log.Wrapper.ManifestError": "无法检索 {{name}} 的清单来验证安装的版本。 不使用 {{name}} 功能继续。", // Google Translate - Feel free to update
+  "Log.Wrapper.ModFound": "找到 {{name}} - 正在加载 {{subject}}", // Google Translate - Feel free to update
+  "Log.Wrapper.OldVersion": "{{name}} 是版本 {{currentVersion}}。 {{name}} 功能需要最低版本 {{minimumVersion}}，请考虑更新。", // Google Translate - Feel free to update
 
   "Message.AutoForagerToggled": "自动觅食 {{state}}",
   "Message.MissingHoe": "缺少锄头.",
@@ -83,8 +83,8 @@
   "State.Deactivated": "已停用",
 
   "Subject.BlackberryBushes": "黑莓灌木",
-  "Subject.Bushes": "灌木丛",
-  "Subject.BushBloomSchedules": "布什开花时间表",
+  "Subject.Bushes": "灌木丛", // Google Translate - Feel free to update
+  "Subject.BushBloomSchedules": "布什开花时间表", // Google Translate - Feel free to update
   "Subject.GingerRoots": "姜",
   "Subject.SalmonberryBushes": "树莓灌木",
   "Subject.TeaBushes": "茶苗",

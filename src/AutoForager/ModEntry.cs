@@ -748,13 +748,33 @@ namespace AutoForager
 
                 // Tea Bushes
                 case 3:
-                    if (!_config.GetTeaBushesEnabled())
+                    if (_cbw.IsCustomBush(bush))
                     {
-                        Monitor.LogOnce(I18n.Log_DisabledConfig(I18n.Subject_TeaBushes(), I18n.Option_ToggleAction_Name(I18n.Subject_TeaBushes())), LogLevel.Info);
-                        return false;
+                        var shakeOffItem = bush.modData[CustomBushWrapper.ShakeOffItemKey];
+
+                        if (!_forageableTracker.BushForageables.TryGetItem(shakeOffItem, out var bItem) || !(bItem?.IsEnabled ?? false))
+                        {
+                            Monitor.LogOnce($"{shakeOffItem} was not shaken from custom bush as it does not exist or is disabled.", LogLevel.Debug);
+                            return false;
+                        }
+                        else
+                        {
+                            _trackingCounts[Constants.BushKey].AddOrIncrement(bItem.DisplayName);
+                        }
+                    }
+                    else
+                    {
+                        if (!_config.GetTeaBushesEnabled())
+                        {
+                            Monitor.LogOnce(I18n.Log_DisabledConfig(I18n.Subject_TeaBushes(), I18n.Option_ToggleAction_Name(I18n.Subject_TeaBushes())), LogLevel.Info);
+                            return false;
+                        }
+                        else
+                        {
+                            _trackingCounts[Constants.BushKey].AddOrIncrement(I18n.Subject_TeaBushes());
+                        }
                     }
 
-                    _trackingCounts[Constants.BushKey].AddOrIncrement(I18n.Subject_TeaBushes());
 
                     break;
 

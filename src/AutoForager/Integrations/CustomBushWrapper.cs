@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using StardewModdingAPI;
 using StardewValley.GameData;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using AutoForager.Extensions;
-using System.Threading.Tasks;
-using System.Linq;
 
 namespace AutoForager.Integrations
 {
@@ -14,13 +14,15 @@ namespace AutoForager.Integrations
         private const string _minVersion = "1.0.4";
         private const string _cbUniqueId = "furyx639.CustomBush";
         private const string _cpUniqueId = "Pathoschild.ContentPatcher";
-        public const string _dataPath = _cbUniqueId + "/Data";
+
+        public static string ShakeOffItemKey => _cbUniqueId + "/ShakeOff";
 
         private readonly IMonitor _monitor;
         private readonly IModHelper _helper;
 
         private readonly ICustomBushApi? _customBushApi;
         private readonly IContentPatcherApi? _contentPatcherApi;
+
 
         public CustomBushWrapper(IMonitor monitor, IModHelper helper)
         {
@@ -56,7 +58,6 @@ namespace AutoForager.Integrations
 
         public bool IsCustomBush(Bush bush) => _customBushApi?.IsCustomBush(bush) ?? false;
 
-        //public IEnumerable<string> GetDrops()
         public async Task<IEnumerable<string>> GetDrops()
         {
             var customDrops = new List<string>();

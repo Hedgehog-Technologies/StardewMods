@@ -1,21 +1,21 @@
 {
   "Action.Shake.Future": "Agite",
 
-  "Category.Beach": "Praia",
-  "Category.BushBlooms": "Flores de Arbustos",
-  "Category.CustomBushes": "Arbustos Personalizados",
-  "Category.Desert": "Deserto",
-  "Category.Fall": "Outono",
-  "Category.Mushrooms": "Cogumelos",
-  "Category.Other": "Outros",
-  "Category.Special": "Especial",
-  "Category.Spring": "Primavera",
-  "Category.Summer": "Verão",
-  "Category.Unknown": "Desconhecido",
-  "Category.Vanilla": "Básico",
-  "Category.Winter": "Inerno",
+  "Category.Beach": "Praia", // Google Translate - Feel free to update
+  "Category.BushBlooms": "Flores de Arbustos", // Google Translate - Feel free to update
+  "Category.CustomBushes": "Arbustos Personalizados", // Google Translate - Feel free to update
+  "Category.Desert": "Deserto", // Google Translate - Feel free to update
+  "Category.Fall": "Outono", // Google Translate - Feel free to update
+  "Category.Mushrooms": "Cogumelos", // Google Translate - Feel free to update
+  "Category.Other": "Outros", // Google Translate - Feel free to update
+  "Category.Special": "Especial", // Google Translate - Feel free to update
+  "Category.Spring": "Primavera", // Google Translate - Feel free to update
+  "Category.Summer": "Verão", // Google Translate - Feel free to update
+  "Category.Unknown": "Desconhecido", // Google Translate - Feel free to update
+  "Category.Vanilla": "Básico", // Google Translate - Feel free to update
+  "Category.Winter": "Inerno", // Google Translate - Feel free to update
 
-  "Key.Bushes": "Arbustos",
+  "Key.Bushes": "Arbustos", // Google Translate - Feel free to update
   "Key.Forageables": "Forragem",
   "Key.FruitTrees": "Árvores frutíferas",
   "Key.WildTrees": "Árvores Selvagens",
@@ -25,16 +25,16 @@
   "Link.FruitTrees.Text": "Alternadores de árvores frutíferas >",
   "Link.WildTrees.Text": "Alternadores de árvore selvagem >",
 
-  "Log.ContentPack.LoadError": "Não foi possível carregar o pacote de conteúdo: {{packPath}}. Verifique se há erros de sintaxe nesse arquivo.",
+  "Log.ContentPack.LoadError": "Não foi possível carregar o pacote de conteúdo: {{packPath}}. Verifique se há erros de sintaxe nesse arquivo.", // Google Translate - Feel free to update
   "Log.DisabledConfig": "{{Subjects}} não estão sendo interagidos porque a configuração [{{configName}}] está atualmente desativada.",
   "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
   "Log.Eod.TotalStat": "[{{amount}}]Forragem Total",
   "Log.FruitNotReady": "As árvores frutíferas não serão abaladas até que tenham {{quantidade}} de frutas disponíveis. Isso pode ser definido com a configuração {{configName}}.",
   "Log.MissingHoe": "{{Subject}} não será forrageado porque nenhuma enxada foi encontrada no inventário do jogador. Esta configuração pode ser desativada desativando {{configName}}",
   "Log.MissingToolMoss": "Musgo não será forrageado porque nenhuma Ferramenta foi encontrada no inventário do jogador. Esta configuração pode ser desativada desativando {{configName}}",
-  "Log.Wrapper.ManifestError": "Não foi possível recuperar o manifesto de {{name}} para verificar a versão instalada. Continuando sem funcionalidades de {{name}}.",
-  "Log.Wrapper.ModFound": "{{name}} encontrado - Carregando {{subject}}",
-  "Log.Wrapper.OldVersion": "{{name}} é a versão {{currentVersion}}. A versão mínima {{minimumVersion}} é necessária para os recursos do {{name}}, considere atualizar.",
+  "Log.Wrapper.ManifestError": "Não foi possível recuperar o manifesto de {{name}} para verificar a versão instalada. Continuando sem funcionalidades de {{name}}.", // Google Translate - Feel free to update
+  "Log.Wrapper.ModFound": "{{name}} encontrado - Carregando {{subject}}", // Google Translate - Feel free to update
+  "Log.Wrapper.OldVersion": "{{name}} é a versão {{currentVersion}}. A versão mínima {{minimumVersion}} é necessária para os recursos do {{name}}, considere atualizar.", // Google Translate - Feel free to update
 
   "Message.AutoForagerToggled": "AutoForagem tem sido {{state}}",
   "Message.MissingHoe": "Falta uma enxada. Você não pode forragear {{assunto}} sem um.",
@@ -83,8 +83,8 @@
   "State.Deactivated": "DESATIVADO",
 
   "Subject.BlackberryBushes": "Arbustos de amora",
-  "Subject.Bushes": "arbustos",
-  "Subject.BushBloomSchedules": "horários de floração do mato",
+  "Subject.Bushes": "arbustos", // Google Translate - Feel free to update
+  "Subject.BushBloomSchedules": "horários de floração do mato", // Google Translate - Feel free to update
   "Subject.GingerRoots": "Raízes de gengibre",
   "Subject.SalmonberryBushes": "Arbustos de salmão",
   "Subject.TeaBushes": "Arbustos de chá",
