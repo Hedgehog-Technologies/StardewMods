@@ -506,15 +506,6 @@ namespace AutoForager
 
                         case HoeDirt hoeDirt:
                             if (!(hoeDirt.crop?.forageCrop.Value ?? false) || (hoeDirt.crop?.whichForageCrop.Value.IsNullOrEmpty() ?? true)) continue;
-                            if (!_forageableTracker.ObjectForageables.Any(i =>
-                            {
-                                if (i.IsEnabled && i.CustomFields.TryGetValue(Constants.CustomFieldCategoryKey, out var category))
-                                {
-                                    return category.IEquals("Special");
-                                }
-
-                                return false;
-                            })) continue;
 
                             Vector2 tile;
                             var whichCrop = hoeDirt.crop.whichForageCrop.Value;
@@ -567,7 +558,7 @@ namespace AutoForager
 
                                 default:
                                     // $TODO - Improve error message
-                                    Monitor.Log($"No good case: {whichCrop}", LogLevel.Debug);
+                                    Monitor.LogOnce($"No good case: {whichCrop}", LogLevel.Debug);
                                     break;
                             }
 
