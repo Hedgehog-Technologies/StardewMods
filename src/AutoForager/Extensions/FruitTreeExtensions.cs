@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using StardewValley.TerrainFeatures;
 
-namespace AutoForager.Helpers
+namespace AutoForager.Extensions
 {
     public static class FruitTreeExtensions
     {

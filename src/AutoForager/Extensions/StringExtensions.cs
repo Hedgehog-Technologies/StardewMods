@@ -1,4 +1,4 @@
-﻿namespace AutoForager.Helpers
+﻿namespace AutoForager.Extensions
 {
     public static class StringExtensions
     {

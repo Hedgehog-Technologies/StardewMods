@@ -1,4 +1,4 @@
-﻿**AutoForager** (previously AutoShaker) is an open-source mod for [Stardew Valley](https://stardewvalley.net) that allows players to automatically forage items simply by moving near them.
+﻿**Auto Forager** (previously AutoShaker) is an open-source mod for [Stardew Valley](https://stardewvalley.net) that allows players to automatically forage items simply by moving near them.
 
 ## Documentation
 ### Overview
@@ -15,7 +15,8 @@ You can find a breakdown of the config values [here](./docs/config.md)
 
 ### Extensibility
 - Custom Trees and Fruit Trees should automatically get picked up and recognized by the AutoForager
-- If you are a mod maker working on custom Forageable items, to have your item regonized by the AutoForager all you need to do is add the context tag `forage_item` to the item definition
+- If you are a mod maker working on custom Forageable items, to have your item recognized by the AutoForager all you need to do is add the context tag `forage_item` to the item definition
+  - Alternatively, you can create a [content pack](./docs/ContentPack.md) that can also help to categorize your custom forageables / trees
 
 ### Translation
 &nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By
@@ -28,7 +29,7 @@ Italian    | ✔              | ❌                   | ❌                | n/a
 Japanese   | ✔              | ❌                   | ❌                | n/a
 Korean     | ✔              | ❌                   | ❌                | n/a
 Polish     | ✔              | ❌                   | ❌                | n/a
-Portuguese | ✔              | ❌                   | ❌                | n/a
+Portuguese | ✔              | ✔                    | ✔                | [NARCOAZAZAL](https://www.nexusmods.com/users/200703680)
 Russian    | ✔              | ❌                   | ❌                | n/a
 Spanish    | ✔              | ❌                   | ❌                | n/a
 Thai       | ✔              | ❌                   | ❌                | n/a
@@ -40,7 +41,7 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
     1. [Nexus Mirror](https://www.nexusmods.com/stardewvalley/mods/2400)
     2. [CurseForge Mirror](https://www.curseforge.com/stardewvalley/utility/smapi)
     3. [GitHub Mirror](https://github.com/Pathoschild/SMAPI/releases)
-2. *OPTIONAL* Install the latest version of [Generic Mod Config Menu](https://spacechase0.com/mods/stardew-valley/generic-mod-config-menu/)
+2. *Optional but recommended* Install the latest version of [Generic Mod Config Menu](https://spacechase0.com/mods/stardew-valley/generic-mod-config-menu/)
     1. [Nexus Mirror](https://www.nexusmods.com/stardewvalley/mods/5098)
     2. [CurseForge Mirror](https://www.curseforge.com/stardewvalley/mods/generic-mod-config-menu)
 3. Install this mod by unzipping the mod folder into 'Stardew Valley/Mods'
@@ -50,6 +51,9 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 - Compatible with...
     - Stardew Valley 1.6 or later
     - SMAPI 4.0.0 or later
+- Automatic Integrations
+  - [Bush Bloom Mod](https://www.nexusmods.com/stardewvalley/mods/15792)
+  - [Custom Bush](https://www.nexusmods.com/stardewvalley/mods/20619)
 - No known mod conflicts
     - If you find one, please feel free to notify me here on Github, on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, or on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
 
@@ -59,6 +63,28 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.0.0
+- Added [content pack format](./docs/ContentPack.md) to allow for easier extensibility for various content mods
+  - Content Packs for 2.2.3 compatibility parity provided as optional files
+    - Cornucopia
+      - More Crops
+      - More Flowers
+    - Forage of Ferngill
+      - Coastal Forage of Ferngill
+      - Fruits and Nuts of Ferngill
+      - Mushrooms of Ferngill
+      - Roots of Ferngill
+    - Lumisteria
+      - Serene Meadow
+      - Visit Mount Vapius
+    - Ridgeside Village
+    - Stardew Valley Expanded
+- Added automatic integrations with the following mods
+  - [Bush Bloom Mod](https://www.nexusmods.com/stardewvalley/mods/15792) - minimum version: 1.1.9
+  - [Custom Bush](https://www.nexusmods.com/stardewvalley/mods/20619) - minimum version: 1.0.4
+- Add Portuguese translations
+  - Thanks to [NARCOAZAZAL](https://www.nexusmods.com/users/200703680) for the provided translation
+- Fixed buried forageables not respecting config toggles until game was reopened
 ### 2.2.3
 - Fix some translations not getting updated on locale change
 - Added Chinese translations

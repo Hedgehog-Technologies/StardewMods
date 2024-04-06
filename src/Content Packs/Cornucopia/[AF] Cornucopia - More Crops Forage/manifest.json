@@ -1,0 +1,14 @@
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "Name": "[AF] Cornucopia - More Crops Forage",
+  "Description": "Forage added by Cornucopia - More Crops",
+  "Author": "Jag3Dagster",
+  "UniqueID": "HedgehogTechnologies.CMCropsForageAF",
+  "Version": "1.0.0",
+  "MinimumApiVersion": "4.0",
+  "UpdateKeys": [ "Nexus:7736" ],
+  "ContentPackFor": {
+    "UniqueID": "HedgehogTechnologies.AutoForager",
+    "MinimumVersion": "3.0.0"
+  }
+}

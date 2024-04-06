@@ -9,7 +9,7 @@ using StardewValley.GameData.Objects;
 using StardewValley.GameData.WildTrees;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.TokenizableStrings;
-using AutoForager.Helpers;
+using AutoForager.Extensions;
 
 using Constants = AutoForager.Helpers.Constants;
 
@@ -71,15 +71,15 @@ namespace AutoForager.Classes
                     try
                     {
                         var customFields = kvp.Value.CustomFields;
-                        if (customFields == null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
+                        if (customFields is null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
 
                         var enabled = true;
                         var fruitData = ItemRegistry.GetData(fruit.ItemId);
                         fruitData ??= ItemRegistry.GetData("(O)" + fruit.ItemId);
 
-                        if (fruitData != null)
+                        if (fruitData is not null)
                         {
-                            if (configValues != null && configValues.TryGetValue(fruitData.InternalName, out var configEnabled))
+                            if (configValues is not null && configValues.TryGetValue(fruitData.InternalName, out var configEnabled))
                             {
                                 enabled = configEnabled;
                             }
@@ -105,11 +105,11 @@ namespace AutoForager.Classes
             foreach (var kvp in data)
             {
                 var customFields = kvp.Value.CustomFields;
-                if (customFields == null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
+                if (customFields is null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
 
                 var seedAndSeedItemIds = new List<string> { kvp.Value.SeedItemId };
 
-                if (kvp.Value.SeedDropItems != null)
+                if (kvp.Value.SeedDropItems is not null)
                 {
                     seedAndSeedItemIds.AddRange(kvp.Value.SeedDropItems.Select(i => i.ItemId));
                 }
@@ -118,12 +118,12 @@ namespace AutoForager.Classes
                 {
                     try
                     {
-                        if (seedItem == null) continue;
+                        if (seedItem is null) continue;
 
                         var enabled = true;
                         var seedData = ItemRegistry.GetData(seedItem);
 
-                        if (configValues != null && configValues.TryGetValue(seedData.InternalName, out var configEnabled))
+                        if (configValues is not null && configValues.TryGetValue(seedData.InternalName, out var configEnabled))
                         {
                             enabled = configEnabled;
                         }
@@ -140,35 +140,64 @@ namespace AutoForager.Classes
             return forageItems;
         }
 
-        public static IEnumerable<ForageableItem> ParseObjectData(IDictionary<string, ObjectData> data, IDictionary<string, bool>? configValues = null, IMonitor? monitor = null)
+        public static (IEnumerable<ForageableItem>, IEnumerable<ForageableItem>) ParseObjectData(IDictionary<string, ObjectData> data, ModConfig? config = null, IMonitor? monitor = null)
         {
             var forageItems = new List<ForageableItem>();
+            var bushItems = new List<ForageableItem>();
+            var forageableConfig = config?.ForageToggles[Constants.ForagingToggleKey];
+            var bushConfig = config?.ForageToggles[Constants.BushToggleKey];
 
             foreach (var kvp in data)
             {
                 try
                 {
                     var customFields = kvp.Value.CustomFields;
-                    if (customFields == null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
 
-                    var qualifiedItemId = "(O)" + kvp.Key;
-                    var enabled = false;
-                    var itemData = ItemRegistry.GetData(qualifiedItemId) ?? ItemRegistry.GetData(kvp.Key);
-                    var internalName = itemData?.InternalName ?? kvp.Value.Name;
+                    if (customFields is not null)
+                    {
+                        var qualifiedItemId = "(O)" + kvp.Key;
+                        var itemData = ItemRegistry.GetData(qualifiedItemId) ?? ItemRegistry.GetData(kvp.Key);
+                        var internalName = itemData?.InternalName ?? kvp.Value.Name;
 
-                    if (configValues != null && configValues.TryGetValue(internalName, out var configEnabled))
-                    {
-                        enabled = configEnabled;
-                    }
+                        if (customFields.TryGetValue(Constants.CustomFieldForageableKey, out var isForageable) && isForageable.IEquals("true"))
+                        {
+                            var enabled = false;
 
-                    if (itemData != null)
-                    {
-                        forageItems.AddDistinct(new ForageableItem(itemData, customFields, enabled));
-                    }
-                    else
-                    {
-                        var kvpValue = kvp.Value;
-                        forageItems.AddDistinct(new ForageableItem(kvp.Key, qualifiedItemId, kvpValue.Name, kvpValue.DisplayName, kvpValue.CustomFields, enabled));
+                            if (forageableConfig is not null && forageableConfig.TryGetValue(internalName, out var configEnabled))
+                            {
+                                enabled = configEnabled;
+                            }
+
+                            if (itemData is not null)
+                            {
+                                forageItems.AddDistinct(new ForageableItem(itemData, customFields, enabled));
+                            }
+                            else
+                            {
+                                var kvpValue = kvp.Value;
+                                forageItems.AddDistinct(new ForageableItem(kvp.Key, qualifiedItemId, kvpValue.Name, kvpValue.DisplayName, customFields, enabled));
+                            }
+                        }
+
+                        if (customFields.TryGetValue(Constants.CustomFieldBushKey, out var isBush) && isBush.IEquals("true"))
+                        {
+                            var enabled = true;
+
+                            if (bushConfig is not null && bushConfig.TryGetValue(internalName, out var configEnabled))
+                            {
+                                enabled = configEnabled;
+                            }
+
+                            if (itemData is not null)
+                            {
+                                bushItems.AddDistinct(new ForageableItem(itemData, customFields, enabled));
+                            }
+                            else
+                            {
+                                var kvpValue = kvp.Value;
+                                bushItems.AddDistinct(new ForageableItem(kvp.Key, qualifiedItemId, kvpValue.Name, kvpValue.DisplayName, customFields, enabled));
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -178,7 +207,7 @@ namespace AutoForager.Classes
 
             }
 
-            return forageItems;
+            return (forageItems, bushItems);
         }
 
         public static IEnumerable<ForageableItem> ParseLocationData(IDictionary<string, ObjectData> oData, IDictionary<string, LocationData> lData, IDictionary<string, bool>? configValues = null)
@@ -188,17 +217,17 @@ namespace AutoForager.Classes
             foreach (var kvp in lData)
             {
                 var artifactSpots = kvp.Value.ArtifactSpots;
-                if (artifactSpots == null || artifactSpots.Count <= 0) continue;
+                if (artifactSpots is null || artifactSpots.Count <= 0) continue;
 
                 foreach (var artifact in artifactSpots)
                 {
                     List<string> itemIds;
 
-                    if (artifact.RandomItemId != null)
+                    if (artifact.RandomItemId is not null)
                     {
                         itemIds = artifact.RandomItemId;
                     }
-                    else if (artifact.ItemId != null)
+                    else if (artifact.ItemId is not null)
                     {
                         itemIds = new() { artifact.ItemId };
                     }
@@ -213,12 +242,12 @@ namespace AutoForager.Classes
                         if (!oData.ContainsKey(artifactId)) continue;
 
                         var objData = oData[artifactId];
-                        if (objData == null || objData.CustomFields == null || !objData.CustomFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
+                        if (objData is null || objData.CustomFields is null || !objData.CustomFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
 
                         var enabled = false;
                         var itemData = ItemRegistry.GetData(itemId);
 
-                        if (configValues != null && configValues.TryGetValue(itemData.InternalName, out var configEnabled))
+                        if (configValues is not null && configValues.TryGetValue(itemData.InternalName, out var configEnabled))
                         {
                             enabled = configEnabled;
                         }
@@ -233,7 +262,7 @@ namespace AutoForager.Classes
 
         public int CompareTo(object? obj)
         {
-            if (obj == null) return 1;
+            if (obj is null) return 1;
 
             if (obj is ForageableItem otherForageable)
             {

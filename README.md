@@ -30,7 +30,7 @@ Hungarian  | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i1
 Italian    | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)
 Japanese   | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)
 Korean     | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)
-Portuguese | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)
+Portuguese | [❌](./src/AllowBeachSprinklers/i18n) | [✔](./src/AutoForager/i18n/pt.json)
 Russian    | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n) 
 Spanish    | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)
 Turkish    | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)
