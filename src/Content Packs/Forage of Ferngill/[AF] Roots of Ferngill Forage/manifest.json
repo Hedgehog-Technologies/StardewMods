@@ -4,7 +4,7 @@
   "Description": "Forage added by Roots of Ferngill",
   "Author": "Jag3Dagster",
   "UniqueID": "HedgehogTechnologies.FoFRootsForageAF",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "MinimumApiVersion": "4.0",
   "ContentPackFor": {
     "UniqueID": "HedgehogTechnologies.AutoForager",
