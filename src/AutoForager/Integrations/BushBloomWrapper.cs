@@ -63,7 +63,7 @@ namespace AutoForager.Integrations
         {
             if (_bushBloomApi is not null)
             {
-                var tries = 10;
+                var tries = 60;
 
                 while (!_bushBloomApi.IsReady() && tries-- > 0)
                 {

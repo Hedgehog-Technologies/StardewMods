@@ -63,6 +63,8 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.0.2
+- Bump Integration wait timer from 5s -> 30s to account for larger installed mod counts
 ### 3.0.1
 - Fix Spring Onions and Ginger not being foraged
 ### 3.0.0

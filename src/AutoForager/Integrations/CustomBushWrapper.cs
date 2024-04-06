@@ -64,7 +64,7 @@ namespace AutoForager.Integrations
 
             if (_customBushApi is not null && _contentPatcherApi is not null)
             {
-                var tries = 10;
+                var tries = 60;
 
                 while (!_contentPatcherApi.IsConditionsApiReady && tries-- > 0)
                 {
