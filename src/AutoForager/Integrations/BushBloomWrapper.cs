@@ -12,6 +12,8 @@ namespace AutoForager.Integrations
     {
         private const string _minVersion = "1.1.9";
         private const string _bbUniqueId = "NCarigon.BushBloomMod";
+        private const int _readyRetries = 120;
+        private const int _readyRetryWaitMs = 500;
 
         private readonly IMonitor _monitor;
         private readonly IModHelper _helper;
@@ -61,28 +63,42 @@ namespace AutoForager.Integrations
 
         public async Task<List<BloomSchedule>> UpdateSchedules()
         {
+            var defaultBlooms = new BloomSchedule[]
+            {
+				new BloomSchedule("296", new WorldDate(1, Season.Spring, 15), new WorldDate(1, Season.Spring, 18)),
+				new BloomSchedule("410", new WorldDate(1, Season.Fall, 8), new WorldDate(1, Season.Fall, 11))
+			};
+
             if (_bushBloomApi is not null)
             {
-                var tries = 60;
+                var remainingRetries = _readyRetries;
 
-                while (!_bushBloomApi.IsReady() && tries-- > 0)
+                while (!_bushBloomApi.IsReady() && remainingRetries-- > 0)
                 {
-                    await Task.Delay(500);
+                    await Task.Delay(_readyRetryWaitMs);
                 }
 
-                _monitor.Log($"Bush Bloom Mod status: {_bushBloomApi.IsReady()} - {tries}", LogLevel.Debug);
-                foreach (var sched in _bushBloomApi.GetAllSchedules())
+                remainingRetries += 1;
+                var retryTime = (_readyRetries - remainingRetries) * _readyRetryWaitMs;
+
+                _monitor.Log($"Bush Bloom Mod status: Ready: {_bushBloomApi.IsReady()} - Remaining retries: {remainingRetries} / {_readyRetries} - Total time: {retryTime}ms", LogLevel.Debug);
+
+                if (_bushBloomApi.IsReady())
                 {
-                    _schedules.Add(new BloomSchedule(sched));
+                    foreach (var sched in _bushBloomApi.GetAllSchedules())
+                    {
+                        _schedules.Add(new BloomSchedule(sched));
+                    }
+                }
+                else
+                {
+                    _monitor.Log($"Bush Bloom Mod not ready within {retryTime}ms. Continuing with only default bush blooms.", LogLevel.Warn);
                 }
             }
-            else
+
+            if (_schedules.Count == 0)
             {
-                _schedules.AddRange(new BloomSchedule[]
-                {
-                    new BloomSchedule("296", new WorldDate(1, Season.Spring, 15), new WorldDate(1, Season.Spring, 18)),
-                    new BloomSchedule("410", new WorldDate(1, Season.Fall, 8), new WorldDate(1, Season.Fall, 11))
-                });
+                _schedules.AddRange(defaultBlooms);
             }
 
             return Schedules;

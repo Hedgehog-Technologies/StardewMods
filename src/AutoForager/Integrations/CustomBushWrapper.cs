@@ -14,8 +14,10 @@ namespace AutoForager.Integrations
         private const string _minVersion = "1.0.4";
         private const string _cbUniqueId = "furyx639.CustomBush";
         private const string _cpUniqueId = "Pathoschild.ContentPatcher";
+        private const int _readyRetries = 60;
+        private const int _readyRetryWaitMs = 500;
 
-        public static string ShakeOffItemKey => _cbUniqueId + "/ShakeOff";
+		public static string ShakeOffItemKey => _cbUniqueId + "/ShakeOff";
 
         private readonly IMonitor _monitor;
         private readonly IModHelper _helper;
@@ -64,24 +66,35 @@ namespace AutoForager.Integrations
 
             if (_customBushApi is not null && _contentPatcherApi is not null)
             {
-                var tries = 60;
+                var remainingRetries = _readyRetries;
 
-                while (!_contentPatcherApi.IsConditionsApiReady && tries-- > 0)
+                while (!_contentPatcherApi.IsConditionsApiReady && remainingRetries-- > 0)
                 {
-                    await Task.Delay(500);
+                    await Task.Delay(_readyRetryWaitMs);
                 }
 
-                _monitor.Log($"Custom Bush status: {_contentPatcherApi.IsConditionsApiReady} - {tries}", LogLevel.Debug);
-                var bushes = _customBushApi.GetData();
+                remainingRetries += 1;
+                var retryTime = (_readyRetries - remainingRetries) * _readyRetryWaitMs;
 
-                foreach (var bush in bushes)
+                _monitor.Log($"Custom Bush status: Content Patcher Ready: {_contentPatcherApi.IsConditionsApiReady} - Remaining Retries: {remainingRetries} / {_readyRetries} - Total time: {retryTime}ms", LogLevel.Debug);
+
+                if (_contentPatcherApi.IsConditionsApiReady)
                 {
-                    _monitor.Log(bush.Id, LogLevel.Debug);
+                    var bushes = _customBushApi.GetData();
 
-                    if (_customBushApi.TryGetDrops(bush.Id, out var drops))
+                    foreach (var bush in bushes)
                     {
-                        customDrops.AddRange(drops?.Select(d => d.ItemId) ?? new List<string>());
+                        _monitor.Log(bush.Id, LogLevel.Debug);
+
+                        if (_customBushApi.TryGetDrops(bush.Id, out var drops))
+                        {
+                            customDrops.AddRange(drops?.Select(d => d.ItemId) ?? new List<string>());
+                        }
                     }
+                }
+                else
+                {
+                    _monitor.Log($"Custom Bush or Content Patcher was not ready within {retryTime}ms. Continuing without Custom Bush integration.", LogLevel.Warn);
                 }
             }
 
