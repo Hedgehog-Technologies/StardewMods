@@ -14,7 +14,7 @@ namespace AutoForager.Integrations
         private const string _minVersion = "1.0.4";
         private const string _cbUniqueId = "furyx639.CustomBush";
         private const string _cpUniqueId = "Pathoschild.ContentPatcher";
-        private const int _readyRetries = 60;
+        private const int _readyRetries = 120;
         private const int _readyRetryWaitMs = 500;
 
 		public static string ShakeOffItemKey => _cbUniqueId + "/ShakeOff";
