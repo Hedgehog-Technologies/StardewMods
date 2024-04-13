@@ -7,6 +7,8 @@ using AutoForager.Classes;
 using AutoForager.Extensions;
 
 using Constants = AutoForager.Helpers.Constants;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 
 namespace AutoForager
 {
@@ -17,6 +19,10 @@ namespace AutoForager
 		private readonly ForageableItemTracker _forageableTracker;
 		private IComparer<string> _comparer = new CategoryComparer();
 		private IMonitor? _monitor;
+		private IManifest _manifest;
+		private IModHelper _helper;
+
+		private IGenericModConfigMenu? _gmcmApi;
 
 		#region General Properties
 
@@ -110,29 +116,35 @@ namespace AutoForager
 		{
 			if (!helper.ModRegistry.IsLoaded(_gmcmUniqueId)) return;
 
-			var gmcmApi = helper.ModRegistry.GetApi<IGenericModConfigMenu>(_gmcmUniqueId);
-			if (gmcmApi is null) return;
+			_gmcmApi = helper.ModRegistry.GetApi<IGenericModConfigMenu>(_gmcmUniqueId);
+			_manifest = manifest;
+			_helper = helper;
+
+			if (_gmcmApi is null) return;
 
 			try
 			{
-				gmcmApi.Unregister(manifest);
+				_gmcmApi.Unregister(_manifest);
 			}
 			catch { }
 
-			gmcmApi.Register(
-				mod: manifest,
+
+			_gmcmApi.Register(
+				mod: _manifest,
 				reset: ResetToDefault,
-				save: () => helper.WriteConfig(this));
+				save: () => _helper.WriteConfig(this));
+
+			_gmcmApi.OnFieldChanged(_manifest, HandleOnChange);
 
 			/* General */
 
-			gmcmApi.AddSectionTitle(
-				mod: manifest,
+			_gmcmApi.AddSectionTitle(
+				mod: _manifest,
 				text: I18n.Section_General_Text);
 
 			// IsForagerActive
-			gmcmApi.AddBoolOption(
-				mod: manifest,
+			_gmcmApi.AddBoolOption(
+				mod: _manifest,
 				fieldId: Constants.IsForagerActiveId,
 				name: I18n.Option_IsForagerActive_Name,
 				tooltip: I18n.Option_IsForagerActive_Tooltip,
@@ -140,8 +152,8 @@ namespace AutoForager
 				setValue: val => IsForagerActive = val);
 
 			// ToggleForager
-			gmcmApi.AddKeybindList(
-				mod: manifest,
+			_gmcmApi.AddKeybindList(
+				mod: _manifest,
 				fieldId: Constants.ToggleForagerId,
 				name: I18n.Option_ToggleForager_Name,
 				tooltip: I18n.Option_ToggleForager_Tooltip,
@@ -149,8 +161,8 @@ namespace AutoForager
 				setValue: val => ToggleForagerKeybind = val);
 
 			// UsePlayerMagnetism
-			gmcmApi.AddBoolOption(
-				mod: manifest,
+			_gmcmApi.AddBoolOption(
+				mod: _manifest,
 				fieldId: Constants.UsePlayerMagnetismId,
 				name: I18n.Option_UsePlayerMagnetism_Name,
 				tooltip: () => I18n.Option_UsePlayerMagnetism_Tooltip(I18n.Option_ShakeDistance_Name()),
@@ -158,8 +170,8 @@ namespace AutoForager
 				setValue: val => UsePlayerMagnetism = val);
 
 			// ShakeDistance
-			gmcmApi.AddNumberOption(
-				mod: manifest,
+			_gmcmApi.AddNumberOption(
+				mod: _manifest,
 				fieldId: Constants.ShakeDistanceId,
 				name: I18n.Option_ShakeDistance_Name,
 				tooltip: () => I18n.Option_ShakeDistance_Tooltip(I18n.Option_UsePlayerMagnetism_Name()),
@@ -167,8 +179,8 @@ namespace AutoForager
 				setValue: val => ShakeDistance = val);
 
 			// RequireHoe
-			gmcmApi.AddBoolOption(
-				mod: manifest,
+			_gmcmApi.AddBoolOption(
+				mod: _manifest,
 				fieldId: Constants.RequireHoeId,
 				name: () => I18n.Option_RequireHoe_Name(Environment.NewLine),
 				tooltip: I18n.Option_RequireHoe_Tooltip,
@@ -176,71 +188,65 @@ namespace AutoForager
 				setValue: val => RequireHoe = val);
 
 			// RequireToolMoss
-			gmcmApi.AddBoolOption(
-				mod: manifest,
+			_gmcmApi.AddBoolOption(
+				mod: _manifest,
 				fieldId: Constants.RequireToolMossId,
 				name: () => I18n.Option_RequireToolMoss_Name(Environment.NewLine),
 				tooltip: I18n.Option_RequireToolMoss_Tooltip,
 				getValue: () => RequireToolMoss,
 				setValue: val => RequireToolMoss = val);
 
-			gmcmApi.AddParagraph(
-				mod: manifest,
+			_gmcmApi.AddParagraph(
+				mod: _manifest,
 				text: () => "");
-
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				name: () => "Enable All Forage?",
-				getValue: GetAllEnabled,
-				setValue: SetAllEnabled);
 
 			/* Page Links Section */
 
-			gmcmApi.AddPageLink(
-				mod: manifest,
+			_gmcmApi.AddPageLink(
+				mod: _manifest,
 				pageId: Constants.BushesPageId,
 				text: I18n.Link_Bushes_Text);
 
-			gmcmApi.AddPageLink(
-				mod: manifest,
+			_gmcmApi.AddPageLink(
+				mod: _manifest,
 				pageId: Constants.ForageablesPageId,
 				text: I18n.Link_Forageables_Text);
 
-			gmcmApi.AddPageLink(
-				mod: manifest,
+			_gmcmApi.AddPageLink(
+				mod: _manifest,
 				pageId: Constants.FruitTreesPageId,
 				text: I18n.Link_FruitTrees_Text);
 
-			gmcmApi.AddPageLink(
-				mod: manifest,
+			_gmcmApi.AddPageLink(
+				mod: _manifest,
 				pageId: Constants.WildTreesPageId,
 				text: I18n.Link_WildTrees_Text);
 
 			/* Wild Trees */
 
-			gmcmApi.AddPage(
-				mod: manifest,
+			_gmcmApi.AddPage(
+				mod: _manifest,
 				pageId: Constants.WildTreesPageId,
 				pageTitle: I18n.Page_WildTrees_Title);
 
-			gmcmApi.AddSectionTitle(
-				mod: manifest,
+			_gmcmApi.AddSectionTitle(
+				mod: _manifest,
 				text: I18n.Section_WildTree_Text);
 
-			gmcmApi.AddParagraph(
-				mod: manifest,
+			_gmcmApi.AddParagraph(
+				mod: _manifest,
 				text: I18n.Page_WildTrees_Description);
 
-			foreach (var currentGroup in _forageableTracker.WildTreeForageables.GroupByCategory(helper, comparer: _comparer))
+			foreach (var currentGroup in _forageableTracker.WildTreeForageables.GroupByCategory(_helper, comparer: _comparer))
 			{
-				gmcmApi.AddSectionTitle(
-					mod: manifest,
+				_gmcmApi.AddSectionTitle(
+					mod: _manifest,
 					text: () => currentGroup.Key);
 
 				foreach (var item in currentGroup)
 				{
-					gmcmApi.AddBoolOption(
-						mod: manifest,
+					_gmcmApi.AddBoolOption(
+						mod: _manifest,
 						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
 						getValue: () => item.IsEnabled,
 						setValue: val =>
@@ -254,14 +260,14 @@ namespace AutoForager
 
 			/* Fruit Trees */
 
-			gmcmApi.AddPage(
-				mod: manifest,
+			_gmcmApi.AddPage(
+				mod: _manifest,
 				pageId: Constants.FruitTreesPageId,
 				pageTitle: I18n.Page_FruitTrees_Title);
 
 			// FruitsReadyToShake
-			gmcmApi.AddNumberOption(
-				mod: manifest,
+			_gmcmApi.AddNumberOption(
+				mod: _manifest,
 				fieldId: Constants.FruitsReadyToShakeId,
 				name: I18n.Option_FruitsReadyToShake_Name,
 				tooltip: I18n.Option_FruitsReadyToShake_Tooltip,
@@ -270,24 +276,24 @@ namespace AutoForager
 				min: Constants.MinFruitsReady,
 				max: Constants.MaxFruitsReady);
 
-			gmcmApi.AddSectionTitle(
-				mod: manifest,
+			_gmcmApi.AddSectionTitle(
+				mod: _manifest,
 				text: I18n.Section_FruitTrees_Text);
 
-			gmcmApi.AddParagraph(
-				mod: manifest,
+			_gmcmApi.AddParagraph(
+				mod: _manifest,
 				text: I18n.Page_FruitTrees_Description);
 
-			foreach (var currentGroup in _forageableTracker.FruitTreeForageables.GroupByCategory(helper, comparer: _comparer))
+			foreach (var currentGroup in _forageableTracker.FruitTreeForageables.GroupByCategory(_helper, comparer: _comparer))
 			{
-				gmcmApi.AddSectionTitle(
-					mod: manifest,
+				_gmcmApi.AddSectionTitle(
+					mod: _manifest,
 					text: () => currentGroup.Key);
 
 				foreach (var item in currentGroup)
 				{
-					gmcmApi.AddBoolOption(
-						mod: manifest,
+					_gmcmApi.AddBoolOption(
+						mod: _manifest,
 						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
 						getValue: () => item.IsEnabled,
 						setValue: val =>
@@ -301,32 +307,32 @@ namespace AutoForager
 
 			/* Bushes */
 
-			gmcmApi.AddPage(
-				mod: manifest,
+			_gmcmApi.AddPage(
+				mod: _manifest,
 				pageId: Constants.BushesPageId,
 				pageTitle: I18n.Page_Bushes_Title);
 
-			gmcmApi.AddSectionTitle(
-				mod: manifest,
+			_gmcmApi.AddSectionTitle(
+				mod: _manifest,
 				text: I18n.Section_Bushes_Text);
 
-			gmcmApi.AddParagraph(
-				mod: manifest,
+			_gmcmApi.AddParagraph(
+				mod: _manifest,
 				text: I18n.Page_Bushes_Description);
 
 			// Bush Blooms
 			foreach (var currentGroup in _forageableTracker.BushForageables
 				.Where(b => b.CustomFields.ContainsKey(Constants.CustomFieldBushBloomCategory)).ToList()
-				.GroupByCategory(helper, Constants.CustomFieldBushBloomCategory, _comparer))
+				.GroupByCategory(_helper, Constants.CustomFieldBushBloomCategory, _comparer))
 			{
-				gmcmApi.AddSectionTitle(
-					mod: manifest,
+				_gmcmApi.AddSectionTitle(
+					mod: _manifest,
 					text: () => currentGroup.Key);
 
 				foreach (var item in currentGroup)
 				{
-					gmcmApi.AddBoolOption(
-						mod: manifest,
+					_gmcmApi.AddBoolOption(
+						mod: _manifest,
 						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
 						tooltip: () => I18n.Option_ToggleAction_Description_Reward(
 							I18n.Action_Shake_Future().ToLowerInvariant(),
@@ -345,16 +351,16 @@ namespace AutoForager
 			// Custom Bushes
 			foreach (var currentGroup in _forageableTracker.BushForageables
 				.Where(b => b.CustomFields.ContainsKey(Constants.CustomFieldCustomBushCategory)).ToList()
-				.GroupByCategory(helper, Constants.CustomFieldCustomBushCategory, _comparer))
+				.GroupByCategory(_helper, Constants.CustomFieldCustomBushCategory, _comparer))
 			{
-				gmcmApi.AddSectionTitle(
-					mod: manifest,
+				_gmcmApi.AddSectionTitle(
+					mod: _manifest,
 					text: () => currentGroup.Key);
 
 				foreach (var item in currentGroup)
 				{
-					gmcmApi.AddBoolOption(
-						mod: manifest,
+					_gmcmApi.AddBoolOption(
+						mod: _manifest,
 						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
 						tooltip: () => I18n.Option_ToggleAction_Description_Reward(
 							I18n.Action_Shake_Future().ToLowerInvariant(),
@@ -370,13 +376,13 @@ namespace AutoForager
 				}
 			}
 
-			gmcmApi.AddSectionTitle(
-				mod: manifest,
+			_gmcmApi.AddSectionTitle(
+				mod: _manifest,
 				text: I18n.Category_Vanilla);
 
 			// ShakeTeaBushes
-			gmcmApi.AddBoolOption(
-				mod: manifest,
+			_gmcmApi.AddBoolOption(
+				mod: _manifest,
 				fieldId: Constants.ShakeTeaBushesId,
 				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_TeaBushes()),
 				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
@@ -391,8 +397,8 @@ namespace AutoForager
 				});
 
 			// ShakeWalnutBushes
-			gmcmApi.AddBoolOption(
-				mod: manifest,
+			_gmcmApi.AddBoolOption(
+				mod: _manifest,
 				fieldId: Constants.ShakeWalnutBushesId,
 				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_WalnutBushes()),
 				tooltip: () => I18n.Option_ToggleAction_Description_Reward_Note(
@@ -409,25 +415,32 @@ namespace AutoForager
 
 			/* Forageables */
 
-			gmcmApi.AddPage(
-				mod: manifest,
+			_gmcmApi.AddPage(
+				mod: _manifest,
 				pageId: Constants.ForageablesPageId,
 				pageTitle: I18n.Page_Forageables_Title);
 
-			gmcmApi.AddParagraph(
-				mod: manifest,
+			_gmcmApi.AddParagraph(
+				mod: _manifest,
 				text: I18n.Page_Forageables_Description);
 
-			foreach (var currentGroup in _forageableTracker.ObjectForageables.GroupByCategory(helper, comparer: _comparer))
+			_gmcmApi.AddBoolOption(
+				mod: _manifest,
+				fieldId: "AF_ENABLE_ALL",
+				name: () => "Enable All Forage?",
+				getValue: GetAllEnabled,
+				setValue: SetAllEnabled);
+
+			foreach (var currentGroup in _forageableTracker.ObjectForageables.GroupByCategory(_helper, comparer: _comparer))
 			{
-				gmcmApi.AddSectionTitle(
-					mod: manifest,
+				_gmcmApi.AddSectionTitle(
+					mod: _manifest,
 					text: () => currentGroup.Key);
 
 				foreach (var item in currentGroup)
 				{
-					gmcmApi.AddBoolOption(
-						mod: manifest,
+					_gmcmApi.AddBoolOption(
+						mod: _manifest,
 						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
 						getValue: () => item.IsEnabled,
 						setValue: val =>
@@ -496,13 +509,24 @@ namespace AutoForager
 			{
 				foreach (var kvp in toggleDict.Value)
 				{
-					ForageToggles[toggleDict.Key][kvp.Key] = true;
+					ForageToggles[toggleDict.Key][kvp.Key] = enabled;
+					_monitor.Log($"{toggleDict.Key} - {kvp.Key} - {enabled}", LogLevel.Debug);
 
 					// Edit the ForageableTracker values also
 				}
 			}
 
 			UpdateEnabled();
+			//RegisterModConfigMenu(_helper, _manifest);
+			//_gmcmApi.OpenModMenu(_manifest);
+		}
+
+		private void HandleOnChange(string fieldId, object value)
+		{
+			if (fieldId.IEquals("AF_ENABLE_ALL"))
+			{
+				SetAllEnabled((bool)value);
+			}
 		}
 
 		private static void UpdateTrackerEnables(List<ForageableItem> items, Dictionary<string, bool> dict)
@@ -624,11 +648,31 @@ namespace AutoForager
 		** Advanced
 		****/
 
+		/// <summary>Add an option at the current position in the form using custom rendering logic.</summary>
+		/// <param name="mod">The mod's manifest.</param>
+		/// <param name="name">The label text to show in the form.</param>
+		/// <param name="draw">Draw the option in the config UI. This is called with the sprite batch being rendered and the pixel position at which to start drawing.</param>
+		/// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+		/// <param name="beforeMenuOpened">A callback raised just before the menu containing this option is opened.</param>
+		/// <param name="beforeSave">A callback raised before the form's current values are saved to the config (i.e. before the <c>save</c> callback passed to <see cref="Register"/>).</param>
+		/// <param name="afterSave">A callback raised after the form's current values are saved to the config (i.e. after the <c>save</c> callback passed to <see cref="Register"/>).</param>
+		/// <param name="beforeReset">A callback raised before the form is reset to its default values (i.e. before the <c>reset</c> callback passed to <see cref="Register"/>).</param>
+		/// <param name="afterReset">A callback raised after the form is reset to its default values (i.e. after the <c>reset</c> callback passed to <see cref="Register"/>).</param>
+		/// <param name="beforeMenuClosed">A callback raised just before the menu containing this option is closed.</param>
+		/// <param name="height">The pixel height to allocate for the option in the form, or <c>null</c> for a standard input-sized option. This is called and cached each time the form is opened.</param>
+		/// <param name="fieldId">The unique field ID for use with <see cref="OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
+		/// <remarks>The custom logic represented by the callback parameters is responsible for managing its own state if needed. For example, you can store state in a static field or use closures to use a state variable.</remarks>
+		void AddComplexOption(IManifest mod, Func<string> name, Action<SpriteBatch, Vector2> draw, Func<string> tooltip = null, Action beforeMenuOpened = null, Action beforeSave = null, Action afterSave = null, Action beforeReset = null, Action afterReset = null, Action beforeMenuClosed = null, Func<int> height = null, string fieldId = null);
+
 		/// <summary>Register a method to notify when any option registered by this mod is edited through the config UI.</summary>
 		/// <param name="mod">The mod's manifest.</param>
 		/// <param name="onChange">The method to call with the option's unique field ID and new value.</param>
 		/// <remarks>Options use a randomized ID by default; you'll likely want to specify the <c>fieldId</c> argument when adding options if you use this.</remarks>
 		void OnFieldChanged(IManifest mod, Action<string, object> onChange);
+
+		/// <summary>Open the config UI for a specific mod.</summary>
+		/// <param name="mod">The mod's manifest.</param>
+		void OpenModMenu(IManifest mod);
 
 		/// <summary>Remove a mod from the config UI and delete all its options and pages.</summary>
 		/// <param name="mod">The mod's manifest.</param>
