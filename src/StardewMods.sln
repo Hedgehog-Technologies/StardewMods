@@ -113,6 +113,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Lumisteria - Visit Mou
 		Content Packs\Lumisteria\[AF] Lumisteria - Visit Mount Vapius Forage\manifest.json = Content Packs\Lumisteria\[AF] Lumisteria - Visit Mount Vapius Forage\manifest.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wildflour", "Wildflour", "{A3B7354D-B517-4F6F-B823-3EB4B29DDCE7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Atelier Wildflour Crops and Forage", "[AF] Atelier Wildflour Crops and Forage", "{1B0905E8-F4B8-4CE1-927A-7EE6FC1B6F2C}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Wildflour\[AF] Atelier Wildflour Crops and Forage\content.json = Content Packs\Wildflour\[AF] Atelier Wildflour Crops and Forage\content.json
+		Content Packs\Wildflour\[AF] Atelier Wildflour Crops and Forage\manifest.json = Content Packs\Wildflour\[AF] Atelier Wildflour Crops and Forage\manifest.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +157,8 @@ Global
 		{883B28C6-CA76-4E2C-9AEB-D0975004CAC4} = {E179C223-A891-4CAB-B4B6-8FBD90D65054}
 		{F6C7652A-2FEE-446A-9B31-9BC1FB8C5D79} = {A59F6289-18E4-464E-A3C4-2070AF8AF980}
 		{182E1E65-A6D6-4DE8-B17A-B201C9F8B81C} = {A59F6289-18E4-464E-A3C4-2070AF8AF980}
+		{A3B7354D-B517-4F6F-B823-3EB4B29DDCE7} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
+		{1B0905E8-F4B8-4CE1-927A-7EE6FC1B6F2C} = {A3B7354D-B517-4F6F-B823-3EB4B29DDCE7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A03CBE3-E271-4626-8494-2FB6A6D9647A}
