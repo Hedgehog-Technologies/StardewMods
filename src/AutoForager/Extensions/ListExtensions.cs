@@ -16,6 +16,14 @@ namespace AutoForager.Extensions
             items.Add(newItem);
         }
 
+        public static void AddDistinct<T>(this List<T> items, T newItem)
+            where T : notnull
+        {
+            if (items.Any(i => i.Equals(newItem))) return;
+
+            items.Add(newItem);
+        }
+
         public static IOrderedEnumerable<IGrouping<string, ForageableItem>> GroupByCategory(this List<ForageableItem> list, IModHelper helper, string? categoryKey = null, IComparer<string>? comparer = null)
         {
             categoryKey ??= Constants.CustomFieldCategoryKey;

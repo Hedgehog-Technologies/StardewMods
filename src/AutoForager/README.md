@@ -63,6 +63,9 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.1.0
+- Added field for content packs to ignore items that may not actually be forageable
+- Added content pack for Atelier Wildflour Crops and Forage
 ### 3.0.3
 - Prevent crash when integrated mods aren't ready within the timeout window
 - Bump up wait time for integrated mods

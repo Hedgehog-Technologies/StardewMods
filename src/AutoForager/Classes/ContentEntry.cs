@@ -8,6 +8,7 @@ namespace AutoForager.Classes
         public List<string>? Forageables { get; set; }
         public List<string>? FruitTrees { get; set; }
         public List<string>? WildTrees { get; set; }
+        public List<string>? IgnoredItems { get; set; }
 
         public ContentEntry()
         {
@@ -15,6 +16,7 @@ namespace AutoForager.Classes
             Forageables = new();
             FruitTrees = new();
             WildTrees = new();
+            IgnoredItems = new();
         }
     }
 }
