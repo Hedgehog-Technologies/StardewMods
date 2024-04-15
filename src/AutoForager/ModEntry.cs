@@ -35,6 +35,7 @@ namespace AutoForager
 
 		private bool _gameStarted;
 		private Vector2 _previousTilePosition;
+		private string _currentRacoonSeeds;
 
 		private readonly List<string> _overrideItemIds;
 		private readonly List<string> _ignoreItemIds;
@@ -314,6 +315,24 @@ namespace AutoForager
 		private void OnDayStarted(object? sender, DayStartedEventArgs e)
 		{
 			_previousTilePosition = Game1.player.Tile;
+			
+			switch (Game1.season)
+			{
+				case Season.Spring:
+					_currentRacoonSeeds = "(O)CarrotSeeds";
+					break;
+				case Season.Summer:
+					_currentRacoonSeeds = "(O)SummerSquashSeeds";
+					break;
+				case Season.Fall:
+					_currentRacoonSeeds = "(O)BroccoliSeeds";
+					break;
+				case Season.Winter:
+					_currentRacoonSeeds = "(O)PowdermelonSeeds";
+					break;
+				default:
+					break;
+			}
 		}
 
 		[EventPriority(EventPriority.Low)]
@@ -612,6 +631,26 @@ namespace AutoForager
 
 							_trackingCounts[Constants.ForageableKey].AddOrIncrement(objItem.DisplayName);
 						}
+					}
+					else if (obj.QualifiedItemId.Equals("(O)SeedSpot")
+						&& _forageableTracker.ObjectForageables.TryGetItem(_currentRacoonSeeds, out var racoonSeeds)
+						&& (racoonSeeds?.IsEnabled ?? false))
+					{
+						if (_config.RequireHoe && !Game1.player.Items.Any(i => i is Hoe))
+						{
+							if (_nextErrorMessage < DateTime.UtcNow)
+							{
+								Game1.addHUDMessage(new HUDMessage(I18n.Message_MissingHoe(racoonSeeds.DisplayName), HUDMessage.error_type));
+								_nextErrorMessage = DateTime.UtcNow.AddSeconds(10);
+							}
+
+							Monitor.Log(I18n.Log_MissingHoe(racoonSeeds.DisplayName, I18n.Option_RequireHoe_Name(" ")), LogLevel.Info);
+							continue;
+						}
+
+						// TODO - call use tool function instead of rewriting the logic - for artifact spots too
+						var random = Utility.CreateDaySaveRandom((0f - vec.X) * 7f, vec.Y * 777f, Game1.netWorldState.Value.TreasureTotemsUsed * 777);
+						Item racconSeedItem = Utility.getRaccoonSeedForCurrentTimeOfYear(Game1.player, random)
 					}
 				}
 

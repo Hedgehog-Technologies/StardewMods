@@ -46,7 +46,7 @@
   "Option.FruitsReadyToShake.Tooltip": "Minimum amount of fruits a Fruit Tree should have ready before the AutoForager shakes the tree.",
   "Option.IsForagerActive.Name": "Forager Is Active?",
   "Option.IsForagerActive.Tooltip": "Whether or not the Auto Forager will shake trees and bushes and forage for objects.",
-  "Option.RequireHoe.Name": "Require Hoe for Ginger roots,{{whitespace}}Snow Yams, and Winter Roots?",
+  "Option.RequireHoe.Name": "Require Hoe for Ginger roots,{{whitespace}}Artifact Spots, and Seed Spots?",
   "Option.RequireHoe.Tooltip": "Whether or not a player is required to have a hoe in their inventory to forage for some items, such as Ginger and Snow Yams.",
   "Option.RequireToolMoss.Name": "Require any tool for foraging{{whitespace}}Moss from trees?",
   "Option.RequireToolMoss.Tooltip": "Whether or not a player is required to have any tool in their inventory to forage for Moss from trees.",
