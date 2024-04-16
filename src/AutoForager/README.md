@@ -63,6 +63,9 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.2.1
+- Fix crash on launch
+- Move mod initialization to final init heartbeat to ensure everything is loaded
 ### 3.2.0
 - Buried forageables are now handled via `Artifact Spot` and `Seed Spot` toggles instead of individually
 - Final initialization heartbeat now waits for Title Menu to be interactable
