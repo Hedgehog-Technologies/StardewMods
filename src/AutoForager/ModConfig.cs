@@ -461,8 +461,7 @@ namespace AutoForager
 					if (toggleDict.Key.Equals(Constants.BushToggleKey)
 						&& toggleDict.Value.Keys.Any())
 					{
-						_anyBushesEnabled = toggleDict.Value[Constants.SalmonBerryBushKey]
-							|| toggleDict.Value[Constants.BlackberryBushKey]
+						_anyBushesEnabled = toggleDict.Value.Any(b => b.Value)
 							|| toggleDict.Value[Constants.TeaBushKey]
 							|| toggleDict.Value[Constants.WalnutBushKey];
 					}
