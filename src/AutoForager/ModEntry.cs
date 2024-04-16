@@ -216,7 +216,6 @@ namespace AutoForager
 			helper.Events.Content.LocaleChanged += OnLocaleChanged;
 			helper.Events.GameLoop.DayEnding += OnDayEnding;
 			helper.Events.GameLoop.DayStarted += OnDayStarted;
-			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 			helper.Events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
 			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
@@ -313,66 +312,62 @@ namespace AutoForager
 			_previousTilePosition = Game1.player.Tile;
 		}
 
-		[EventPriority(EventPriority.Low)]
-		private async void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
-		{
-			_bbw = new BushBloomWrapper(Monitor, Helper);
-			var schedules = await _bbw.UpdateSchedules();
-
-			foreach (var sched in schedules)
-			{
-				var itemId = Utilities.GetItemIdFromName(sched.ItemId);
-
-				if (itemId is not null)
-				{
-					if (_bushBloomItems.ContainsKey(itemId))
-					{
-						Monitor.LogOnce($"Already found an item with ItemId [{itemId}] with category [{_bushBloomItems[itemId]}] when trying to add category [{I18n.Category_BushBlooms()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
-					}
-					else
-					{
-						Monitor.LogOnce($"Found Bush Bloom Schedule for: [{itemId}]", LogLevel.Debug);
-						_bushBloomItems.Add(itemId, "Category.BushBlooms");
-					}
-				}
-			}
-
-			_cbw = new CustomBushWrapper(Monitor, Helper);
-			var customBushDrops = await _cbw.GetDrops();
-
-			foreach (var drop in customBushDrops)
-			{
-				var itemId = Utilities.GetItemIdFromName(drop);
-
-				if (itemId is not null)
-				{
-					if (_customTeaBushItems.ContainsKey(itemId))
-					{
-						Monitor.LogOnce($"Already found an item with ItemID [{itemId}] with category [{_customTeaBushItems[itemId]}] when trying to add category [{I18n.Category_CustomBushes()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
-					}
-					else
-					{
-						Monitor.LogOnce($"Found Custom Bush for: [{itemId}]", LogLevel.Debug);
-						_customTeaBushItems.Add(itemId, "Category.Custombushes");
-					}
-				}
-			}
-
-			try
-			{
-				Helper.GameContent.InvalidateCache(Constants.ObjectsAssetName);
-			}
-			catch (Exception ex)
-			{
-				Monitor.Log($"{ex.Message}{Environment.NewLine}{ex.StackTrace}", LogLevel.Warn);
-			}
-		}
-
-		[EventPriority(EventPriority.Low)]
-		private void OnOneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
+		[EventPriority(EventPriority.High)]
+		private async void OnOneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
 		{
 			if (IsTitleMenuInteractable())
 			{
+				_bbw = new BushBloomWrapper(Monitor, Helper);
+				var schedules = await _bbw.UpdateSchedules();
+
+				foreach (var sched in schedules)
+				{
+					var itemId = Utilities.GetItemIdFromName(sched.ItemId);
+
+					if (itemId is not null)
+					{
+						if (_bushBloomItems.ContainsKey(itemId))
+						{
+							Monitor.LogOnce($"Already found an item with ItemId [{itemId}] with category [{_bushBloomItems[itemId]}] when trying to add category [{I18n.Category_BushBlooms()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+						}
+						else
+						{
+							Monitor.LogOnce($"Found Bush Bloom Schedule for: [{itemId}]", LogLevel.Debug);
+							_bushBloomItems.Add(itemId, "Category.BushBlooms");
+						}
+					}
+				}
+
+				_cbw = new CustomBushWrapper(Monitor, Helper);
+				var customBushDrops = await _cbw.GetDrops();
+
+				foreach (var drop in customBushDrops)
+				{
+					var itemId = Utilities.GetItemIdFromName(drop);
+
+					if (itemId is not null)
+					{
+						if (_customTeaBushItems.ContainsKey(itemId))
+						{
+							Monitor.LogOnce($"Already found an item with ItemID [{itemId}] with category [{_customTeaBushItems[itemId]}] when trying to add category [{I18n.Category_CustomBushes()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+						}
+						else
+						{
+							Monitor.LogOnce($"Found Custom Bush for: [{itemId}]", LogLevel.Debug);
+							_customTeaBushItems.Add(itemId, "Category.Custombushes");
+						}
+					}
+				}
+
+				try
+				{
+					Helper.GameContent.InvalidateCache(Constants.ObjectsAssetName);
+				}
+				catch (Exception ex)
+				{
+					Monitor.Log($"{ex.Message}{Environment.NewLine}{ex.StackTrace}", LogLevel.Warn);
+				}
+
 				FruitTreeCache = Game1.content.Load<Dictionary<string, FruitTreeData>>(Constants.FruitTreesAssetName);
 				WildTreeCache = Game1.content.Load<Dictionary<string, WildTreeData>>(Constants.WildTreesAssetName);
 				ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
