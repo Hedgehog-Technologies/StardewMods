@@ -8,12 +8,10 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Extensions;
 using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.Locations;
 using StardewValley.GameData.Objects;
 using StardewValley.GameData.WildTrees;
-using StardewValley.Internal;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using AutoForager.Classes;
@@ -33,6 +31,7 @@ namespace AutoForager
 	{
 		private ModConfig _config;
 
+		private bool _isForagerActive = true;
 		private bool _gameStarted;
 		private Vector2 _previousTilePosition;
 
@@ -41,7 +40,6 @@ namespace AutoForager
 
 		private readonly ForageableItemTracker _forageableTracker;
 
-		private readonly Dictionary<Vector2, string> _artifactPredictions;
 		private readonly Dictionary<string, Dictionary<string, int>> _trackingCounts;
 
 		private DateTime _nextErrorMessage;
@@ -185,11 +183,10 @@ namespace AutoForager
 
 			_ignoreItemIds = new()
 			{
-				"(O)78"  // Cave Carrot
+				"(O)78"   // Cave Carrot
 			};
 
 			_forageableTracker = ForageableItemTracker.Instance;
-			_artifactPredictions = new();
 
 			_trackingCounts = new()
 			{
@@ -221,8 +218,7 @@ namespace AutoForager
 			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 			helper.Events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
 			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
-			helper.Events.Input.ButtonsChanged += OnButtonsChanged; // Maybe change this to pressed or released?
-			helper.Events.Player.Warped += OnPlayerWarped;
+			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
 		}
 
 		[EventPriority(EventPriority.Low)]
@@ -459,6 +455,7 @@ namespace AutoForager
 									}
 								}
 
+								tool.lastUser = Game1.player;
 								tree.performToolAction(tool, -1, tree.Tile);
 								_trackingCounts[Constants.ForageableKey].AddOrIncrement(mossItem.DisplayName);
 							}
@@ -581,37 +578,42 @@ namespace AutoForager
 							_trackingCounts[Constants.ForageableKey].AddOrIncrement(objItem.DisplayName);
 						}
 					}
-					// Artifact Spot
-					else if (obj.QualifiedItemId.Equals("(O)590") && _artifactPredictions.ContainsKey(vec))
+					else if ((obj.QualifiedItemId.IEquals("(O)590") && _config.ForageArtifactSpots)
+						|| (obj.QualifiedItemId.IEquals("(O)SeedSpot") && _config.ForageSeedSpots))
 					{
-						var prediction = _artifactPredictions[vec];
-
-						if (_forageableTracker.ArtifactForageables.TryGetItem(prediction, out var objItem) && (objItem?.IsEnabled ?? false))
+						if (_config.RequireHoe && !Game1.player.Items.Any(i => i is Hoe))
 						{
-							if (_config.RequireHoe && !Game1.player.Items.Any(i => i is Hoe))
+							if (_nextErrorMessage < DateTime.UtcNow)
 							{
-								if (_nextErrorMessage < DateTime.UtcNow)
-								{
-									Game1.addHUDMessage(new HUDMessage(I18n.Message_MissingHoe(objItem.DisplayName), HUDMessage.error_type));
-									_nextErrorMessage = DateTime.UtcNow.AddSeconds(10);
-								}
-
-								Monitor.LogOnce(I18n.Log_MissingHoe(objItem.DisplayName, I18n.Option_RequireHoe_Name(" ")), LogLevel.Info);
-								continue;
+								Game1.addHUDMessage(new HUDMessage(I18n.Message_MissingHoe(obj.DisplayName), HUDMessage.error_type));
+								_nextErrorMessage = DateTime.UtcNow.AddSeconds(10);
 							}
 
-							Game1.currentLocation.digUpArtifactSpot((int)vec.X, (int)vec.Y, Game1.player);
-
-							if (!Game1.currentLocation.terrainFeatures.ContainsKey(vec))
-							{
-								Game1.currentLocation.makeHoeDirt(vec, ignoreChecks: true);
-							}
-
-							Game1.currentLocation.playSound("hoeHit");
-							Game1.currentLocation.removeObject(vec, false);
-
-							_trackingCounts[Constants.ForageableKey].AddOrIncrement(objItem.DisplayName);
+							Monitor.Log(I18n.Log_MissingHoe(obj.DisplayName, I18n.Option_RequireHoe_Name(" ")), LogLevel.Info);
+							continue;
 						}
+
+						Tool? tool;
+
+						if (_config.RequireHoe)
+						{
+							tool = Game1.player.Items.FirstOrDefault(i => i is Hoe, null) as Tool;
+
+							if (tool is not null) tool.lastUser = Game1.player;
+						}
+						else
+						{
+							tool = new Hoe { lastUser = Game1.player };
+						}
+
+						// TODO - Improve logging
+						if (tool is null)
+						{
+							Monitor.Log($"Failed to get instance of Hoe Tool - {_config.RequireHoe}", LogLevel.Warn);
+						}
+
+						obj.performToolAction(tool);
+						_trackingCounts[Constants.ForageableKey].AddOrIncrement(obj.DisplayName);
 					}
 				}
 
@@ -631,75 +633,23 @@ namespace AutoForager
 			if (Game1.activeClickableMenu is not null) return;
 			if (!_config.ToggleForagerKeybind.JustPressed()) return;
 
-			_config.IsForagerActive = !_config.IsForagerActive;
+			_isForagerActive = !_isForagerActive;
 			Task.Run(() => Helper.WriteConfig(_config)).ContinueWith(t =>
 				Monitor.Log(t.Status == TaskStatus.RanToCompletion ? "Config saved successfully!" : $"Saving config unsuccessful {t.Status}", LogLevel.Debug));
 
-			var state = _config.IsForagerActive ? I18n.State_Activated() : I18n.State_Deactivated();
+			var state = _isForagerActive ? I18n.State_Activated() : I18n.State_Deactivated();
 			var message = I18n.Message_AutoForagerToggled(state);
 
 			Monitor.Log(message, LogLevel.Info);
 			Game1.addHUDMessage(new HUDMessage(message) { noIcon = true });
 
-			if (_config.IsForagerActive)
+			if (_isForagerActive)
 			{
 				Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 			}
 			else
 			{
 				Helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
-			}
-		}
-
-		private void OnPlayerWarped(object? sender, WarpedEventArgs e)
-		{
-			if (!e.IsLocalPlayer) return;
-
-			_artifactPredictions.Clear();
-
-			var mapLoc = e.NewLocation;
-			var objsPairs = mapLoc.Objects.Pairs;
-
-			foreach (var objPair in objsPairs)
-			{
-				var vec = objPair.Key;
-				var x = (int)vec.X;
-				var y = (int)vec.Y;
-				var obj = objPair.Value;
-
-				// $NOTE - Sourced from GameLocation.digUpArtifactSpot
-				if (obj.QualifiedItemId == "(O)590")
-				{
-					var random = Utility.CreateDaySaveRandom(x * 2000, y);
-					var locData = mapLoc.GetData();
-					var context = new ItemQueryContext(mapLoc, Game1.player, random);
-					IEnumerable<ArtifactSpotDropData> artifactSpotDrops = LocationCache["Default"].ArtifactSpots;
-
-					if (locData is not null && locData.ArtifactSpots?.Count > 0)
-					{
-						artifactSpotDrops = artifactSpotDrops.Concat(locData.ArtifactSpots);
-					}
-
-					artifactSpotDrops = artifactSpotDrops.OrderBy(p => p.Precedence);
-					foreach (var drop in artifactSpotDrops)
-					{
-						if (!random.NextBool(drop.Chance) || (drop.Condition is not null && !GameStateQuery.CheckConditions(drop.Condition, mapLoc, Game1.player, null, null, random))) continue;
-
-						var item = ItemQueryResolver.TryResolveRandomItem(drop, context, avoidRepeat: false, null, null, null, delegate (string query, string error)
-						{
-							Monitor.Log($"Error on query resolve: {mapLoc.NameOrUniqueName} ({drop.ItemId}): {query}{Environment.NewLine}{error}", LogLevel.Debug);
-						});
-
-						if (item is null) continue;
-
-						if (_forageableTracker.ArtifactForageables.Any(i => i.QualifiedItemId.Equals(item.QualifiedItemId)))
-						{
-							_artifactPredictions.Add(vec, item.QualifiedItemId);
-						}
-
-						if (!drop.ContinueOnDrop) break;
-					}
-				}
 			}
 		}
 

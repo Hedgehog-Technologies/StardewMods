@@ -20,7 +20,6 @@ namespace AutoForager
 
 		#region General Properties
 
-		public bool IsForagerActive { get; set; }
 		public KeybindList ToggleForagerKeybind { get; set; } = new();
 		public bool UsePlayerMagnetism { get; set; }
 		public int ShakeDistance { get; set; }
@@ -34,16 +33,14 @@ namespace AutoForager
 			set => _fruitsReadyToShake = Math.Clamp(value, Constants.MinFruitsReady, Constants.MaxFruitsReady);
 		}
 
+		public bool ForageArtifactSpots { get; set; }
+
+		public bool ForageSeedSpots { get; set; }
+
 		public Dictionary<string, Dictionary<string, bool>> ForageToggles { get; set; }
 
 		private bool _anyBushesEnabled;
 		public bool AnyBushEnabled() => _anyBushesEnabled;
-
-		public bool GetSalmonberryBushesEnabled() => ForageToggles[Constants.BushToggleKey][Constants.SalmonBerryBushKey];
-		private void SetSalmonberryBushesEnabled(bool value) => ForageToggles[Constants.BushToggleKey][Constants.SalmonBerryBushKey] = value;
-
-		public bool GetBlackberryBushesEnabled() => ForageToggles[Constants.BushToggleKey][Constants.BlackberryBushKey];
-		private void SetBlackberryBushesEnabled(bool value) => ForageToggles[Constants.BushToggleKey][Constants.BlackberryBushKey] = value;
 
 		public bool GetTeaBushesEnabled() => ForageToggles[Constants.BushToggleKey][Constants.TeaBushKey];
 		private void SetTeaBushesEnabled(bool value) => ForageToggles[Constants.BushToggleKey][Constants.TeaBushKey] = value;
@@ -76,7 +73,6 @@ namespace AutoForager
 
 		public void ResetToDefault()
 		{
-			IsForagerActive = true;
 			ToggleForagerKeybind = new KeybindList(
 				new Keybind(SButton.LeftAlt, SButton.H),
 				new Keybind(SButton.RightAlt, SButton.H));
@@ -87,14 +83,15 @@ namespace AutoForager
 			RequireToolMoss = true;
 			FruitsReadyToShake = Constants.MinFruitsReady;
 
+			ForageArtifactSpots = true;
+			ForageSeedSpots = true;
+
 			foreach (var toggleDict in ForageToggles)
 			{
 				if (_forageableTracker is not null || toggleDict.Key == Constants.BushToggleKey)
 				{
 					if (toggleDict.Key.Equals(Constants.BushToggleKey))
 					{
-						toggleDict.Value[Constants.SalmonBerryBushKey] = true;
-						toggleDict.Value[Constants.BlackberryBushKey] = true;
 						toggleDict.Value[Constants.TeaBushKey] = true;
 						toggleDict.Value[Constants.WalnutBushKey] = false;
 					}
@@ -137,15 +134,6 @@ namespace AutoForager
 			gmcmApi.AddSectionTitle(
 				mod: manifest,
 				text: I18n.Section_General_Text);
-
-			// IsForagerActive
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				fieldId: Constants.IsForagerActiveId,
-				name: I18n.Option_IsForagerActive_Name,
-				tooltip: I18n.Option_IsForagerActive_Tooltip,
-				getValue: () => IsForagerActive,
-				setValue: val => IsForagerActive = val);
 
 			// ToggleForager
 			gmcmApi.AddKeybindList(
@@ -411,6 +399,28 @@ namespace AutoForager
 				mod: manifest,
 				pageId: Constants.ForageablesPageId,
 				pageTitle: I18n.Page_Forageables_Title);
+
+			// Artifact Spots
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: () => I18n.Option_ToggleAction_Name("Artifact Spot"),
+				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
+					I18n.Action_Shake_Future().ToLowerInvariant(),
+					"Artifact Spot",
+					"Buried Items"),
+				getValue: () => ForageArtifactSpots,
+				setValue: (val) => ForageArtifactSpots = val);
+
+			// Seed Spots
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: () => I18n.Option_ToggleAction_Name("Seed Spot"),
+				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
+					I18n.Action_Shake_Future().ToLowerInvariant(),
+					"Seed Spot",
+					"Buried Seeds"),
+				getValue: () => ForageSeedSpots,
+				setValue: (val) => ForageSeedSpots = val);
 
 			gmcmApi.AddParagraph(
 				mod: manifest,
