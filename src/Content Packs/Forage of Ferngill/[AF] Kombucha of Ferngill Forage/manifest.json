@@ -1,0 +1,13 @@
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "Name": "[AF] Kombucha of Ferngill Forage",
+  "Description": "Forage added by Kombucha of Ferngill",
+  "Author": "Jag3Dagster",
+  "UniqueID": "HedgehogTechnologies.FoFKombuchaForageAF",
+  "Version": "1.0.0",
+  "MinimumApiVersion": "4.0",
+  "ContentPackFor": {
+    "UniqueID": "HedgehogTechnologies.AutoForager",
+    "MinimumVersion": "3.0.0"
+  }
+}

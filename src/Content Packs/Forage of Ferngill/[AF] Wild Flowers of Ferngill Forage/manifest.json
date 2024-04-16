@@ -1,0 +1,13 @@
+{
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "Name": "[AF] Wild Flowers of Ferngill Forage",
+  "Description": "Forage added by Wild Flowers of Ferngill",
+  "Author": "Jag3Dagster",
+  "UniqueID": "HedgehogTechnologies.FoFWildFlowersForageAF",
+  "Version": "1.0.0",
+  "MinimumApiVersion": "4.0",
+  "ContentPackFor": {
+    "UniqueID": "HedgehogTechnologies.AutoForager",
+    "MinimumVersion": "3.0.0"
+  }
+}
