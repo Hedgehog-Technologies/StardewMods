@@ -12,6 +12,7 @@ using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.Locations;
 using StardewValley.GameData.Objects;
 using StardewValley.GameData.WildTrees;
+using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using AutoForager.Classes;
@@ -367,23 +368,23 @@ namespace AutoForager
 			}
 		}
 
-		// We are using OneSecondUpdateTicked instead of GameStart because we don't want to block other events during game start
-		// but need to more or less blind wait ~1 second before loading assets to give time for various cache's to catch up with
-		// mods being loaded.
 		[EventPriority(EventPriority.Low)]
 		private void OnOneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
 		{
-			FruitTreeCache = Game1.content.Load<Dictionary<string, FruitTreeData>>(Constants.FruitTreesAssetName);
-			WildTreeCache = Game1.content.Load<Dictionary<string, WildTreeData>>(Constants.WildTreesAssetName);
-			ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
-			LocationCache = Game1.content.Load<Dictionary<string, LocationData>>(Constants.LocationsAssetName);
+			if (IsTitleMenuInteractable())
+			{
+				FruitTreeCache = Game1.content.Load<Dictionary<string, FruitTreeData>>(Constants.FruitTreesAssetName);
+				WildTreeCache = Game1.content.Load<Dictionary<string, WildTreeData>>(Constants.WildTreesAssetName);
+				ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
+				LocationCache = Game1.content.Load<Dictionary<string, LocationData>>(Constants.LocationsAssetName);
 
-			_config.RegisterModConfigMenu(Helper, ModManifest);
-			_config.UpdateEnabled(Helper);
+				_config.RegisterModConfigMenu(Helper, ModManifest);
+				_config.UpdateEnabled(Helper);
 
-			_gameStarted = true;
+				_gameStarted = true;
 
-			Helper.Events.GameLoop.OneSecondUpdateTicked -= OnOneSecondUpdateTicked;
+				Helper.Events.GameLoop.OneSecondUpdateTicked -= OnOneSecondUpdateTicked;
+			}
 		}
 
 		private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
@@ -566,17 +567,14 @@ namespace AutoForager
 				if (Game1.currentLocation.Objects.TryGetValue(vec, out var obj))
 				{
 					// Forageable Item
-					if (obj.isForage() && obj.IsSpawnedObject && !obj.questItem.Value)
+					if (_forageableTracker.ObjectForageables.TryGetItem(obj.QualifiedItemId, out var objItem) && (objItem?.IsEnabled ?? false))
 					{
-						if (_forageableTracker.ObjectForageables.TryGetItem(obj.QualifiedItemId, out var objItem) && (objItem?.IsEnabled ?? false))
-						{
-							ForageItem(obj, vec, Utility.CreateDaySaveRandom(vec.X, vec.Y * 777f), 7, true);
+						ForageItem(obj, vec, Utility.CreateDaySaveRandom(vec.X, vec.Y * 777f), 7, true);
 
-							Game1.player.currentLocation.removeObject(vec, false);
-							Game1.playSound("harvest");
+						Game1.player.currentLocation.removeObject(vec, false);
+						Game1.playSound("harvest");
 
-							_trackingCounts[Constants.ForageableKey].AddOrIncrement(objItem.DisplayName);
-						}
+						_trackingCounts[Constants.ForageableKey].AddOrIncrement(objItem.DisplayName);
 					}
 					else if ((obj.QualifiedItemId.IEquals("(O)590") && _config.ForageArtifactSpots)
 						|| (obj.QualifiedItemId.IEquals("(O)SeedSpot") && _config.ForageSeedSpots))
@@ -831,6 +829,27 @@ namespace AutoForager
 				{
 					wildTree.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCategoryKey, category);
 				}
+			}
+		}
+
+		// Taken from Spacechase0's Generic Mod Config Menu
+		// https://github.com/spacechase0/StardewValleyMods/blob/develop/GenericModConfigMenu/Mod.cs#L168
+		private bool IsTitleMenuInteractable()
+		{
+			if (Game1.activeClickableMenu is not TitleMenu titleMenu || TitleMenu.subMenu is not null)
+			{
+				return false;
+			}
+
+			var method = Helper.Reflection.GetMethod(titleMenu, "ShouldAllowInteraction", false);
+
+			if (method is not null)
+			{
+				return method.Invoke<bool>();
+			}
+			else
+			{
+				return Helper.Reflection.GetField<bool>(titleMenu, "titleInPosition").GetValue();
 			}
 		}
 
