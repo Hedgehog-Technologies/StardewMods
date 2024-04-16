@@ -1,9 +1,6 @@
 # Configuration Values
 
 ## General Options
-### IsForagerActive
-- Whether or not the AutoForager will shake tree and bushes and forage for objects
-- *Default* - **true**
 ### ToggleForagerKeybind
 - Which button(s) / button combo(s) will toggle the AutoForager on and off
 - *Default* - **LeftAlt + H**, **RightAlt + H**

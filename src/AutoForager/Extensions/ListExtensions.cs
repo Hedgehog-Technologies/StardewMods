@@ -7,74 +7,74 @@ using Constants = AutoForager.Helpers.Constants;
 
 namespace AutoForager.Extensions
 {
-    public static class ListExtensions
-    {
-        public static void AddDistinct(this List<ForageableItem> items, ForageableItem newItem)
-        {
-            if (items.Any(i => i.QualifiedItemId.Equals(newItem.QualifiedItemId))) return;
+	public static class ListExtensions
+	{
+		public static void AddDistinct(this List<ForageableItem> items, ForageableItem newItem)
+		{
+			if (items.Any(i => i.QualifiedItemId.Equals(newItem.QualifiedItemId))) return;
 
-            items.Add(newItem);
-        }
+			items.Add(newItem);
+		}
 
-        public static void AddDistinct<T>(this List<T> items, T newItem)
-            where T : notnull
-        {
-            if (items.Any(i => i.Equals(newItem))) return;
+		public static void AddDistinct<T>(this List<T> items, T newItem)
+			where T : notnull
+		{
+			if (items.Any(i => i.Equals(newItem))) return;
 
-            items.Add(newItem);
-        }
+			items.Add(newItem);
+		}
 
-        public static IOrderedEnumerable<IGrouping<string, ForageableItem>> GroupByCategory(this List<ForageableItem> list, IModHelper helper, string? categoryKey = null, IComparer<string>? comparer = null)
-        {
-            categoryKey ??= Constants.CustomFieldCategoryKey;
+		public static IOrderedEnumerable<IGrouping<string, ForageableItem>> GroupByCategory(this List<ForageableItem> list, IModHelper helper, string? categoryKey = null, IComparer<string>? comparer = null)
+		{
+			categoryKey ??= Constants.CustomFieldCategoryKey;
 
-            return list.GroupBy(f =>
-            {
-                var category = I18n.Category_Other();
+			return list.GroupBy(f =>
+			{
+				var category = I18n.Category_Other();
 
-                if (f.CustomFields?.TryGetValue(categoryKey, out var customCategory) ?? false)
-                {
-                    category = helper.Translation.Get(customCategory);
+				if (f.CustomFields?.TryGetValue(categoryKey, out var customCategory) ?? false)
+				{
+					category = helper.Translation.Get(customCategory);
 
-                    if (category.StartsWith("(no translation:"))
-                    {
-                        category = customCategory;
-                    }
-                }
+					if (category.StartsWith("(no translation:"))
+					{
+						category = customCategory;
+					}
+				}
 
-                return category;
-            })
-            .OrderBy(g => g.Key, comparer ?? new CategoryComparer());
-        }
+				return category;
+			})
+			.OrderBy(g => g.Key, comparer ?? new CategoryComparer());
+		}
 
-        public static void SortByDisplayName(this List<ForageableItem> items)
-        {
-            items.Sort((x, y) => string.CompareOrdinal(x.DisplayName, y.DisplayName));
-        }
+		public static void SortByDisplayName(this List<ForageableItem> items)
+		{
+			items.Sort((x, y) => string.CompareOrdinal(x.DisplayName, y.DisplayName));
+		}
 
-        public static bool TryGetItem(this List<ForageableItem> items, string qualifiedItemId, out ForageableItem? item)
-        {
-            item = null;
+		public static bool TryGetItem(this List<ForageableItem> items, string qualifiedItemId, out ForageableItem? item)
+		{
+			item = null;
 
-            if (items is null || qualifiedItemId is null) return false;
+			if (items is null || qualifiedItemId is null) return false;
 
-            foreach (var fItem in items)
-            {
-                if (fItem.QualifiedItemId.IEquals(qualifiedItemId))
-                {
-                    item = fItem;
-                    return true;
-                }
-            }
+			foreach (var fItem in items)
+			{
+				if (fItem.QualifiedItemId.IEquals(qualifiedItemId))
+				{
+					item = fItem;
+					return true;
+				}
+			}
 
-            return false;
-        }
+			return false;
+		}
 
-        public static bool IsNullOrEmpty<T>(this List<T>? list)
-        {
-            if (list is null) return true;
+		public static bool IsNullOrEmpty<T>(this List<T>? list)
+		{
+			if (list is null) return true;
 
-            return !list.Any();
-        }
-    }
+			return !list.Any();
+		}
+	}
 }

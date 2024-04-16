@@ -3,18 +3,18 @@ using StardewValley.TerrainFeatures;
 
 namespace AutoForager.Extensions
 {
-    public static class FruitTreeExtensions
-    {
-        public static List<string> GetFruitItemIds(this FruitTree fruitTree)
-        {
-            var itemIds = new List<string>();
+	public static class FruitTreeExtensions
+	{
+		public static List<string> GetFruitItemIds(this FruitTree fruitTree)
+		{
+			var itemIds = new List<string>();
 
-            foreach (var fruit in fruitTree.fruit)
-            {
-                itemIds.Add(fruit.QualifiedItemId);
-            }
+			foreach (var fruit in fruitTree.fruit)
+			{
+				itemIds.Add(fruit.QualifiedItemId);
+			}
 
-            return itemIds;
-        }
-    }
+			return itemIds;
+		}
+	}
 }
