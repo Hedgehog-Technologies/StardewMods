@@ -63,6 +63,11 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.2.0 ??
+- Buried forageables are now handled under `Artifact Spot` and `Seed Spot` toggles
+- Fixed exception thrown by utilizing tools when foraging moss and buried forageables
+- Fixed toggling forager with keybinds sometimes not respecting "Is Forager Active?" config setting
+  - Config setting was removed to prevent doubling up on sources of truth, forager will always be active on game start
 ### 3.1.0
 - Added field for content packs to ignore items that may not actually be forageable
 - Added content pack for Atelier Wildflour Crops and Forage
