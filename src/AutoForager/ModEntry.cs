@@ -585,35 +585,33 @@ namespace AutoForager
 						{
 							if (_nextErrorMessage < DateTime.UtcNow)
 							{
-								Game1.addHUDMessage(new HUDMessage(I18n.Message_MissingHoe(obj.DisplayName), HUDMessage.error_type));
+								Game1.addHUDMessage(new HUDMessage(I18n.Message_MissingHoe(obj.Name), HUDMessage.error_type));
 								_nextErrorMessage = DateTime.UtcNow.AddSeconds(10);
 							}
 
-							Monitor.Log(I18n.Log_MissingHoe(obj.DisplayName, I18n.Option_RequireHoe_Name(" ")), LogLevel.Info);
+							Monitor.Log(I18n.Log_MissingHoe(obj.Name, I18n.Option_RequireHoe_Name(" ")), LogLevel.Info);
 							continue;
 						}
 
-						Tool? tool;
+						var tool = Game1.player.Items.FirstOrDefault(i => i is Hoe, null) as Tool;
 
-						if (_config.RequireHoe)
+						if (!_config.RequireHoe && tool is null)
 						{
-							tool = Game1.player.Items.FirstOrDefault(i => i is Hoe, null) as Tool;
-
-							if (tool is not null) tool.lastUser = Game1.player;
-						}
-						else
-						{
-							tool = new Hoe { lastUser = Game1.player };
+							tool = new Hoe();
+							Monitor.Log($"Failed to get instance of existing Hoe Tool - {_config.RequireHoe}", LogLevel.Debug);
 						}
 
 						// TODO - Improve logging
 						if (tool is null)
 						{
-							Monitor.Log($"Failed to get instance of Hoe Tool - {_config.RequireHoe}", LogLevel.Warn);
+							Monitor.Log($"Failed to get instance of Hoe Tool - {_config.RequireHoe}", LogLevel.Debug);
 						}
-
-						obj.performToolAction(tool);
-						_trackingCounts[Constants.ForageableKey].AddOrIncrement(obj.DisplayName);
+						else
+						{
+							tool.lastUser = Game1.player;
+							obj.performToolAction(tool);
+							_trackingCounts[Constants.ForageableKey].AddOrIncrement(obj.DisplayName);
+						}
 					}
 				}
 

@@ -70,6 +70,8 @@
   "Page.WildTrees.Description": "Se os seguintes itens devem ou não ser sacudidos das Árvores Selvagens:",
 
   "Reward.Blackberries": "Amoras",
+  "Reward.Buried.Items": "Itens Enterrados", // Google Translate - Feel free to update
+  "Reward.Buried.Seeds": "Sementes Enterradas", // Google Translate - Feel free to update
   "Reward.GoldenWalnuts": "GWalnuts antigos",
   "Reward.Salmonberries": "Salmonberries",
   "Reward.TeaLeaves": "Folhas de Chá",
@@ -82,11 +84,13 @@
   "State.Activated": "ATIVADO",
   "State.Deactivated": "DESATIVADO",
 
+  "Subject.ArtifactSpot": "Localização do artefato", // Google Translate - Feel free to update
   "Subject.BlackberryBushes": "Arbustos de amora",
   "Subject.Bushes": "arbustos", // Google Translate - Feel free to update
   "Subject.BushBloomSchedules": "horários de floração do mato", // Google Translate - Feel free to update
   "Subject.GingerRoots": "Raízes de gengibre",
   "Subject.SalmonberryBushes": "Arbustos de salmão",
+  "Subject.SeedSpot": "Localização da semente", // Google Translate - Feel free to update
   "Subject.TeaBushes": "Arbustos de chá",
   "Subject.WalnutBushes": "Arbustos de nozes"
 }

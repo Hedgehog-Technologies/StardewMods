@@ -403,22 +403,22 @@ namespace AutoForager
 			// Artifact Spots
 			gmcmApi.AddBoolOption(
 				mod: manifest,
-				name: () => I18n.Option_ToggleAction_Name("Artifact Spot"),
+				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_ArtifactSpot()),
 				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
 					I18n.Action_Shake_Future().ToLowerInvariant(),
-					"Artifact Spot",
-					"Buried Items"),
+					I18n.Subject_ArtifactSpot(),
+					I18n.Reward_Buried_Items()),
 				getValue: () => ForageArtifactSpots,
 				setValue: (val) => ForageArtifactSpots = val);
 
 			// Seed Spots
 			gmcmApi.AddBoolOption(
 				mod: manifest,
-				name: () => I18n.Option_ToggleAction_Name("Seed Spot"),
+				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_SeedSpot()),
 				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
 					I18n.Action_Shake_Future().ToLowerInvariant(),
-					"Seed Spot",
-					"Buried Seeds"),
+					I18n.Subject_SeedSpot(),
+					I18n.Reward_Buried_Seeds()),
 				getValue: () => ForageSeedSpots,
 				setValue: (val) => ForageSeedSpots = val);
 

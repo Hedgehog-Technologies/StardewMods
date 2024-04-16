@@ -70,6 +70,8 @@
   "Page.WildTrees.Description": "是否应从野生树木中摇晃以下物品:",
 
   "Reward.Blackberries": "黑莓",
+  "Reward.Buried.Items": "埋藏物品", // Google Translate - Feel free to update
+  "Reward.Buried.Seeds": "埋藏的种子", // Google Translate - Feel free to update
   "Reward.GoldenWalnuts": "金胡桃",
   "Reward.Salmonberries": "树莓",
   "Reward.TeaLeaves": "茶叶",
@@ -82,11 +84,13 @@
   "State.Activated": "已激活",
   "State.Deactivated": "已停用",
 
+  "Subject.ArtifactSpot": "神器位置", // Google Translate - Feel free to update
   "Subject.BlackberryBushes": "黑莓灌木",
   "Subject.Bushes": "灌木丛", // Google Translate - Feel free to update
   "Subject.BushBloomSchedules": "布什开花时间表", // Google Translate - Feel free to update
   "Subject.GingerRoots": "姜",
   "Subject.SalmonberryBushes": "树莓灌木",
+  "Subject.SeedSpot": "种子位置", // Google Translate - Feel free to update
   "Subject.TeaBushes": "茶苗",
   "Subject.WalnutBushes": "核桃树丛"
 }
