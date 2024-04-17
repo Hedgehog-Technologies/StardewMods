@@ -412,7 +412,7 @@ namespace AutoForager
 				mod: manifest,
 				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_ArtifactSpot()),
 				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-					I18n.Action_Shake_Future().ToLowerInvariant(),
+					I18n.Action_Dig_Future().ToLowerInvariant(),
 					I18n.Subject_ArtifactSpot(),
 					I18n.Reward_Buried_Items()),
 				getValue: () => ForageArtifactSpots,
@@ -423,7 +423,7 @@ namespace AutoForager
 				mod: manifest,
 				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_SeedSpot()),
 				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-					I18n.Action_Shake_Future().ToLowerInvariant(),
+					I18n.Action_Dig_Future().ToLowerInvariant(),
 					I18n.Subject_SeedSpot(),
 					I18n.Reward_Buried_Seeds()),
 				getValue: () => ForageSeedSpots,

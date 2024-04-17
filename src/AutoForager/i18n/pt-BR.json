@@ -1,5 +1,6 @@
 {
   "Action.Shake.Future": "Agite",
+  "Action.Dig.Future": "Desenterrar", // Google Translate - Feel free to update
 
   "Category.Beach": "Praia", // Google Translate - Feel free to update
   "Category.BushBlooms": "Flores de Arbustos", // Google Translate - Feel free to update
@@ -38,7 +39,7 @@
 
   "Message.AutoForagerToggled": "AutoForagem tem sido {{state}}",
   "Message.MissingHoe": "Falta uma enxada. Você não pode forragear {{assunto}} sem um.",
-  "Message.MissingToolMoss": "Falta uma ferramenta. Você não pode forragear musgo sem uma ferramenta.",
+  "Message.MissingToolMoss": "Faltando uma ferramenta ou arma branca. Você não pode coletar Moss sem uma ferramenta ou arma branca em seu inventário.", // Google Translate - Feel free to update
 
   "Note.ShakeWalnutBushes": "Essas nozes devem ser conteúdo de fim de jogo e difíceis de encontrar. Ativar essa opção banaliza esse conteúdo até certo ponto.",
 
@@ -47,9 +48,9 @@
   "Option.IsForagerActive.Name": "Forager Está Ativo?",
   "Option.IsForagerActive.Tooltip": "Se o Auto Forager vai ou não sacudir árvores e arbustos e forragear objetos.",
   "Option.RequireHoe.Name": "Exigir enxada para raízes de gengibre,{{whitespace}}Inhames de neve e raízes de inverno?",
-  "Option.RequireHoe.Tooltip": "Se um jogador é ou não obrigado a ter uma enxada em seu inventário para procurar alguns itens, como Ginger e Snow Yams.",
-  "Option.RequireToolMoss.Name": "Exigir qualquer ferramenta para forragear{{whitespace}}Musgo de árvores?",
-  "Option.RequireToolMoss.Tooltip": "Se um jogador é ou não obrigado a ter alguma ferramenta em seu inventário para forragear Moss das árvores.",
+  "Option.RequireHoe.Tooltip": "Se um jogador é obrigado ou não a ter uma enxada em seu inventário para procurar raízes de gengibre, pontos de artefatos e pontos de sementes.", // Google Translate - Feel free to update
+  "Option.RequireToolMoss.Name": "Precisa de alguma ferramenta ou arma branca{{whitespace}}para colher musgo nas árvores?", // Google Translate - Feel free to update
+  "Option.RequireToolMoss.Tooltip": "Se um jogador é obrigado ou não a ter qualquer ferramenta ou arma branca em seu inventário para procurar musgo nas árvores.", // Google Translate - Feel free to update
   "Option.ShakeDistance.Name": "Distância de agitação",
   "Option.ShakeDistance.Tooltip": "Distância para sacudir arbustos quando '{{playerMagnetismName}}' está desativado.",
   "Option.ToggleAction.Name": "Forragem qualquer {{subject}}?",

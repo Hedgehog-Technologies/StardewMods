@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -36,7 +35,7 @@ namespace AutoForager
 		private JsonHelper _jsonHelper;
 
 		private bool _isForagerActive = true;
-		private bool _gameStarted;
+		private bool _gameStarted = false;
 		private Vector2 _previousTilePosition;
 
 		private readonly List<string> _overrideItemIds;
@@ -321,6 +320,8 @@ namespace AutoForager
 		{
 			if (IsTitleMenuInteractable())
 			{
+				Helper.Events.GameLoop.OneSecondUpdateTicked -= OnOneSecondUpdateTicked;
+
 				_bbw = new BushBloomWrapper(Monitor, Helper);
 				var schedules = await _bbw.UpdateSchedules();
 
@@ -383,8 +384,6 @@ namespace AutoForager
 				Monitor.Log(_jsonHelper.Serialize(_config), LogLevel.Trace);
 
 				_gameStarted = true;
-
-				Helper.Events.GameLoop.OneSecondUpdateTicked -= OnOneSecondUpdateTicked;
 			}
 		}
 
@@ -588,7 +587,7 @@ namespace AutoForager
 								_nextErrorMessage = DateTime.UtcNow.AddSeconds(10);
 							}
 
-							Monitor.Log(I18n.Log_MissingHoe(obj.Name, I18n.Option_RequireHoe_Name(" ")), LogLevel.Info);
+							Monitor.LogOnce(I18n.Log_MissingHoe(obj.Name, I18n.Option_RequireHoe_Name(" ")), LogLevel.Info);
 							continue;
 						}
 

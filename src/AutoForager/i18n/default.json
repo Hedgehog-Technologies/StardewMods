@@ -1,5 +1,6 @@
 ﻿{
   "Action.Shake.Future": "Shake",
+  "Action.Dig.Future": "Dig Up",
 
   "Category.Beach": "Beach",
   "Category.BushBlooms": "Bush Blooms",
@@ -38,7 +39,7 @@
 
   "Message.AutoForagerToggled": "AutoForager has been {{state}}",
   "Message.MissingHoe": "Missing a Hoe. You can't forage {{subject}} without one.",
-  "Message.MissingToolMoss": "Missing a tool. You can't forage Moss without a tool.",
+  "Message.MissingToolMoss": "Missing a tool or melee weapon. You can't forage Moss without a tool or melee weapon in your inventory.",
 
   "Note.ShakeWalnutBushes": "These walnuts are meant to be end game content and difficult to find. Enabling this option does trivialize this content to some degree.",
 
@@ -47,9 +48,9 @@
   "Option.IsForagerActive.Name": "Forager Is Active?",
   "Option.IsForagerActive.Tooltip": "Whether or not the Auto Forager will shake trees and bushes and forage for objects.",
   "Option.RequireHoe.Name": "Require Hoe for Ginger roots,{{whitespace}}Artifact Spots, and Seed Spots?",
-  "Option.RequireHoe.Tooltip": "Whether or not a player is required to have a hoe in their inventory to forage for some items, such as Ginger and Snow Yams.",
-  "Option.RequireToolMoss.Name": "Require any tool for foraging{{whitespace}}Moss from trees?",
-  "Option.RequireToolMoss.Tooltip": "Whether or not a player is required to have any tool in their inventory to forage for Moss from trees.",
+  "Option.RequireHoe.Tooltip": "Whether or not a player is required to have a Hoe in their inventory to forage for Ginger roots, Aritifact Spots, and Seed Spots.",
+  "Option.RequireToolMoss.Name": "Require any tool or melee weapon{{whitespace}}for foraging Moss from trees?",
+  "Option.RequireToolMoss.Tooltip": "Whether or not a player is required to have any tool or melee weapon in their inventory to forage for Moss from trees.",
   "Option.ShakeDistance.Name": "Shake Distance",
   "Option.ShakeDistance.Tooltip": "Distance to shake bushes when '{{playerMagnetismName}}' is disabled.",
   "Option.ToggleAction.Name": "Forage any {{subject}}?",
