@@ -63,6 +63,10 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.2.2
+- Fix exception on launch due to multiple Title Screen init events running simultaneously
+- Update config strings to be a bit more explicit what they are looking for
+- Add some trace logging for config values
 ### 3.2.1
 - Fix crash on launch
 - Move mod initialization to final init heartbeat to ensure everything is loaded
