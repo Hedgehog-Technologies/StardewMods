@@ -5,6 +5,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using AutoForager.Classes;
 using AutoForager.Extensions;
+using AutoForager.Helpers;
 
 using Constants = AutoForager.Helpers.Constants;
 
@@ -17,6 +18,7 @@ namespace AutoForager
 		private readonly ForageableItemTracker _forageableTracker;
 		private IComparer<string> _comparer = new CategoryComparer();
 		private IMonitor? _monitor;
+		private JsonHelper _jsonHelper;
 
 		#region General Properties
 
@@ -65,10 +67,11 @@ namespace AutoForager
 			ResetToDefault();
 		}
 
-		public void UpdateUtilities(IMonitor monitor, IEnumerable<IContentPack> packs)
+		public void UpdateUtilities(IMonitor monitor, IEnumerable<IContentPack> packs, JsonHelper jsonHelper)
 		{
 			_monitor = monitor;
 			_comparer = new CategoryComparer(packs);
+			_jsonHelper = jsonHelper;
 		}
 
 		public void ResetToDefault()
@@ -127,7 +130,11 @@ namespace AutoForager
 			gmcmApi.Register(
 				mod: manifest,
 				reset: ResetToDefault,
-				save: () => helper.WriteConfig(this));
+				save: () =>
+				{
+					helper.WriteConfig(this);
+					_monitor?.Log(_jsonHelper.Serialize(this), LogLevel.Trace);
+				});
 
 			/* General */
 

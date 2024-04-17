@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -17,6 +18,7 @@ using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using AutoForager.Classes;
 using AutoForager.Extensions;
+using AutoForager.Helpers;
 using AutoForager.Integrations;
 
 using SObject = StardewValley.Object;
@@ -31,6 +33,7 @@ namespace AutoForager
 	public class ModEntry : Mod
 	{
 		private ModConfig _config;
+		private JsonHelper _jsonHelper;
 
 		private bool _isForagerActive = true;
 		private bool _gameStarted;
@@ -165,6 +168,7 @@ namespace AutoForager
 		public ModEntry()
 		{
 			_config = new();
+			_jsonHelper = new();
 			_gameStarted = false;
 
 			_cpForageables = new();
@@ -206,7 +210,7 @@ namespace AutoForager
 			var packs = helper.ContentPacks.GetOwned();
 
 			_config = helper.ReadConfig<ModConfig>();
-			_config.UpdateUtilities(Monitor, packs);
+			_config.UpdateUtilities(Monitor, packs, _jsonHelper);
 			_config.UpdateEnabled(helper);
 
 			ParseContentPacks(packs);
@@ -274,7 +278,7 @@ namespace AutoForager
 			ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
 			LocationCache = Game1.content.Load<Dictionary<string, LocationData>>(Constants.LocationsAssetName);
 
-			_config.UpdateUtilities(Monitor, Helper.ContentPacks.GetOwned());
+			_config.UpdateUtilities(Monitor, Helper.ContentPacks.GetOwned(), _jsonHelper);
 			_config.RegisterModConfigMenu(Helper, ModManifest);
 			_config.UpdateEnabled(Helper);
 		}
@@ -375,6 +379,8 @@ namespace AutoForager
 
 				_config.RegisterModConfigMenu(Helper, ModManifest);
 				_config.UpdateEnabled(Helper);
+
+				Monitor.Log(_jsonHelper.Serialize(_config), LogLevel.Trace);
 
 				_gameStarted = true;
 
