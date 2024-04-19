@@ -49,7 +49,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Forage of Ferngill", "Forag
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lumisteria", "Lumisteria", "{A59F6289-18E4-464E-A3C4-2070AF8AF980}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ridgeside Village", "Ridgeside Village", "{6385528A-44CC-47E4-969B-2F8CF2870AC1}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Rafseazz", "Rafseazz", "{6385528A-44CC-47E4-969B-2F8CF2870AC1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stardew Valley Expanded", "Stardew Valley Expanded", "{25E98636-2E17-46A1-8F87-6DC3FF359483}"
 EndProject
@@ -61,8 +61,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Stardew Valley Expande
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[Af] Ridgeside Village Forage", "[Af] Ridgeside Village Forage", "{3A9B74D5-F0B6-4EE8-A9A7-509868055B4A}"
 	ProjectSection(SolutionItems) = preProject
-		Content Packs\Ridgeside Village\[AF] Ridgeside Village Forage\content.json = Content Packs\Ridgeside Village\[AF] Ridgeside Village Forage\content.json
-		Content Packs\Ridgeside Village\[AF] Ridgeside Village Forage\manifest.json = Content Packs\Ridgeside Village\[AF] Ridgeside Village Forage\manifest.json
+		Content Packs\Rafseazz\[AF] Ridgeside Village Forage\content.json = Content Packs\Rafseazz\[AF] Ridgeside Village Forage\content.json
+		Content Packs\Rafseazz\[AF] Ridgeside Village Forage\manifest.json = Content Packs\Rafseazz\[AF] Ridgeside Village Forage\manifest.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Coastal Forage of Ferngill Forage", "[AF] Coastal Forage of Ferngill Forage", "{23A97F11-5140-42A8-9042-A9718CE78274}"
