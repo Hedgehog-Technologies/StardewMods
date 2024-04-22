@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>FullFishingBar</AssemblyName>
+    <BaseManifest>new</BaseManifest>
+
+    <UniqueId>HedgehogTechnologies.FullFishingBar</UniqueId>
+    <Name>Full Fishing Bar</Name>
+    <Authors>Jag3Dagster</Authors>
+    <Description>How would they know?</Description>
+    <Version>1.0.0</Version>
+
+    <MinimumApiVersion>auto</MinimumApiVersion>
+    <MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Required="false" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(BuildConfig)' == 'GITHUB' ">
+    <GamePath>../ref</GamePath>
+    <EnableModDeploy>false</EnableModDeploy>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+  </ItemGroup>
+</Project>
