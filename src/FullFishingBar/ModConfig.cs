@@ -9,12 +9,14 @@ namespace FullFishingBar
 		private const string _gmcmUniqueId = "spacechase0.GenericModConfigMenu";
 
 		public bool IsEnabled { get; set; }
+		public bool OnlyCorkBobber { get; set; }
 		public double BarSizePercentage { get; set; }
 		public bool ExceptBossFish { get; set; }
 
 		public ModConfig()
 		{
 			IsEnabled = true;
+			OnlyCorkBobber = false;
 			BarSizePercentage = 1.0;
 			ExceptBossFish = false;
 		}
@@ -22,6 +24,7 @@ namespace FullFishingBar
 		public void ResetToDefault()
 		{
 			IsEnabled = true;
+			OnlyCorkBobber = false;
 			BarSizePercentage = 1.0;
 			ExceptBossFish = false;
 		}
@@ -54,6 +57,17 @@ namespace FullFishingBar
 				tooltip: I18n.Option_Enabled_Tooltip,
 				getValue: () => IsEnabled,
 				setValue: (val) => IsEnabled = val);
+
+			gmcmApi.AddSectionTitle(
+				mod: manifest,
+				text: I18n.Section_Customizations);
+
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: I18n.Option_OnlyCorkBobber_Name,
+				tooltip: I18n.Option_OnlyCorkBobber_Tooltip,
+				getValue: () => OnlyCorkBobber,
+				setValue: (val) => OnlyCorkBobber = val);
 
 			gmcmApi.AddNumberOption(
 				mod: manifest,

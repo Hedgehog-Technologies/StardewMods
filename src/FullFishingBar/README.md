@@ -18,10 +18,17 @@ Potential answers:
 ### Config
 - `IsEnabled`
   - Whether or not the mod will function and resize the fishing mini game's bobber bar
-  - *Default*: `true`
+  - *Default:* `true`
+- `OnlyCorkBobber`
+  - Whether or not the Bobber Bar resizing only works when a Cork Bobber is equipped on the current fishing rod
+  - *Default:* `false`
+- `BarSizePercentage`
+  - What percentage of the mini game play space do you want the Bobber Bar to take up?
+  - *Default:* `1.0`
+  - *Range:* `0.1` - `1.0`
 - `ExceptBossFish`
   - Whether or not the mod will **skip** resizing the fishing mini game's bobber bar **for Boss Fish**
-  - *Default*: `false`
+  - *Default:* `false`
 
 ### Translation
 &nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By
@@ -65,5 +72,7 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/23006) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/full-fishing-bar) site.
+### 1.1.0
+- Add "Only Cork Bobber" config option
 ### 1.0.0
 - Initial Release

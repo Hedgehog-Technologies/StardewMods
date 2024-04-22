@@ -33,6 +33,8 @@ namespace AutoForager
 
 				if (bobberBarMenu is not null)
 				{
+					if (_config.OnlyCorkBobber && !bobberBarMenu.bobbers.Contains("(O)695")) return;
+
 					bobberBarMenu.bobberBarHeight = Math.Min(
 						Math.Max(
 							(int)(BobberBar.bobberBarTrackHeight * _config.BarSizePercentage),
