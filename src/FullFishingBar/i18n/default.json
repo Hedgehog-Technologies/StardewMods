@@ -1,4 +1,6 @@
 {
+  "Option.BarSizePercentage.Name": "Bobber Bar Size",
+  "Option.BarSizePercentage.Tooltip": "What percentage of the playspace do you want to the Bobber Bar to take up?",
   "Option.Enabled.Name": "Enabled?",
   "Option.Enabled.Tooltip": "Whether or not to resize the fishing bobber bar.",
   "Option.ExceptBossFish.Name": "Disable for Boss Fish?",

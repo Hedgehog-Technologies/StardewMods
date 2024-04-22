@@ -2,6 +2,7 @@
 using StardewModdingAPI.Events;
 using StardewValley.Menus;
 using FullFishingBar;
+using System;
 
 namespace AutoForager
 {
@@ -32,7 +33,11 @@ namespace AutoForager
 
 				if (bobberBarMenu is not null)
 				{
-					bobberBarMenu.bobberBarHeight = BobberBar.bobberBarTrackHeight;
+					bobberBarMenu.bobberBarHeight = Math.Min(
+						Math.Max(
+							(int)(BobberBar.bobberBarTrackHeight * _config.BarSizePercentage),
+							(int)(BobberBar.bobberBarTrackHeight * 0.1)),
+						BobberBar.bobberBarTrackHeight);
 				}
 			}
 		}

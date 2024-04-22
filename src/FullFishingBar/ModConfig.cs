@@ -9,17 +9,20 @@ namespace FullFishingBar
 		private const string _gmcmUniqueId = "spacechase0.GenericModConfigMenu";
 
 		public bool IsEnabled { get; set; }
+		public double BarSizePercentage { get; set; }
 		public bool ExceptBossFish { get; set; }
 
 		public ModConfig()
 		{
 			IsEnabled = true;
+			BarSizePercentage = 1.0;
 			ExceptBossFish = false;
 		}
 
 		public void ResetToDefault()
 		{
 			IsEnabled = true;
+			BarSizePercentage = 1.0;
 			ExceptBossFish = false;
 		}
 
@@ -51,6 +54,17 @@ namespace FullFishingBar
 				tooltip: I18n.Option_Enabled_Tooltip,
 				getValue: () => IsEnabled,
 				setValue: (val) => IsEnabled = val);
+
+			gmcmApi.AddNumberOption(
+				mod: manifest,
+				name: I18n.Option_BarSizePercentage_Name,
+				tooltip: I18n.Option_BarSizePercentage_Tooltip,
+				getValue: () => Math.Max(10, Math.Min((int)(BarSizePercentage * 100), 100)),
+				setValue: (val) => BarSizePercentage = val / 100.0,
+				min: 10,
+				max: 100,
+				interval: 1,
+				formatValue: (val) => $"{val}%");
 
 			gmcmApi.AddBoolOption(
 				mod: manifest,
