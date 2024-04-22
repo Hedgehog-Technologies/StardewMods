@@ -4,10 +4,10 @@
 ### Overview
 This mod checks for:
 - Bushes that are currently blooming with berries or tea leaves
-    - NOTE: This includes Golden Walnut bushes
+  - NOTE: This includes Golden Walnut bushes
 - Fruit trees that currently have fruit on them
 - Trees that have a seed available to be shaken down
-    - NOTE: This includes trees with hazelnuts, coconuts, and golden coconuts
+  - NOTE: This includes trees with hazelnuts, coconuts, and golden coconuts
 - Forageables throughout Stardew Valley
 
 ### Config
@@ -38,24 +38,24 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ### Install
 1. Install the latest version of [SMAPI](https://smapi.io)
-    1. [Nexus Mirror](https://www.nexusmods.com/stardewvalley/mods/2400)
-    2. [CurseForge Mirror](https://www.curseforge.com/stardewvalley/utility/smapi)
-    3. [GitHub Mirror](https://github.com/Pathoschild/SMAPI/releases)
+  1. [Nexus Mirror](https://www.nexusmods.com/stardewvalley/mods/2400)
+  2. [CurseForge Mirror](https://www.curseforge.com/stardewvalley/utility/smapi)
+  3. [GitHub Mirror](https://github.com/Pathoschild/SMAPI/releases)
 2. *Optional but recommended* Install the latest version of [Generic Mod Config Menu](https://spacechase0.com/mods/stardew-valley/generic-mod-config-menu/)
-    1. [Nexus Mirror](https://www.nexusmods.com/stardewvalley/mods/5098)
-    2. [CurseForge Mirror](https://www.curseforge.com/stardewvalley/mods/generic-mod-config-menu)
+  1. [Nexus Mirror](https://www.nexusmods.com/stardewvalley/mods/5098)
+  2. [CurseForge Mirror](https://www.curseforge.com/stardewvalley/mods/generic-mod-config-menu)
 3. Install this mod by unzipping the mod folder into 'Stardew Valley/Mods'
 4. Launch the game using SMAPI
 
 ### Compatibility
 - Compatible with...
-    - Stardew Valley 1.6 or later
-    - SMAPI 4.0.0 or later
+  - Stardew Valley 1.6 or later
+  - SMAPI 4.0.0 or later
 - Automatic Integrations
   - [Bush Bloom Mod](https://www.nexusmods.com/stardewvalley/mods/15792)
   - [Custom Bush](https://www.nexusmods.com/stardewvalley/mods/20619)
 - No known mod conflicts
-    - If you find one, please feel free to notify me here on Github, on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, or on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+  - If you find one, please feel free to notify me here on Github, on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, or on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
 
 ## Limitations
 ### Solo + Multiplayer

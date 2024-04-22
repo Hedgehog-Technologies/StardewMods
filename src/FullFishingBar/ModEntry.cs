@@ -1,7 +1,7 @@
-﻿using FullFishingBar;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley.Menus;
+using FullFishingBar;
 
 namespace AutoForager
 {
@@ -14,6 +14,8 @@ namespace AutoForager
 
 		public override void Entry(IModHelper helper)
 		{
+			I18n.Init(helper.Translation);
+
 			_config = helper.ReadConfig<ModConfig>();
 
 			helper.Events.Display.MenuChanged += OnMenuChanged;
@@ -22,15 +24,15 @@ namespace AutoForager
 
 		private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
 		{
-			if (!_config.IsEnabled) return;
+			if (!_config.IsEnabled || _config.ExceptBossFish) return;
 
 			if (e.NewMenu is BobberBar)
 			{
-				var bb = e.NewMenu as BobberBar;
+				var bobberBarMenu = e.NewMenu as BobberBar;
 
-				if (bb is not null)
+				if (bobberBarMenu is not null)
 				{
-					bb.bobberBarHeight = BobberBar.bobberBarTrackHeight;
+					bobberBarMenu.bobberBarHeight = BobberBar.bobberBarTrackHeight;
 				}
 			}
 		}

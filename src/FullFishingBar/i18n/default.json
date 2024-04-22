@@ -1,0 +1,8 @@
+{
+  "Option.Enabled.Name": "Enabled?",
+  "Option.Enabled.Tooltip": "Whether or not to resize the fishing bobber bar.",
+  "Option.ExceptBossFish.Name": "Disable for Boss Fish?",
+  "Option.ExceptBossFish.Tooltip": "Whether or not to have the resized fishing bobber bar for boss fish.",
+
+  "Section.General": "General"
+}

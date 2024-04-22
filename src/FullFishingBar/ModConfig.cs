@@ -1,6 +1,6 @@
-﻿using StardewModdingAPI;
+﻿using System;
+using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
-using System;
 
 namespace FullFishingBar
 {
@@ -9,15 +9,18 @@ namespace FullFishingBar
 		private const string _gmcmUniqueId = "spacechase0.GenericModConfigMenu";
 
 		public bool IsEnabled { get; set; }
+		public bool ExceptBossFish { get; set; }
 
 		public ModConfig()
 		{
 			IsEnabled = true;
+			ExceptBossFish = false;
 		}
 
 		public void ResetToDefault()
 		{
 			IsEnabled = true;
+			ExceptBossFish = false;
 		}
 
 		public void RegisterModConfigMenu(IModHelper helper, IManifest manifest)
@@ -40,14 +43,21 @@ namespace FullFishingBar
 
 			gmcmApi.AddSectionTitle(
 				mod: manifest,
-				text: () => "General");
+				text: I18n.Section_General);
 
 			gmcmApi.AddBoolOption(
 				mod: manifest,
-				name: () => "Enabled?",
-				tooltip: () => "Whether or not to resize the fishing bobber bar.",
+				name: I18n.Option_Enabled_Name,
+				tooltip: I18n.Option_Enabled_Tooltip,
 				getValue: () => IsEnabled,
 				setValue: (val) => IsEnabled = val);
+
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: I18n.Option_ExceptBossFish_Name,
+				tooltip: I18n.Option_ExceptBossFish_Tooltip,
+				getValue: () => ExceptBossFish,
+				setValue: (val) => ExceptBossFish = val);
 		}
 	}
 
