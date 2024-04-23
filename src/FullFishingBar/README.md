@@ -1,5 +1,7 @@
 ﻿**Full Fishing Bar** is an open-source mod for [Stardew Valley](https://stardewvalley.net) that allows players to trivialize the fishing mini game.
 
+![](https://i.imgur.com/03calCX.gif)
+
 ## Documentation
 ### Overview
 When enabled, this mod will set the fishing mini game's "Bobber Bar" to take up the entire possible range.

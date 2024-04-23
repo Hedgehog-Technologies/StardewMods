@@ -1,5 +1,7 @@
 ﻿**Auto Forager** (previously AutoShaker) is an open-source mod for [Stardew Valley](https://stardewvalley.net) that allows players to automatically forage items simply by moving near them.
 
+![](https://i.imgur.com/beGLdhy.gif)
+
 ## Documentation
 ### Overview
 This mod checks for:
