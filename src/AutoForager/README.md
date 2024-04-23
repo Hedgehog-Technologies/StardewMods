@@ -33,7 +33,7 @@ Korean     | ✔              | ❌                   | ❌                | n/a
 Polish     | ✔              | ❌                   | ❌                | n/a
 Portuguese | ✔              | ✔                    | ✔                | [NARCOAZAZAL](https://www.nexusmods.com/users/200703680)
 Russian    | ✔              | ❌                   | ❌                | n/a
-Spanish    | ✔              | ❌                   | ❌                | n/a
+Spanish    | ✔              | ✔                    | ✔                | [ElviraCroft](https://github.com/ElviraCroft)
 Thai       | ✔              | ❌                   | ❌                | n/a
 Turkish    | ✔              | ❌                   | ❌                | n/a
 Ukrainian  | ✔              | ❌                   | ❌                | n/a
@@ -65,6 +65,9 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.2.3
+- Adds Spanish translations
+  - Thanks to [ElviraCroft](https://github.com/ElviraCroft) for the contribution
 ### 3.2.2
 - Fix exception on launch due to multiple Title Screen init events running simultaneously
 - Update config strings to be a bit more explicit what they are looking for

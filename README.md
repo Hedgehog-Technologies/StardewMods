@@ -37,5 +37,5 @@ Japanese   | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i1
 Korean     | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)           | [❌](./src/FullFishingBar/i18n)
 Portuguese | [❌](./src/AllowBeachSprinklers/i18n) | [✔](./src/AutoForager/i18n/pt-BR.json) | [❌](./src/FullFishingBar/i18n)
 Russian    | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)           | [❌](./src/FullFishingBar/i18n)
-Spanish    | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)           | [❌](./src/FullFishingBar/i18n)
+Spanish    | [❌](./src/AllowBeachSprinklers/i18n) | [✔](./src/AutoForager/i18n/es.json)    | [❌](./src/FullFishingBar/i18n)
 Turkish    | [❌](./src/AllowBeachSprinklers/i18n) | [❌](./src/AutoForager/i18n)           | [❌](./src/FullFishingBar/i18n)
