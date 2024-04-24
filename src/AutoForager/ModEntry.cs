@@ -430,7 +430,7 @@ namespace AutoForager
 							}
 							else
 							{
-								Monitor.Log($"Tree not shaken: {string.Join(",", seedItemIds)}; HasSeed: {tree.hasSeed.Value}", LogLevel.Debug);
+								Monitor.LogOnce($"Tree not shaken: {string.Join(",", seedItemIds)}; HasSeed: {tree.hasSeed.Value}", LogLevel.Trace);
 							}
 
 							if (tree.hasMoss.Value
