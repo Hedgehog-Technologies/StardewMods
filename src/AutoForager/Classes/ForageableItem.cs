@@ -114,6 +114,11 @@ namespace AutoForager.Classes
 					seedAndSeedItemIds.AddRange(kvp.Value.SeedDropItems.Select(i => i.ItemId));
 				}
 
+				if (kvp.Value.ShakeItems is not null)
+				{
+					seedAndSeedItemIds.AddRange(kvp.Value.ShakeItems.Select(i => i.ItemId));
+				}
+
 				foreach (var seedItem in seedAndSeedItemIds)
 				{
 					try

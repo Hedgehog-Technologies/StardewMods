@@ -65,7 +65,8 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
-### 3.2.3
+### 3.3.0
+- Wild Tree shake items are now supported
 - Adds Spanish translations
   - Thanks to [ElviraCroft](https://github.com/ElviraCroft) for the contribution
 ### 3.2.2

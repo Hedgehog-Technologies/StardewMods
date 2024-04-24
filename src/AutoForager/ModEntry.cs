@@ -406,11 +406,12 @@ namespace AutoForager
 					{
 						case Tree tree:
 							if (tree.stump.Value) continue;
-							if (tree.growthStage.Value < 5 || (!tree.hasSeed.Value && !tree.hasMoss.Value)) continue;
+							if (tree.growthStage.Value < 5 || (!tree.hasSeed.Value && !tree.hasMoss.Value && (!tree.GetData().ShakeItems?.Any() ?? false))) continue;
 
 							var seedItemIds = tree.GetSeedAndSeedItemIds();
-							if (!tree.wasShakenToday.Value && tree.hasSeed.Value && (Game1.IsMultiplayer || Game1.player.ForagingLevel >= 1) && tree.isActionable()
-								&& _forageableTracker.WildTreeForageables.Any(i => (seedItemIds.Contains(i.QualifiedItemId) || seedItemIds.Contains(i.ItemId)) && i.IsEnabled))
+							if (!tree.wasShakenToday.Value && (Game1.IsMultiplayer || Game1.player.ForagingLevel >= 1) && tree.isActionable()
+								&& ((tree.hasSeed.Value && _forageableTracker.WildTreeForageables.Any(i => (seedItemIds.Contains(i.QualifiedItemId) || seedItemIds.Contains(i.ItemId)) && i.IsEnabled))
+								|| (tree.GetData().ShakeItems?.Any(s => _forageableTracker.WildTreeForageables.Any(i => (s.ItemId.Contains(i.QualifiedItemId) || s.ItemId.Contains(i.ItemId)) && i.IsEnabled)) ?? false)))
 							{
 								tree.performUseAction(tree.Tile);
 								Monitor.Log($"Tree shaken: {string.Join(", ", seedItemIds)}", LogLevel.Debug);
@@ -429,7 +430,7 @@ namespace AutoForager
 							}
 							else
 							{
-								Monitor.Log($"Tree not shaken: {string.Join(",", seedItemIds)}", LogLevel.Debug);
+								Monitor.Log($"Tree not shaken: {string.Join(",", seedItemIds)}; HasSeed: {tree.hasSeed.Value}", LogLevel.Debug);
 							}
 
 							if (tree.hasMoss.Value
