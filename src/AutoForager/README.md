@@ -23,7 +23,7 @@ You can find a breakdown of the config values [here](./docs/config.md)
 ### Translation
 &nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By
 :--------: | :-------------: | :------------------: | :---------------: | :------------:
-Chinese    | ✔              | ✔                    | ✔                | [Krobus](https://www.nexusmods.com/users/127351118)
+Chinese    | ✔              | ✔                    | ❌                | [Krobus](https://www.nexusmods.com/users/127351118)
 French     | ✔              | ❌                   | ❌                | n/a
 German     | ✔              | ❌                   | ❌                | n/a
 Hungarian  | ✔              | ❌                   | ❌                | n/a
@@ -31,9 +31,9 @@ Italian    | ✔              | ❌                   | ❌                | n/a
 Japanese   | ✔              | ❌                   | ❌                | n/a
 Korean     | ✔              | ❌                   | ❌                | n/a
 Polish     | ✔              | ❌                   | ❌                | n/a
-Portuguese | ✔              | ✔                    | ✔                | [NARCOAZAZAL](https://www.nexusmods.com/users/200703680)
+Portuguese | ✔              | ✔                    | ❌                | [NARCOAZAZAL](https://www.nexusmods.com/users/200703680)
 Russian    | ✔              | ❌                   | ❌                | n/a
-Spanish    | ✔              | ✔                    | ✔                | [ElviraCroft](https://github.com/ElviraCroft)
+Spanish    | ✔              | ✔                    | ❌                | [ElviraCroft](https://github.com/ElviraCroft)
 Thai       | ✔              | ❌                   | ❌                | n/a
 Turkish    | ✔              | ❌                   | ❌                | n/a
 Ukrainian  | ✔              | ❌                   | ❌                | n/a
@@ -65,6 +65,9 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.4.0
+- Add ability to ignore moss-covered trees that are near enough to contribute to a Mushroom Log
+- Lower the amount some logs were spamming the SMAPI console
 ### 3.3.0
 - Wild Tree shake items are now supported
 - Adds Spanish translations

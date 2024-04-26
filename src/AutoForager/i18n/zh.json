@@ -45,6 +45,8 @@
 
   "Option.FruitsReadyToShake.Name": "准备摇晃的最小水果数",
   "Option.FruitsReadyToShake.Tooltip": "在自动觅食者摇晃果树之前,果树应准备好的最小水果量.",
+  "Option.IgnoreMushroomLogTrees.Name": "Skip Moss-Covered Trees near{{whitespace}}Mushroom Logs?", // TODO
+  "Option.IgnoreMushroomLogTrees.Tooltip": "Whether or not to skip harvesting Moss from trees that are near enough to contribute to a Mushroom log.", // TODO
   "Option.IsForagerActive.Name": "觅食是否开启？",
   "Option.IsForagerActive.Tooltip": "自动觅食是否会摇晃树木和灌木丛并觅食.",
   "Option.RequireHoe.Name": "是否需要用锄头来觅食{{whitespace}}生姜,雪山药还有冬根？",

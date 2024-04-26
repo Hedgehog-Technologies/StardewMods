@@ -27,6 +27,7 @@ namespace AutoForager
 		public int ShakeDistance { get; set; }
 		public bool RequireHoe { get; set; }
 		public bool RequireToolMoss { get; set; }
+		public bool IgnoreMushroomLogTrees { get; set; }
 
 		private int _fruitsReadyToShake;
 		public int FruitsReadyToShake
@@ -84,6 +85,7 @@ namespace AutoForager
 			ShakeDistance = 2;
 			RequireHoe = true;
 			RequireToolMoss = true;
+			IgnoreMushroomLogTrees = true;
 			FruitsReadyToShake = Constants.MinFruitsReady;
 
 			ForageArtifactSpots = true;
@@ -186,6 +188,15 @@ namespace AutoForager
 				tooltip: I18n.Option_RequireToolMoss_Tooltip,
 				getValue: () => RequireToolMoss,
 				setValue: val => RequireToolMoss = val);
+
+			// IgnoreMushroomLogTrees
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				fieldId: Constants.IgnoreMushroomLogTreesId,
+				name: () => I18n.Option_IgnoreMushroomLogTrees_Name(Environment.NewLine),
+				tooltip: I18n.Option_IgnoreMushroomLogTrees_Tooltip,
+				getValue: () => IgnoreMushroomLogTrees,
+				setValue: (val) => IgnoreMushroomLogTrees = val);
 
 			/* Page Links Section */
 

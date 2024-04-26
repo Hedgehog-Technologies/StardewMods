@@ -1,8 +1,8 @@
-﻿using StardewModdingAPI;
+﻿using System;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley.Menus;
 using FullFishingBar;
-using System;
 
 namespace AutoForager
 {

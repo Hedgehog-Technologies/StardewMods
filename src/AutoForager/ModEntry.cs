@@ -37,6 +37,7 @@ namespace AutoForager
 		private bool _isForagerActive = true;
 		private bool _gameStarted = false;
 		private Vector2 _previousTilePosition;
+		private List<Tree> _mushroomLogTrees = new();
 
 		private readonly List<string> _overrideItemIds;
 		private readonly List<string> _ignoreItemIds;
@@ -222,6 +223,8 @@ namespace AutoForager
 			helper.Events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
 			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
+			helper.Events.Player.Warped += OnPlayerWarped;
+			helper.Events.World.ObjectListChanged += OnObjectListChanged;
 		}
 
 		[EventPriority(EventPriority.Low)]
@@ -437,6 +440,11 @@ namespace AutoForager
 								&& _forageableTracker.ObjectForageables.TryGetItem("(O)Moss", out var mossItem)
 								&& (mossItem?.IsEnabled ?? false))
 							{
+								if (_config.IgnoreMushroomLogTrees
+									&& (_mushroomLogTrees.Contains(tree)
+										|| _mushroomLogTrees.Any(t => t.Tile.Equals(tree.Tile))))
+									continue;
+
 								Tool? tool = new GenericTool();
 
 								if (_config.RequireToolMoss)
@@ -647,6 +655,46 @@ namespace AutoForager
 			else
 			{
 				Helper.Events.GameLoop.UpdateTicked -= OnUpdateTicked;
+			}
+		}
+
+		private void OnPlayerWarped(object? sender, WarpedEventArgs e)
+		{
+			if (e.Player is null || !e.Player.Equals(Game1.player)) return;
+
+			CheckForMushroomLogTrees(e.NewLocation);
+		}
+
+		private void OnObjectListChanged(object? sender, ObjectListChangedEventArgs e)
+		{
+			if (!e.IsCurrentLocation) return;
+			if (!e.Removed.Any(r => r.Value.QualifiedItemId.IEquals("(BC)MushroomLog"))
+				&& !e.Added.Any(r => r.Value.QualifiedItemId.IEquals("(BC)MushroomLog"))) return;
+
+			CheckForMushroomLogTrees(e.Location);
+		}
+
+		private void CheckForMushroomLogTrees(GameLocation location)
+		{
+			var locObjects = location.Objects;
+
+			_mushroomLogTrees.Clear();
+
+			foreach (var kvp in locObjects.Pairs)
+			{
+				var obj = kvp.Value;
+				if (obj is null) continue;
+
+				if (obj.QualifiedItemId.IEquals("(BC)MushroomLog"))
+				{
+					foreach (var vec in GetTilesToCheck(obj.TileLocation.ToPoint(), 3))
+					{
+						if (location.terrainFeatures.TryGetValue(vec, out var feat) && feat is Tree)
+						{
+							_mushroomLogTrees.AddDistinct((Tree)feat);
+						}
+					}
+				}
 			}
 		}
 
@@ -963,10 +1011,10 @@ namespace AutoForager
 			}
 		}
 
-		private static IEnumerable<Vector2> GetTilesToCheck(Point playerLocation, int radius)
+		private static IEnumerable<Vector2> GetTilesToCheck(Point origin, int radius)
 		{
-			for (int x = Math.Max(playerLocation.X - radius, 0); x <= playerLocation.X + radius; x++)
-				for (int y = Math.Max(playerLocation.Y - radius, 0); y <= playerLocation.Y + radius; y++)
+			for (int x = Math.Max(origin.X - radius, 0); x <= origin.X + radius; x++)
+				for (int y = Math.Max(origin.Y - radius, 0); y <= origin.Y + radius; y++)
 					yield return new Vector2(x, y);
 
 			yield break;

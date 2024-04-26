@@ -45,6 +45,8 @@
 
   "Option.FruitsReadyToShake.Name": "Frutas Mínimas Prontas para Agitar",
   "Option.FruitsReadyToShake.Tooltip": "Quantidade mínima de frutas que uma árvore frutífera deve ter pronta antes que o AutoForager agite a árvore.",
+  "Option.IgnoreMushroomLogTrees.Name": "Skip Moss-Covered Trees near{{whitespace}}Mushroom Logs?", // TODO
+  "Option.IgnoreMushroomLogTrees.Tooltip": "Whether or not to skip harvesting Moss from trees that are near enough to contribute to a Mushroom log.", // TODO
   "Option.IsForagerActive.Name": "Forager Está Ativo?",
   "Option.IsForagerActive.Tooltip": "Se o Auto Forager vai ou não sacudir árvores e arbustos e forragear objetos.",
   "Option.RequireHoe.Name": "Exigir enxada para raízes de gengibre,{{whitespace}}Inhames de neve e raízes de inverno?",

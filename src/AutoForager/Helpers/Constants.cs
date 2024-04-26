@@ -110,6 +110,9 @@ namespace AutoForager.Helpers
 		private const string _requireToolMossId = _fieldIdPrefix + "RequireToolMoss";
 		public static string RequireToolMossId => _requireToolMossId;
 
+		private const string _ignoreMushroomLogTreesId = _fieldIdPrefix + "IgnoreMushroomLogTrees";
+		public static string IgnoreMushroomLogTreesId => _ignoreMushroomLogTreesId;
+
 		private const string _bushesPageId = _fieldIdPrefix + "BushesPage";
 		public static string BushesPageId => _bushesPageId;
 
