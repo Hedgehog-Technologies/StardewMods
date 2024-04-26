@@ -74,6 +74,8 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/23006) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/full-fishing-bar) site.
+### 1.1.1
+- Simplify backend for getting the Bar Size Percentage
 ### 1.1.0
 - Add "Only Cork Bobber" config option
 ### 1.0.0
