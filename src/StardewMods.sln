@@ -141,6 +141,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Lunna - Astray in SDV 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FullFishingBar", "FullFishingBar\FullFishingBar.csproj", "{711D9D67-8FA2-4A27-9387-CA6E279074EB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stranded Fish", "Stranded Fish", "{6B1BD09E-AD1D-46F9-B485-2017F27D9A12}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Stranded Fish Forage", "[AF] Stranded Fish Forage", "{14178271-63C6-4E30-BE2E-A06A8D7B7334}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Stranded Fish\[AF] Stranded Fish Forage\content.json = Content Packs\Stranded Fish\[AF] Stranded Fish Forage\content.json
+		Content Packs\Stranded Fish\[AF] Stranded Fish Forage\manifest.json = Content Packs\Stranded Fish\[AF] Stranded Fish Forage\manifest.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -186,6 +194,8 @@ Global
 		{D8E8B421-3B87-4DBB-A82D-E588EE714949} = {74156DC2-8E4F-47D5-81D2-7ACD00002366}
 		{CC1F6EEF-13C5-4A67-86E7-31CADF6EB8E3} = {74156DC2-8E4F-47D5-81D2-7ACD00002366}
 		{392ADCD8-FF12-4095-AA02-C5203C51664F} = {6385528A-44CC-47E4-969B-2F8CF2870AC1}
+		{6B1BD09E-AD1D-46F9-B485-2017F27D9A12} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
+		{14178271-63C6-4E30-BE2E-A06A8D7B7334} = {6B1BD09E-AD1D-46F9-B485-2017F27D9A12}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A03CBE3-E271-4626-8494-2FB6A6D9647A}
