@@ -12,7 +12,7 @@ namespace FullFishingBar
 		public bool OnlyCorkBobber { get; set; }
 
 		private double _barSizePercentage;
-		public int BarSizePercentage
+		public int BarSizePercentageInt
 		{
 			get => (int)Math.Clamp(_barSizePercentage * 100, 10.0, 100.0);
 			set => _barSizePercentage = Math.Clamp(value / 100.0, 0.1, 1.0);
@@ -80,8 +80,8 @@ namespace FullFishingBar
 				mod: manifest,
 				name: I18n.Option_BarSizePercentage_Name,
 				tooltip: I18n.Option_BarSizePercentage_Tooltip,
-				getValue: () => BarSizePercentage,
-				setValue: (val) => BarSizePercentage = val,
+				getValue: () => BarSizePercentageInt,
+				setValue: (val) => BarSizePercentageInt = val,
 				min: 10,
 				max: 100,
 				interval: 1,
