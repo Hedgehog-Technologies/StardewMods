@@ -24,10 +24,10 @@ Potential answers:
 - `OnlyCorkBobber`
   - Whether or not the Bobber Bar resizing only works when a Cork Bobber is equipped on the current fishing rod
   - *Default:* `false`
-- `BarSizePercentage`
+- `BarSizePercentageInt`
   - What percentage of the mini game play space do you want the Bobber Bar to take up?
-  - *Default:* `1.0`
-  - *Range:* `0.1` - `1.0`
+  - *Default:* `100`
+  - *Range:* `10` - `100`
 - `ExceptBossFish`
   - Whether or not the mod will **skip** resizing the fishing mini game's bobber bar **for Boss Fish**
   - *Default:* `false`
