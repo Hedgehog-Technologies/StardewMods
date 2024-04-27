@@ -46,7 +46,7 @@ namespace AutoForager
 
 		private int GetBobberBarSize()
 		{
-			var trackHeight = BobberBar.bobberTrackHeight;
+			var trackHeight = BobberBar.bobberBarTrackHeight;
 			var configSizePercentage = _config.GetBarSizePercentage();
 			var barSize = (int)(trackHeight * configSizePercentage);
 
