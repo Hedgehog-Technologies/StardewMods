@@ -445,27 +445,20 @@ namespace AutoForager
 										|| _mushroomLogTrees.Any(t => t.Tile.Equals(tree.Tile))))
 									continue;
 
-								Tool? tool = new GenericTool();
+								Tool tool = new GenericTool { lastUser = Game1.player };
 
-								if (_config.RequireToolMoss)
+								if (_config.RequireToolMoss && !Game1.player.Items.Any(i => i is Tool))
 								{
-									tool = Game1.player.CurrentTool;
-									tool ??= Game1.player.Items.FirstOrDefault(i => i is Tool, null) as Tool;
-
-									if (tool is null)
+									if (_nextErrorMessage < DateTime.UtcNow)
 									{
-										if (_nextErrorMessage < DateTime.UtcNow)
-										{
-											Game1.addHUDMessage(new HUDMessage(I18n.Message_MissingToolMoss(), HUDMessage.error_type));
-											_nextErrorMessage = DateTime.UtcNow.AddSeconds(10);
-										}
-
-										Monitor.LogOnce(I18n.Log_MissingToolMoss(I18n.Option_RequireToolMoss_Name(" ")), LogLevel.Info);
-										continue;
+										Game1.addHUDMessage(new HUDMessage(I18n.Message_MissingToolMoss(), HUDMessage.error_type));
+										_nextErrorMessage = DateTime.UtcNow.AddSeconds(10);
 									}
+
+									Monitor.LogOnce(I18n.Log_MissingToolMoss(I18n.Option_RequireToolMoss_Name(" ")), LogLevel.Info);
+									continue;
 								}
 
-								tool.lastUser = Game1.player;
 								tree.performToolAction(tool, -1, tree.Tile);
 								_trackingCounts[Constants.ForageableKey].AddOrIncrement(mossItem.DisplayName);
 							}

@@ -67,6 +67,7 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
 ### 3.4.0
 - Add ability to ignore moss-covered trees that are near enough to contribute to a Mushroom Log
+- Fix optional tool requirement for harvesting moss to be less intrusive
 - Lower the amount some logs were spamming the SMAPI console
 ### 3.3.0
 - Wild Tree shake items are now supported
