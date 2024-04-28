@@ -1,77 +1,9 @@
 {
   "Category": "Cape Stardew",
   "Forageables": [
-    "0", // Weeds
-    "2", // Stone - ruby
-    "4", // Stone - diamond
-    "16", // Wild Horseradish - handled
-    "18", // Daffodil - handled
-    "20", // Leek - handled
-    "22", // Dandelion - handled
-    "76", // Stone - Frozen Geode
-    "78", // Cave Carrot - buried
-    "80", // Quartz - buried
-    "84", // Frozen Tear - buried
-    "86", // Earth Crystal - buried
     "107", // Dinosaur Egg
     "116", // Dried Starfish
-    "125", // Golden Relic - buried
-    "152", // Seaweed
-    "166", // Treasure Chest - buried
-    "257", // Morel - handled
-    "259", // Fiddlehead Fern - handled
-    "281", // Chanterelle - handled
-    "283", // Holly - handled
-    "290", // Stone - Iron
-    "294", // Twig
     "296", // Salmonberry
-    "302", // Sweet Pea - handled
-    "319", // Weeds - Ice Crystal?
-    "320", // Weeds - Ice Crystal?
-    "321", // Weeds - Ice Crystal?
-    "330", // Clay - buried
-    "343", // Stone - stone
-    "347", // Rare Seed - buried
-    "372", // Clam - handled
-    "380", // Iron Ore - buried
-    "382", // Coal - buried
-    "392", // Nautilus Shell - handled
-    "393", // Coral - handled
-    "394", // Rainbow Shell - handled
-    "396", // Spice Berry - handled
-    "397", // Sea Urching - handled
-    "398", // Grape - handled
-    "399", // Spring Onion - handled
-    "410", // Blackberry - handled
-    "402", // Sweet Pea - handled
-    "404", // Common Mushroom - handled
-    "406", // Wild Plum - handled
-    "408", // Hazelnut - handled
-    "414", // Crystal Fruit
-    "418", // Crocus - handled
-    "420", // Red Mushroom - handled
-    "422", // Purple Mushroom - handled
-    "450", // Stone - Stone
-    "516", // Small Glow Ring - buried
-    "527", // Iridium Band - buried
-    "537", // Magma Geode - buried
-    "588", // Palm Fossil - buried
-    "668", // Stone - stone with coal
-    "670", // Stone - stone with coal
-    "687", // Dressed Spinner
-    "691", // Barbed Hook
-    "694", // Trap Bobber
-    "718", // Cockle - handled
-    "719", // Mussel - handled
-    "723", // Oyster - handled
-    "751", // Stone - Copper
-    "760", // Stone
-    "762", // Stone
-    "765", // Stone - Iridium
-    "820", // Fossilized Skull - buried
-    "823", // Fossilized Leg - buried
-    "827", // Mummified Bat
-    "828", // Mummified Frog
 
     "Cape.BeachStrawberry",
     "Cape.BioluminescentMycena",
