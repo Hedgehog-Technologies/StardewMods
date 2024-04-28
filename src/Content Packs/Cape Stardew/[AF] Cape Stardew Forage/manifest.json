@@ -1,9 +1,9 @@
 {
   "$schema": "https://smapi.io/schemas/manifest.json",
-  "Name": "[AF] Stranded Fish Forage",
-  "Description": "Forage added by Stranded Fish",
+  "Name": "[AF] Cape Stardew Forage",
+  "Description": "Forage added by Cape Stardew",
   "Author": "Jag3Dagster",
-  "UniqueID": "HedgehogTechnologies.StrandedFishForageAF",
+  "UniqueID": "HedgehogTechnologies.CapeStardewForageAF",
   "Version": "1.0.0",
   "MinimumApiVersion": "4.0",
   "ContentPackFor": {

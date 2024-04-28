@@ -149,6 +149,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Stranded Fish Forage",
 		Content Packs\Stranded Fish\[AF] Stranded Fish Forage\manifest.json = Content Packs\Stranded Fish\[AF] Stranded Fish Forage\manifest.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cape Stardew", "Cape Stardew", "{9D3AEC79-0486-4A29-9D2B-A8223C6D4FE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Cape Stardew Forage", "[AF] Cape Stardew Forage", "{AC227B38-B821-4A96-849A-07290EBDF5F1}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Cape Stardew\[AF] Cape Stardew Forage\content.json = Content Packs\Cape Stardew\[AF] Cape Stardew Forage\content.json
+		Content Packs\Cape Stardew\[AF] Cape Stardew Forage\manifest.json = Content Packs\Cape Stardew\[AF] Cape Stardew Forage\manifest.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -196,6 +204,8 @@ Global
 		{392ADCD8-FF12-4095-AA02-C5203C51664F} = {6385528A-44CC-47E4-969B-2F8CF2870AC1}
 		{6B1BD09E-AD1D-46F9-B485-2017F27D9A12} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
 		{14178271-63C6-4E30-BE2E-A06A8D7B7334} = {6B1BD09E-AD1D-46F9-B485-2017F27D9A12}
+		{9D3AEC79-0486-4A29-9D2B-A8223C6D4FE5} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
+		{AC227B38-B821-4A96-849A-07290EBDF5F1} = {9D3AEC79-0486-4A29-9D2B-A8223C6D4FE5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A03CBE3-E271-4626-8494-2FB6A6D9647A}
