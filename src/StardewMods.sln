@@ -157,6 +157,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Cape Stardew Forage", 
 		Content Packs\Cape Stardew\[AF] Cape Stardew Forage\manifest.json = Content Packs\Cape Stardew\[AF] Cape Stardew Forage\manifest.json
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Distant Lands", "Distant Lands", "{3C030166-3D6D-48C4-BE6F-68959BF04E97}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[AF] Distant Lands Forage", "[AF] Distant Lands Forage", "{94EF54A1-D69C-406D-8A8D-EE2CFC79D322}"
+	ProjectSection(SolutionItems) = preProject
+		Content Packs\Distant Lands\[AF] Distant Lands Forage\content.json = Content Packs\Distant Lands\[AF] Distant Lands Forage\content.json
+		Content Packs\Distant Lands\[AF] Distant Lands Forage\manifest.json = Content Packs\Distant Lands\[AF] Distant Lands Forage\manifest.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -206,6 +214,8 @@ Global
 		{14178271-63C6-4E30-BE2E-A06A8D7B7334} = {6B1BD09E-AD1D-46F9-B485-2017F27D9A12}
 		{9D3AEC79-0486-4A29-9D2B-A8223C6D4FE5} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
 		{AC227B38-B821-4A96-849A-07290EBDF5F1} = {9D3AEC79-0486-4A29-9D2B-A8223C6D4FE5}
+		{3C030166-3D6D-48C4-BE6F-68959BF04E97} = {B959C490-8B99-45C5-84A9-E51067D2D25A}
+		{94EF54A1-D69C-406D-8A8D-EE2CFC79D322} = {3C030166-3D6D-48C4-BE6F-68959BF04E97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0A03CBE3-E271-4626-8494-2FB6A6D9647A}
