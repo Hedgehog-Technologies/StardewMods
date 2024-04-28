@@ -7,7 +7,7 @@
 			return string.Equals(a, b, System.StringComparison.OrdinalIgnoreCase);
 		}
 
-		public static bool IsNullOrEmpty(this string str)
+		public static bool IsNullOrEmpty(this string? str)
 		{
 			return string.IsNullOrEmpty(str);
 		}

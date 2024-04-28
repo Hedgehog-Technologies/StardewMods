@@ -65,6 +65,9 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.4.1
+- Prevent content packs from overriding known categories of vanilla forageables
+- Lower the amount of warning log spew when multiple content packs add the same native item as a forageable
 ### 3.4.0
 - Add ability to ignore moss-covered trees that are near enough to contribute to a Mushroom Log
 - Fix optional tool requirement for harvesting moss to be less intrusive

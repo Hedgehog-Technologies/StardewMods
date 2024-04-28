@@ -807,14 +807,15 @@ namespace AutoForager
 
 				string? category = null;
 
-				if (_cpForageables.TryGetValue(obj.Key, out var cpCategory))
+				if (!Constants.KnownCategoryLookup.TryGetValue(obj.Key, out var knownCategory)
+					&& _cpForageables.TryGetValue(obj.Key, out var cpCategory))
 				{
 					category = cpCategory;
 				}
 				else if ((obj.Value.ContextTags?.Contains("forage_item") ?? false)
 					|| _overrideItemIds.Any(i => obj.Key.IEquals(i.Substring(3))))
 				{
-					if (Constants.KnownCategoryLookup.TryGetValue(obj.Key, out var knownCategory))
+					if (!knownCategory.IsNullOrEmpty())
 					{
 						category = knownCategory;
 					}
@@ -912,11 +913,11 @@ namespace AutoForager
 							{
 								if (_cpForageables.ContainsKey(itemId))
 								{
-									Monitor.LogOnce($"Already found an item with ItemId [{itemId}] with category [{_cpForageables[itemId]}] when trying to add category [{content.Category}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+									Monitor.LogOnce($"Already found an item with ItemId [{itemId}] with category [{_cpForageables[itemId]}] when trying to add category [{content.Category}].", LogLevel.Trace);
 								}
 								else
 								{
-									Monitor.LogOnce($"Found content pack forageable: {itemId} - {content.Category}", LogLevel.Debug);
+									Monitor.LogOnce($"Found content pack forageable: {itemId} - {content.Category}", LogLevel.Trace);
 									_cpForageables.Add(itemId, content.Category);
 								}
 							}
@@ -928,7 +929,7 @@ namespace AutoForager
 							{
 								if (_cpFruitTrees.ContainsKey(treeId))
 								{
-									Monitor.LogOnce($"Already found a Fruit Tree with Id [{treeId}] with category [{_cpFruitTrees[treeId]}] when trying to add category [{content.Category}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+									Monitor.LogOnce($"Already found a Fruit Tree with Id [{treeId}] with category [{_cpFruitTrees[treeId]}] when trying to add category [{content.Category}].", LogLevel.Trace);
 								}
 								else
 								{
@@ -943,7 +944,7 @@ namespace AutoForager
 							{
 								if (_cpWildTrees.ContainsKey(treeId))
 								{
-									Monitor.LogOnce($"Already found a Wild Tree with Id [{treeId}] with category [{_cpWildTrees[treeId]}] when trying to add category [{content.Category}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+									Monitor.LogOnce($"Already found a Wild Tree with Id [{treeId}] with category [{_cpWildTrees[treeId]}] when trying to add category [{content.Category}].", LogLevel.Trace);
 								}
 								else
 								{
