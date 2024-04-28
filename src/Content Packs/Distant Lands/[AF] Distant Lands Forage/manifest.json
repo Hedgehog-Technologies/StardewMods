@@ -1,7 +1,8 @@
 {
   "$schema": "https://smapi.io/schemas/manifest.json",
   "Name": "[AF] Distant Lands Forage",
-  "Description": "Forage added by Distant Lands",
+  // https://www.nexusmods.com/stardewvalley/mods/18109
+  "Description": "Forage added by Aimon111's Distant Lands",
   "Author": "Jag3Dagster",
   "UniqueID": "HedgehogTechnologies.DistantLandsForageAF",
   "Version": "1.0.0",

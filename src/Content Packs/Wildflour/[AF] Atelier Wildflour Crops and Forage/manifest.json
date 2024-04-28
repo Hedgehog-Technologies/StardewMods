@@ -1,7 +1,8 @@
 {
   "$schema": "https://smapi.io/schemas/manifest.json",
   "Name": "[AF] Atelier Wildflour Crops and Forage",
-  "Description": "Forage added by Atelier Wildflour Crops and Forage",
+  // https://www.nexusmods.com/stardewvalley/mods/???? - Discontinued?
+  "Description": "Forage added by Atelier's Wildflour Crops and Forage",
   "Author": "Jag3Dagster",
   "UniqueID": "HedgehogTechnologies.AWCropsAndForageAF",
   "Version": "1.0.0",
