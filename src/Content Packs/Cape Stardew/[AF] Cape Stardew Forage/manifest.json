@@ -8,6 +8,6 @@
   "MinimumApiVersion": "4.0",
   "ContentPackFor": {
     "UniqueID": "HedgehogTechnologies.AutoForager",
-    "MinimumVersion": "3.0.0"
+    "MinimumVersion": "3.4.1"
   }
 }
