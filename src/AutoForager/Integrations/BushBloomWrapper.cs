@@ -4,8 +4,6 @@ using StardewModdingAPI;
 using StardewValley;
 using AutoForager.Extensions;
 
-using Constants = AutoForager.Helpers.Constants;
-
 namespace AutoForager.Integrations
 {
 	internal class BushBloomWrapper
@@ -20,9 +18,6 @@ namespace AutoForager.Integrations
 
 		private readonly IBushBloomApi? _bushBloomApi;
 
-		private readonly List<string> _knownShakeOffItems;
-		public List<string> KnownShakeOffItems => _knownShakeOffItems;
-
 		private readonly List<BloomSchedule> _schedules;
 		public List<BloomSchedule> Schedules => _schedules;
 
@@ -30,9 +25,6 @@ namespace AutoForager.Integrations
 		{
 			_monitor = monitor;
 			_helper = helper;
-
-			_knownShakeOffItems = new List<string>();
-			_knownShakeOffItems.AddRange(Constants.VanillaBushBlooms);
 			_schedules = new();
 
 			if (helper.ModRegistry.IsLoaded(_bbUniqueId))

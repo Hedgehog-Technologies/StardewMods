@@ -11,9 +11,9 @@ namespace AutoForager.Helpers
 	// https://github.com/Pathoschild/SMAPI/blob/develop/src/SMAPI.Toolkit/Serialization/JsonHelper.cs
 	public class JsonHelper
 	{
-		public JsonSerializerSettings JsonSettings { get; } = JsonHelper.CreateDefaultSettings();
+		public JsonSerializerSettings JsonSettings { get; } = CreateDefaultSettings();
 
-		public static JsonSerializerSettings CreateDefaultSettings()
+		private static JsonSerializerSettings CreateDefaultSettings()
 		{
 			return new()
 			{
