@@ -1,8 +1,6 @@
-﻿using AutoTrasher.Extensions;
-using StardewModdingAPI;
+﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using System.Linq;
 
 namespace AutoTrasher
 {
@@ -65,7 +63,7 @@ namespace AutoTrasher
 
 		}
 
-		private int RemoveItemFromInventory(Item item)
+		private static void RemoveItemFromInventory(Item item)
 		{
 			var reclamationPrice = Utility.getTrashReclamationPrice(item, Game1.player);
 
@@ -77,8 +75,6 @@ namespace AutoTrasher
 
 			Game1.player.removeItemFromInventory(item);
 			Game1.soundBank.PlayCue("trashcan");
-
-			return reclamationPrice;
 		}
 	}
 }

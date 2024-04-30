@@ -1,6 +1,6 @@
-﻿using StardewModdingAPI;
+﻿using System.Collections.Generic;
+using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
-using System.Collections.Generic;
 
 namespace AutoTrasher
 {
