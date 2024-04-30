@@ -12,30 +12,51 @@ namespace AutoTrasher
 	public class ModEntry : Mod
 	{
 		private ModConfig _config = new();
+		private bool _isTrasherActive = true;
 
 		public override void Entry(IModHelper helper)
 		{
 			_config = helper.ReadConfig<ModConfig>();
 
+			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
 			helper.Events.Player.InventoryChanged += OnInventoryChanged;
+		}
+
+		private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
+		{
+			if (Game1.activeClickableMenu is not null) return;
+			if (!_config.ToggleTrasherKeybind.JustPressed()) return;
+
+			_isTrasherActive = !_isTrasherActive;
+
+			if (_isTrasherActive)
+			{
+				Helper.Events.Player.InventoryChanged += OnInventoryChanged;
+			}
+			else
+			{
+				Helper.Events.Player.InventoryChanged -= OnInventoryChanged;
+			}
 		}
 
 		private void OnInventoryChanged(object? sender, InventoryChangedEventArgs e)
 		{
 			if (!e.IsLocalPlayer) return;
 
-			var messages = Game1.hudMessages;
-
 			foreach (var item in e.Added)
 			{
 				if (item is null) continue;
+				if (!_config.TrashItems.Contains(item.ItemId)) continue;
 
-				var addMessages = messages.Where(m => item.QualifiedItemId.IEquals(Helper.Reflection.GetField<Item>(messages, "messageSubject")?.GetValue()?.QualifiedItemId));
-
-				foreach (var addMessage in addMessages)
+				var message = new HUDMessage($"Auto-trashed {item.DisplayName}")
 				{
-					Game1.hudMessages.Remove(addMessage);
-				}
+					number = item.Stack,
+					type = $"autotrash_{item.Name}",
+					messageSubject = item
+				};
+
+				Game1.addHUDMessage(message);
+				RemoveItemFromInventory(item);
 			}
 		}
 

@@ -1,13 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
+using System.Collections.Generic;
 
 namespace AutoTrasher
 {
 	public class ModConfig
 	{
+		public KeybindList ToggleTrasherKeybind { get; set; }
 		public List<string> TrashItems { get; set; }
 
 		public ModConfig()
 		{
+			ToggleTrasherKeybind = new KeybindList(
+				new Keybind(SButton.LeftAlt, SButton.T),
+				new Keybind(SButton.RightAlt, SButton.T));
+
 			TrashItems = new List<string>
 			{
 				"168", // Trash
