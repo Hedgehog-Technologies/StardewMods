@@ -1,9 +1,8 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley.Menus;
-using FullFishingBar;
 
-namespace AutoForager
+namespace FullFishingBar
 {
 	/// <summary>
 	/// The mod entry point.
