@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>AutoTrasher</AssemblyName>
+    <BaseManifest>new</BaseManifest>
+
+    <UniqueId>HedgehogTechnologies.AutoTrasher</UniqueId>
+    <Name>Auto Trasher</Name>
+    <Authors>Jag3Dagster</Authors>
+    <Description>Specify items to be automatically sent to the Trash</Description>
+    <Version>1.0.0</Version>
+    <UpdateKeys>-1</UpdateKeys>
+
+    <MinimumApiVersion>auto</MinimumApiVersion>
+    <MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
+  </PropertyGroup>
+
+  <!-- <ItemGroup>
+    <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Required="false" />
+  </ItemGroup> -->
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(BuildConfig)' == 'GITHUB' ">
+    <GamePath>../ref</GamePath>
+    <EnableModDeploy>false</EnableModDeploy>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
+  </ItemGroup>
+</Project>
