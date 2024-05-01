@@ -1,10 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using HedgeTech.Common.Extensions;
+using HedgeTech.Common.Helpers;
+using HedgeTech.Common.Utilities;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -17,12 +20,10 @@ using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using AutoForager.Classes;
 using AutoForager.Extensions;
-using AutoForager.Helpers;
 using AutoForager.Integrations;
 
 using SObject = StardewValley.Object;
 using Constants = AutoForager.Helpers.Constants;
-using Utilities = AutoForager.Helpers.Utilities;
 
 namespace AutoForager
 {
@@ -330,7 +331,7 @@ namespace AutoForager
 
 				foreach (var sched in schedules)
 				{
-					var itemId = Utilities.GetItemIdFromName(sched.ItemId);
+					var itemId = ItemUtilities.GetItemIdFromName(sched.ItemId);
 
 					if (itemId is not null)
 					{
@@ -351,7 +352,7 @@ namespace AutoForager
 
 				foreach (var drop in customBushDrops)
 				{
-					var itemId = Utilities.GetItemIdFromName(drop);
+					var itemId = ItemUtilities.GetItemIdFromName(drop);
 
 					if (itemId is not null)
 					{

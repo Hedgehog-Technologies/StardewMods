@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using AutoForager.Extensions;
+using System.Linq;
 using StardewValley;
+using HedgeTech.Common.Extensions;
 
-namespace AutoForager.Helpers
+namespace HedgeTech.Common.Utilities
 {
-	public static class Utilities
+	public static class ItemUtilities
 	{
 		public static string? GetItemIdFromName(string name)
 		{

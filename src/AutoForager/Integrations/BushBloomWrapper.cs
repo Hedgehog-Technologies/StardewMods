@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HedgeTech.Common.Extensions;
 using StardewModdingAPI;
 using StardewValley;
-using AutoForager.Extensions;
 
 namespace AutoForager.Integrations
 {

@@ -1,7 +1,7 @@
-﻿using StardewValley.TerrainFeatures;
 using System.Collections.Generic;
+using StardewValley.TerrainFeatures;
 
-namespace AutoForager.Extensions
+namespace HedgeTech.Common.Extensions
 {
 	public static class TreeExtensions
 	{

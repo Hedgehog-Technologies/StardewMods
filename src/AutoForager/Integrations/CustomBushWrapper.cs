@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HedgeTech.Common.Extensions;
 using StardewModdingAPI;
 using StardewValley.GameData;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using AutoForager.Extensions;
 
 namespace AutoForager.Integrations
 {

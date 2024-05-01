@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace AutoForager.Extensions
+namespace HedgeTech.Common.Extensions
 {
 	public static class DictionaryExtensions
 	{

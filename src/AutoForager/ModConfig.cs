@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using HedgeTech.Common.Extensions;
+using HedgeTech.Common.Helpers;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using AutoForager.Classes;
 using AutoForager.Extensions;
-using AutoForager.Helpers;
 
 using Constants = AutoForager.Helpers.Constants;
 
