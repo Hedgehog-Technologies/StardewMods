@@ -1,4 +1,5 @@
-﻿using StardewModdingAPI;
+using AutoTrasher.Components;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 
@@ -23,17 +24,26 @@ namespace AutoTrasher
 		private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
 		{
 			if (Game1.activeClickableMenu is not null) return;
-			if (!_config.ToggleTrasherKeybind.JustPressed()) return;
 
-			_isTrasherActive = !_isTrasherActive;
-
-			if (_isTrasherActive)
+			if (_config.ToggleTrasherKeybind.JustPressed())
 			{
-				Helper.Events.Player.InventoryChanged += OnInventoryChanged;
+				_isTrasherActive = !_isTrasherActive;
+
+				if (_isTrasherActive)
+				{
+					Helper.Events.Player.InventoryChanged += OnInventoryChanged;
+				}
+				else
+				{
+					Helper.Events.Player.InventoryChanged -= OnInventoryChanged;
+				}
 			}
-			else
+			else if (_config.OpenMenu.JustPressed())
 			{
-				Helper.Events.Player.InventoryChanged -= OnInventoryChanged;
+				if (Context.IsPlayerFree && Game1.currentMinigame == null)
+				{
+					Game1.activeClickableMenu = new TrashListMenu(Monitor);
+				}
 			}
 		}
 

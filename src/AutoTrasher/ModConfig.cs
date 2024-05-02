@@ -7,6 +7,7 @@ namespace AutoTrasher
 	public class ModConfig
 	{
 		public KeybindList ToggleTrasherKeybind { get; set; }
+		public KeybindList OpenMenu { get; set; }
 		public List<string> TrashItems { get; set; }
 
 		public ModConfig()
@@ -14,6 +15,8 @@ namespace AutoTrasher
 			ToggleTrasherKeybind = new KeybindList(
 				new Keybind(SButton.LeftAlt, SButton.T),
 				new Keybind(SButton.RightAlt, SButton.T));
+
+			OpenMenu = new KeybindList(new Keybind(SButton.LeftAlt, SButton.L));
 
 			TrashItems = new List<string>
 			{
