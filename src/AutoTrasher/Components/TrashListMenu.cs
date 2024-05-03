@@ -13,6 +13,7 @@ namespace AutoTrasher.Components
 		private const int ItemsPerPage = 10;
 
 		private readonly IMonitor _monitor;
+		private readonly ModConfig _config;
 
 		private readonly List<ClickableComponent> _optionSlots;
 		private readonly List<OptionsElement> _options;
@@ -27,9 +28,10 @@ namespace AutoTrasher.Components
 		private TitleMenu REMOVEME;
 		private CharacterCustomization REMOVEME2;
 
-		public TrashListMenu(IMonitor monitor)
+		public TrashListMenu(IMonitor monitor, ModConfig config)
 		{
 			_monitor = monitor;
+			_config = config;
 
 			_optionSlots = new();
 			_options = new();
@@ -39,6 +41,7 @@ namespace AutoTrasher.Components
 			Game1.playSound("bigSelect");
 
 			ResetComponents();
+			SetOptions();
 		}
 
 		public override void draw(SpriteBatch b)
@@ -117,6 +120,13 @@ namespace AutoTrasher.Components
 			{
 				_optionSlots.Add(new ClickableComponent(new Rectangle(xPositionOnScreen + Game1.tileSize / 4, yPositionOnScreen + Game1.tileSize * 5 / 4 + Game1.pixelZoom + i * ((height - Game1.tileSize * 2) / ItemsPerPage), width - Game1.tileSize / 2, (height - Game1.tileSize * 2) / ItemsPerPage + Game1.pixelZoom), string.Concat(i)));
 			}
+		}
+
+		private void SetOptions()
+		{
+			var slotWidth = _optionSlots[0].bounds.Width;
+
+
 		}
 
 		private void SetScrollbarToCurrentIndex()
