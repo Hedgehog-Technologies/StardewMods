@@ -6,14 +6,14 @@ using StardewValley.Menus;
 
 namespace AutoTrasher.Components.Elements
 {
-	internal class OptionsButton<TButton> : BaseOptionsElement
-		where TButton : OptionsButton<TButton>
+	internal class TrashOptionsButton<TButton> : BaseOptionsElement
+		where TButton : TrashOptionsButton<TButton>
 	{
 		private readonly Action<TButton> Toggle;
 		private readonly Rectangle SetButtonSprite;
 		private Rectangle SetButtonBounds;
 
-		public OptionsButton(string label, int slotWidth, Action<TButton> toggle, bool disabled = false)
+		public TrashOptionsButton(string label, int slotWidth, Action<TButton> toggle, bool disabled = false)
 			: base(label, -1, -1, slotWidth + 1, 11 * Game1.pixelZoom)
 		{
 			SetButtonBounds = new Rectangle(slotWidth - 28 * Game1.pixelZoom, -1 + Game1.pixelZoom * 3, 21 * Game1.pixelZoom, 11 * Game1.pixelZoom);
@@ -21,7 +21,7 @@ namespace AutoTrasher.Components.Elements
 			greyedOut = disabled;
 		}
 
-		public OptionsButton(string label, int slotWidth, Action toggle, bool disabled = false)
+		public TrashOptionsButton(string label, int slotWidth, Action toggle, bool disabled = false)
 			: this(label, slotWidth, _ => toggle(), disabled)
 		{ }
 
@@ -44,13 +44,13 @@ namespace AutoTrasher.Components.Elements
 		}
 	}
 
-	internal class OptionsButton : OptionsButton<OptionsButton>
+	internal class TrashOptionsButton : TrashOptionsButton<TrashOptionsButton>
 	{
-		public OptionsButton(string label, int slotWidth, Action<OptionsButton> toggle, bool disabled = false)
+		public TrashOptionsButton(string label, int slotWidth, Action<OptionsButton> toggle, bool disabled = false)
 			: base(label, slotWidth, toggle, disabled)
 		{ }
 
-		public OptionsButton(string label, int slotWidth, Action toggle, bool disabled = false)
+		public TrashOptionsButton(string label, int slotWidth, Action toggle, bool disabled = false)
 			: base(label, slotWidth, _ => toggle(), disabled)
 		{ }
 	}

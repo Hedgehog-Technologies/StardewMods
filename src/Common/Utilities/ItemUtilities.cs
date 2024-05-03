@@ -41,5 +41,41 @@ namespace HedgeTech.Common.Utilities
 
 			return itemId;
 		}
+
+		public static string? GetItemNameFromId(string id)
+		{
+			string? itemName = null;
+
+			if (!id.IsNullOrEmpty())
+			{
+				id = id.Trim();
+
+				if (int.TryParse(id, out var i))
+				{
+					id = $"(O){id}";
+				}
+
+				var item = ItemRegistry.GetMetadata(id);
+
+				if (!item.Exists())
+				{
+					item = ItemRegistry.GetMetadata($"(O){id}");
+				}
+
+				if (item.Exists())
+				{
+					itemName = item.GetParsedData().DisplayName;
+				}
+				else
+				{
+					itemName = Game1.objectData
+						.Where(d => d.Key.IEquals(id) || d.Key.IEquals($"(O){id}"))
+						.Select(d => d.Value.DisplayName)
+						.FirstOrDefault();
+				}
+			}
+
+			return itemName;
+		}
 	}
 }

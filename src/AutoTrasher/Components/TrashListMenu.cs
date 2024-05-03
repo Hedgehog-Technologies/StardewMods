@@ -1,9 +1,11 @@
+using System.Collections.Generic;
+using AutoTrasher.Components.Elements;
+using HedgeTech.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
-using System.Collections.Generic;
 
 namespace AutoTrasher.Components
 {
@@ -126,7 +128,21 @@ namespace AutoTrasher.Components
 		{
 			var slotWidth = _optionSlots[0].bounds.Width;
 
+			_options.Clear();
+			foreach (var item in _config.TrashItems)
+			{
+				_options.Add(new TrashOptionsButton(
+					label: ItemUtilities.GetItemNameFromId(item) ?? item,
+					slotWidth: slotWidth,
+					toggle: () => RemoveTrashItem(item)));
+			}
+		}
 
+		private void RemoveTrashItem(string itemId)
+		{
+			_config.RemoveTrashItem(itemId);
+			ResetComponents();
+			SetOptions();
 		}
 
 		private void SetScrollbarToCurrentIndex()
