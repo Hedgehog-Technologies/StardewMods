@@ -1,11 +1,11 @@
-{
+﻿{
   "$schema": "https://smapi.io/schemas/manifest.json",
   "Name": "[AF] Stardew Valley Expanded Forage",
   // https://www.nexusmods.com/stardewvalley/mods/3753
   "Description": "Forage added by FlashShifter's Stardew Valley Expanded",
   "Author": "Jag3Dagster",
   "UniqueID": "HedgehogTechnologies.SVEForageAF",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "MinimumApiVersion": "4.0",
   "ContentPackFor": {
     "UniqueID": "HedgehogTechnologies.AutoForager",
