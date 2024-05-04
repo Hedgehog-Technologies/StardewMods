@@ -18,19 +18,8 @@
     <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Required="false" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(BuildConfig)' == 'GITHUB' ">
-    <GamePath>../ref</GamePath>
-    <EnableModDeploy>false</EnableModDeploy>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
     <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
   </ItemGroup>
 </Project>

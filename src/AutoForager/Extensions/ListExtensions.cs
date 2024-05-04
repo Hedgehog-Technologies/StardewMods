@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using HedgeTech.Common.Extensions;
 using StardewModdingAPI;
 using AutoForager.Classes;
 
@@ -12,14 +13,6 @@ namespace AutoForager.Extensions
 		public static void AddDistinct(this List<ForageableItem> items, ForageableItem newItem)
 		{
 			if (items.Any(i => i.QualifiedItemId.Equals(newItem.QualifiedItemId))) return;
-
-			items.Add(newItem);
-		}
-
-		public static void AddDistinct<T>(this List<T> items, T newItem)
-			where T : notnull
-		{
-			if (items.Any(i => i.Equals(newItem))) return;
 
 			items.Add(newItem);
 		}
@@ -68,13 +61,6 @@ namespace AutoForager.Extensions
 			}
 
 			return false;
-		}
-
-		public static bool IsNullOrEmpty<T>(this List<T>? list)
-		{
-			if (list is null) return true;
-
-			return !list.Any();
 		}
 	}
 }

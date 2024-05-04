@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,12 +17,13 @@ using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using AutoForager.Classes;
 using AutoForager.Extensions;
-using AutoForager.Helpers;
 using AutoForager.Integrations;
+using HedgeTech.Common.Extensions;
+using HedgeTech.Common.Helpers;
+using HedgeTech.Common.Utilities;
 
 using SObject = StardewValley.Object;
 using Constants = AutoForager.Helpers.Constants;
-using Utilities = AutoForager.Helpers.Utilities;
 
 namespace AutoForager
 {
@@ -330,7 +331,7 @@ namespace AutoForager
 
 				foreach (var sched in schedules)
 				{
-					var itemId = Utilities.GetItemIdFromName(sched.ItemId);
+					var itemId = ItemUtilities.GetItemIdFromName(sched.ItemId);
 
 					if (itemId is not null)
 					{
@@ -351,7 +352,7 @@ namespace AutoForager
 
 				foreach (var drop in customBushDrops)
 				{
-					var itemId = Utilities.GetItemIdFromName(drop);
+					var itemId = ItemUtilities.GetItemIdFromName(drop);
 
 					if (itemId is not null)
 					{
@@ -977,20 +978,24 @@ namespace AutoForager
 
 		private static void ForageItem(SObject obj, Vector2 vec, Random random, int xpGained = 0, bool checkGatherer = false)
 		{
-			var foragingLevel = Game1.player.ForagingLevel;
+			var foragingLevel = (float)Game1.player.ForagingLevel;
 			var professions = Game1.player.professions;
+			var isForage = obj.isForage();
 
-			if (professions.Contains(16))
+			if (professions.Contains(16) && isForage)
 			{
 				obj.Quality = 4;
 			}
-			else if (random.NextDouble() < (double)(foragingLevel / 30f))
+			else if (isForage)
 			{
-				obj.Quality = 2;
-			}
-			else if (random.NextDouble() < (double)(foragingLevel / 15f))
-			{
-				obj.Quality = 1;
+				if (random.NextDouble() < (double)(foragingLevel / 30f))
+				{
+					obj.Quality = 2;
+				}
+				else if (random.NextDouble() < (double)(foragingLevel / 15f))
+				{
+					obj.Quality = 1;
+				}
 			}
 
 			vec *= 64.0f;

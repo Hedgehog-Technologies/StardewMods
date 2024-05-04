@@ -2,11 +2,28 @@
 .vs/
 
 # Build Directories
-obj/
-bin/
+[Oo]bj/
+[Bb]in/
+[Dd]ebug/
+[Rr]elease/
+_releases/
 
 # Specific Files
 manifest.json
 
 # File Exceptions
 !src/Content*Packs/**/manifest.json
+
+# NuGet packages
+*.nupkg
+**/packages/*
+*.nuget.props
+*.nuget.targets
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# JetBrains Rider
+.idea/

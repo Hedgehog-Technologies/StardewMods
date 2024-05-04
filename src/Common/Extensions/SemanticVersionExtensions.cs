@@ -1,6 +1,6 @@
-﻿using StardewModdingAPI;
+using StardewModdingAPI;
 
-namespace AutoForager.Extensions
+namespace HedgeTech.Common.Extensions
 {
 	public static class SemanticVersionExtensions
 	{

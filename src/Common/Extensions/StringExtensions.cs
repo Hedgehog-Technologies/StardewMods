@@ -1,10 +1,12 @@
-﻿namespace AutoForager.Extensions
+namespace HedgeTech.Common.Extensions
 {
 	public static class StringExtensions
 	{
 		public static bool IEquals(this string a, string b)
 		{
-			return string.Equals(a, b, System.StringComparison.OrdinalIgnoreCase);
+			if (a is null || b is null) return false;
+
+			return string.Equals(a, b, System.StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		public static bool IsNullOrEmpty(this string? str)
