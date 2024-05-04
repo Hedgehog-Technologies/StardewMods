@@ -45,7 +45,16 @@ namespace AutoTrasher
 				"171", // Broken CD
 				"172", // Soggy Newspaper
 				"747", // Rotten Plant
-				"748" // Rotten Plant
+				"748", // Rotten Plant
+
+				// REMOVE ME - TESTING ONLY
+				"268", // Trash
+				"269", // Driftwood
+				"270", // Broken Glasses
+				"271", // Broken CD
+				"272", // Soggy Newspaper
+				"847", // Rotten Plant
+				"848" // Rotten Plant
 			};
 		}
 	}

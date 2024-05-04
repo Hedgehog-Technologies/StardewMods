@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
-using AutoTrasher.Components.Elements;
-using HedgeTech.Common.Utilities;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
+using AutoTrasher.Components.Elements;
+using HedgeTech.Common.Utilities;
 
 namespace AutoTrasher.Components
 {
@@ -26,6 +29,9 @@ namespace AutoTrasher.Components
 		private Rectangle _scrollbarRunner;
 
 		private string _hoverText;
+		private int _optionsSlotHeld;
+		private int _currentItemIndex;
+		private bool _isScrolling;
 
 		private TitleMenu REMOVEME;
 		private CharacterCustomization REMOVEME2;
@@ -38,12 +44,163 @@ namespace AutoTrasher.Components
 			_optionSlots = new();
 			_options = new();
 
+
 			_hoverText = string.Empty;
+			_optionsSlotHeld = -1;
+			_currentItemIndex = 0;
 
 			Game1.playSound("bigSelect");
 
 			ResetComponents();
 			SetOptions();
+		}
+
+		public void ExitIfValid()
+		{
+			if (readyToClose() && !GameMenu.forcePreventClose)
+			{
+				Game1.exitActiveMenu();
+				Game1.playSound("bigDeSelect");
+			}
+		}
+
+		public override bool overrideSnappyMenuCursorMovementBan()
+		{
+			return true;
+		}
+
+		public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
+		{
+			ResetComponents();
+		}
+
+		public override void leftClickHeld(int x, int y)
+		{
+			if (GameMenu.forcePreventClose) return;
+
+			base.leftClickHeld(x, y);
+
+			if (_isScrolling)
+			{
+				var num = _scrollbar.bounds.Y;
+
+				_scrollbar.bounds.Y = Math.Min(
+					yPositionOnScreen + height - Game1.tileSize - Game1.pixelZoom * 3 - _scrollbar.bounds.Height,
+					Math.Max(y, yPositionOnScreen + _upArrow.bounds.Height + Game1.pixelZoom * 5));
+
+				_currentItemIndex = Math.Min(
+					_options.Count - ItemsPerPage,
+					Math.Max(0, (int)Math.Round((_options.Count - ItemsPerPage) * (double)((y - _scrollbarRunner.Y) / (float)_scrollbarRunner.Height))));
+
+				// SetScrollBarToCurrentIndex();
+
+				if (num == _scrollbar.bounds.Y) return;
+
+				Game1.playSound("shiny4");
+			}
+			else
+			{
+				var optionsOffset = _optionsSlotHeld + _currentItemIndex;
+				if (_optionsSlotHeld == -1 || optionsOffset >= _options.Count) return;
+
+				_options[optionsOffset].leftClickHeld(x - _optionSlots[_optionsSlotHeld].bounds.X, y - _optionSlots[_optionsSlotHeld].bounds.Y);
+			}
+		}
+
+		public override void receiveKeyPress(Keys key)
+		{
+			if (Game1.options.menuButton.Contains(new InputButton(key)))
+			{
+				ExitIfValid();
+			}
+			else
+			{
+				GetActiveOption()?.receiveKeyPress(key);
+			}
+		}
+
+		public override void receiveScrollWheelAction(int direction)
+		{
+			if (GameMenu.forcePreventClose) return;
+
+			base.receiveScrollWheelAction(direction);
+
+			if (direction > 0 && _currentItemIndex > 0)
+			{
+				UpArrowPressed();
+			}
+			else
+			{
+				if (direction >= 0 || _currentItemIndex >= Math.Max(0, _options.Count - ItemsPerPage)) return;
+
+				DownArrowPressed();
+			}
+		}
+
+		public override void releaseLeftClick(int x, int y)
+		{
+			if (GameMenu.forcePreventClose) return;
+
+			base.releaseLeftClick(x, y);
+
+			var optionOffset = _optionsSlotHeld + _currentItemIndex;
+			if (_optionsSlotHeld != -1 && optionOffset < _options.Count)
+			{
+				_options[optionOffset].leftClickReleased(x - _optionSlots[_optionsSlotHeld].bounds.X, y - _optionSlots[_optionsSlotHeld].bounds.Y);
+			}
+
+			_optionsSlotHeld = -1;
+			_isScrolling = false;
+		}
+
+		public override void receiveLeftClick(int x, int y, bool playSound = true)
+		{
+			if (GameMenu.forcePreventClose) return;
+
+			base.receiveLeftClick(x, y, playSound);
+
+			if (_downArrow.containsPoint(x, y) && _currentItemIndex < Math.Max(0, _options.Count - ItemsPerPage))
+			{
+				DownArrowPressed();
+				Game1.playSound("shwip");
+			}
+			else if (_upArrow.containsPoint(x, y) && _currentItemIndex > 0)
+			{
+				UpArrowPressed();
+				Game1.playSound("shwip");
+			}
+			else if (_scrollbar.containsPoint(x, y))
+			{
+				_isScrolling = true;
+			}
+			else if (!_downArrow.containsPoint(x, y) && x > xPositionOnScreen + width && (x < xPositionOnScreen + width + Game1.tileSize * 2 && y > yPositionOnScreen) && y < yPositionOnScreen + height)
+			{
+				_isScrolling = true;
+				leftClickHeld(x, y);
+				releaseLeftClick(x, y);
+			}
+
+			_currentItemIndex = Math.Max(0, Math.Min(_options.Count - ItemsPerPage, _currentItemIndex));
+
+			for (int idx = 0; idx < _optionSlots.Count; idx++)
+			{
+				if (_optionSlots[idx].bounds.Contains(x, y) && _currentItemIndex + idx < _options.Count && _options[_currentItemIndex + idx].bounds.Contains(x - _optionSlots[idx].bounds.X, y - _optionSlots[idx].bounds.Y - 5))
+				{
+					_options[_currentItemIndex + idx].receiveLeftClick(x - _optionSlots[idx].bounds.X, y - _optionSlots[idx].bounds.Y + 5);
+					_optionsSlotHeld = idx;
+					break;
+				}
+			}
+		}
+
+		public override void performHoverAction(int x, int y)
+		{
+			if (GameMenu.forcePreventClose) return;
+
+			_hoverText = string.Empty;
+			_upArrow.tryHover(x, y);
+			_downArrow.tryHover(x, y);
+			_scrollbar.tryHover(x, y);
 		}
 
 		public override void draw(SpriteBatch b)
@@ -69,6 +226,20 @@ namespace AutoTrasher.Components
 
 				var innerDrawPosition = new Vector2(_title.bounds.X + ButtonBorderWidth + offsetX, _title.bounds.Y + ButtonBorderWidth);
 				Utility.drawTextWithShadow(b, _title.name, Game1.dialogueFont, innerDrawPosition, Game1.textColor);
+			}
+
+			b.End();
+			b.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp);
+
+			// Draw options
+			for (int idx = 0; idx < _optionSlots.Count; idx++)
+			{
+				var itemIndexOffset = _currentItemIndex + idx;
+				if (_currentItemIndex >= 0 && itemIndexOffset < _options.Count)
+				{
+					var optionSlot = _optionSlots[idx];
+					_options[itemIndexOffset].draw(b, optionSlot.bounds.X, optionSlot.bounds.Y + 5);
+				}
 			}
 
 			b.End();
@@ -114,7 +285,7 @@ namespace AutoTrasher.Components
 			_downArrow = new ClickableTextureComponent("down-arrow", new Rectangle(xPositionOnScreen + width + scrollbarOffset, yPositionOnScreen + height - Game1.tileSize, 11 * Game1.pixelZoom, 12 * Game1.pixelZoom), "", "", Game1.mouseCursors, new Rectangle(421, 472, 11, 12), Game1.pixelZoom);
 			_scrollbar = new ClickableTextureComponent("scrollbar", new Rectangle(_upArrow.bounds.X + Game1.pixelZoom * 3, _upArrow.bounds.Y + _upArrow.bounds.Height + Game1.pixelZoom, 6 * Game1.pixelZoom, 10 * Game1.pixelZoom), "", "", Game1.mouseCursors, new Rectangle(435, 463, 6, 10), Game1.pixelZoom);
 			_scrollbarRunner = new Rectangle(_scrollbar.bounds.X, _upArrow.bounds.Y + _upArrow.bounds.Height + Game1.pixelZoom, _scrollbar.bounds.Width, height - Game1.tileSize * 2 - _upArrow.bounds.Height - Game1.pixelZoom * 2);
-			//SetScrollbarToCurrentIndex();
+			SetScrollbarToCurrentIndex();
 
 			// OPTION SLOTS
 			_optionSlots.Clear();
@@ -136,6 +307,8 @@ namespace AutoTrasher.Components
 					slotWidth: slotWidth,
 					toggle: () => RemoveTrashItem(item)));
 			}
+
+			SetScrollbarToCurrentIndex();
 		}
 
 		private void RemoveTrashItem(string itemId)
@@ -145,7 +318,40 @@ namespace AutoTrasher.Components
 			SetOptions();
 		}
 
+		private OptionsElement? GetActiveOption()
+		{
+			if (_optionsSlotHeld == -1) return null;
+
+			var idx = _currentItemIndex + _optionsSlotHeld;
+
+			return idx < _options.Count
+				? _options[idx]
+				: null;
+		}
+
 		private void SetScrollbarToCurrentIndex()
-		{ }
+		{
+			if (_options.Any()) return;
+
+			_scrollbar.bounds.Y = _scrollbarRunner.Height / Math.Max(1, _options.Count - ItemsPerPage + 1) * _currentItemIndex + _upArrow.bounds.Bottom + Game1.pixelZoom;
+
+			if (_currentItemIndex != _options.Count - ItemsPerPage) return;
+
+			_scrollbar.bounds.Y = _downArrow.bounds.Y - _scrollbar.bounds.Height - Game1.pixelZoom;
+		}
+
+		private void DownArrowPressed()
+		{
+			_downArrow.scale = _downArrow.baseScale;
+			_currentItemIndex++;
+			SetScrollbarToCurrentIndex();
+		}
+
+		private void UpArrowPressed()
+		{
+			_upArrow.scale = _upArrow.baseScale;
+			_currentItemIndex--;
+			SetScrollbarToCurrentIndex();
+		}
 	}
 }

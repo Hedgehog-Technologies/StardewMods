@@ -1,7 +1,7 @@
-using AutoTrasher.Components;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using AutoTrasher.Components;
 
 namespace AutoTrasher
 {
@@ -16,6 +16,7 @@ namespace AutoTrasher
 		public override void Entry(IModHelper helper)
 		{
 			_config = helper.ReadConfig<ModConfig>();
+			_config.AddHelper(helper);
 
 			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
 			helper.Events.Player.InventoryChanged += OnInventoryChanged;
@@ -42,7 +43,7 @@ namespace AutoTrasher
 			{
 				if (Context.IsPlayerFree && Game1.currentMinigame == null)
 				{
-					Game1.activeClickableMenu = new TrashListMenu(Monitor);
+					Game1.activeClickableMenu = new TrashListMenu(Monitor, _config);
 				}
 			}
 		}

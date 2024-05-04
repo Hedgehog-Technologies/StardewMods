@@ -10,13 +10,14 @@ namespace AutoTrasher.Components.Elements
 		where TButton : TrashOptionsButton<TButton>
 	{
 		private readonly Action<TButton> Toggle;
-		private readonly Rectangle SetButtonSprite;
-		private Rectangle SetButtonBounds;
+		private readonly Rectangle RemoveButtonSprite;
+		private Rectangle RemoveButtonBounds;
 
 		public TrashOptionsButton(string label, int slotWidth, Action<TButton> toggle, bool disabled = false)
 			: base(label, -1, -1, slotWidth + 1, 11 * Game1.pixelZoom)
 		{
-			SetButtonBounds = new Rectangle(slotWidth - 28 * Game1.pixelZoom, -1 + Game1.pixelZoom * 3, 21 * Game1.pixelZoom, 11 * Game1.pixelZoom);
+			RemoveButtonSprite = new(269, 471, 14, 15);
+			RemoveButtonBounds = new Rectangle(slotWidth - 28 * Game1.pixelZoom, -1 + Game1.pixelZoom * 3, 14 * Game1.pixelZoom, 15 * Game1.pixelZoom);
 			Toggle = toggle;
 			greyedOut = disabled;
 		}
@@ -27,7 +28,7 @@ namespace AutoTrasher.Components.Elements
 
 		public override void receiveLeftClick(int x, int y)
 		{
-			if (greyedOut || SetButtonBounds.Contains(x, y)) return;
+			if (greyedOut || RemoveButtonBounds.Contains(x, y)) return;
 
 			Toggle((TButton)this);
 		}
@@ -35,18 +36,18 @@ namespace AutoTrasher.Components.Elements
 		public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
 		{
 			DrawElement(b, slotX, slotY, context);
-			Utility.drawWithShadow(b, Game1.mouseCursors, new Vector2(SetButtonBounds.X + slotX, SetButtonBounds.Y + slotY), SetButtonSprite, Color.White, 0.0f, Vector2.Zero, Game1.pixelZoom, false, 0.15f);
+			Utility.drawWithShadow(b, Game1.mouseCursors, new Vector2(RemoveButtonBounds.X + slotX, RemoveButtonBounds.Y + slotY), RemoveButtonSprite, Color.White, 0.0f, Vector2.Zero, Game1.pixelZoom * 0.75f, false, 0.15f);
 		}
 
 		protected virtual void DrawElement(SpriteBatch b, int slotX, int slotY, IClickableMenu? context = null)
 		{
-			Utility.drawTextWithShadow(b, label, Game1.dialogueFont, new Vector2(SetButtonBounds.X + slotX, SetButtonBounds.Y + slotY), greyedOut ? Game1.textColor * 0.33f : Game1.textColor, 1f, 0.15f);
+			Utility.drawTextWithShadow(b, label, Game1.dialogueFont, new Vector2(bounds.X + slotX, bounds.Y + slotY), greyedOut ? Game1.textColor * 0.33f : Game1.textColor, 1f, 0.15f);
 		}
 	}
 
 	internal class TrashOptionsButton : TrashOptionsButton<TrashOptionsButton>
 	{
-		public TrashOptionsButton(string label, int slotWidth, Action<OptionsButton> toggle, bool disabled = false)
+		public TrashOptionsButton(string label, int slotWidth, Action<TrashOptionsButton> toggle, bool disabled = false)
 			: base(label, slotWidth, toggle, disabled)
 		{ }
 
