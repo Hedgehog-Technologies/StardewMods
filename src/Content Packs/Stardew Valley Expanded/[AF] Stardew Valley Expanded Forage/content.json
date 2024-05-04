@@ -6,6 +6,7 @@
     "FlashShifter.StardewValleyExpandedCP_Dewdrop_Berry",
     "FlashShifter.StardewValleyExpandedCP_Dried_Sand_Dollar",
     "FlashShifter.StardewValleyExpandedCP_Ferngill_Primrose",
+    "FlashShifter.StardewValleyExpandedCP_Golden_Ocean_Flower",
     "FlashShifter.StardewValleyExpandedCP_Goldenrod",
     "FlashShifter.StardewValleyExpandedCP_Lucky_Four_Leaf_Clover",
     "FlashShifter.StardewValleyExpandedCP_Mushroom_Colony",
@@ -19,8 +20,8 @@
     "376", // Poppy
     "417", // Sweet Gem Berry
     "421", // Sunflower
-    "427", // Tulip
     "454", // Ancient Fruit
+    "591", // Tulip
     "593", // Summer Spangle
     "595", // Fairy Rose
     "597" // Blue Jazz
