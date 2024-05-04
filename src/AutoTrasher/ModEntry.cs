@@ -92,7 +92,7 @@ namespace AutoTrasher
 						Game1.addHUDMessage(new HUDMessage("Auto Trasher has been DEACTIVATED"));
 					}
 				}
-				else if (_config.OpenMenu.JustPressed())
+				else if (_config.OpenTrashMenu.JustPressed())
 				{
 					if (Context.IsPlayerFree && Game1.currentMinigame == null)
 					{
@@ -121,11 +121,6 @@ namespace AutoTrasher
 				Game1.addHUDMessage(message);
 				RemoveItemFromInventory(item);
 			}
-		}
-
-		private void MoveItemToShippingBin(Item item)
-		{
-
 		}
 
 		private static void RemoveItemFromInventory(Item item)

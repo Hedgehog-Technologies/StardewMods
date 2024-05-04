@@ -124,12 +124,14 @@ namespace AutoTrasher.Components
 			if (direction > 0 && _currentItemIndex > 0)
 			{
 				UpArrowPressed();
+				Game1.playSound("shwip");
 			}
 			else
 			{
 				if (direction >= 0 || _currentItemIndex >= Math.Max(0, _options.Count - ItemsPerPage)) return;
 
 				DownArrowPressed();
+				Game1.playSound("shwip");
 			}
 		}
 
@@ -229,11 +231,9 @@ namespace AutoTrasher.Components
 			// Draw options
 			for (int idx = 0; idx < _optionSlots.Count; idx++)
 			{
-				var itemIndexOffset = _currentItemIndex + idx;
-				if (_currentItemIndex >= 0 && itemIndexOffset < _options.Count)
+				if (_currentItemIndex >= 0 && _currentItemIndex + idx < _options.Count)
 				{
-					var optionSlot = _optionSlots[idx];
-					_options[itemIndexOffset].draw(b, optionSlot.bounds.X, optionSlot.bounds.Y + 5);
+					_options[_currentItemIndex + idx].draw(b, _optionSlots[idx].bounds.X, _optionSlots[idx].bounds.Y + 5);
 				}
 			}
 
@@ -297,17 +297,39 @@ namespace AutoTrasher.Components
 			_options.Clear();
 			foreach (var item in _config.TrashItems)
 			{
+				var itemName = ItemUtilities.GetItemNameFromId(item) ?? item;
+
 				_options.Add(new TrashOptionsButton(
-					label: ItemUtilities.GetItemNameFromId(item) ?? item,
+					label: itemName,
 					slotWidth: slotWidth,
-					toggle: () => RemoveTrashItem(item)));
+					toggle: () =>
+					{
+						var confDialog = new ConfirmationDialog(
+							$"Are you sure you want to remove {itemName} from the Trash List?",
+							(Farmer _) => RemoveTrashItem(item),
+							(Farmer _) => CloseConfirmationDialog());
+
+						SetChildMenu(confDialog);
+					}));
 			}
 
 			SetScrollbarToCurrentIndex();
 		}
 
+		private void CloseConfirmationDialog()
+		{
+			var dialog = GetChildMenu();
+
+			if (dialog != null)
+			{
+				dialog.exitThisMenuNoSound();
+				SetChildMenu(null);
+			}
+		}
+
 		private void RemoveTrashItem(string itemId)
 		{
+			CloseConfirmationDialog();
 			_config.RemoveTrashItem(itemId);
 			ResetComponents();
 			SetOptions();
@@ -327,6 +349,18 @@ namespace AutoTrasher.Components
 		private void SetScrollbarToCurrentIndex()
 		{
 			if (!_options.Any()) return;
+
+			if (_options.Count > ItemsPerPage)
+			{
+				if (_currentItemIndex + ItemsPerPage > _options.Count)
+				{
+					_currentItemIndex = _options.Count - ItemsPerPage;
+				}
+			}
+			else
+			{
+				_currentItemIndex = 0;
+			}
 
 			_scrollbar.bounds.Y = _scrollbarRunner.Height / Math.Max(1, _options.Count - ItemsPerPage + 1) * _currentItemIndex + _upArrow.bounds.Bottom + Game1.pixelZoom;
 
