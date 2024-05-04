@@ -11,6 +11,7 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Extensions\" />
     <Folder Include="$(MSBuildThisFileDirectory)Helpers\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Interfaces\" />
     <Folder Include="$(MSBuildThisFileDirectory)Utilities\" />
   </ItemGroup>
   <ItemGroup>
@@ -21,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)extensions\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)extensions\TreeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)helpers\JsonHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)interfaces\IGenericModConfigMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)utilities\ItemUtilities.cs" />
   </ItemGroup>
 </Project>
