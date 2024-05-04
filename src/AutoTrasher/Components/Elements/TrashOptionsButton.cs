@@ -14,7 +14,7 @@ namespace AutoTrasher.Components.Elements
 		private Rectangle RemoveButtonBounds;
 
 		public TrashOptionsButton(string label, int slotWidth, Action<TButton> toggle, bool disabled = false)
-			: base(label, -1, -1, slotWidth + 1, 11 * Game1.pixelZoom)
+			: base(label, -1, -1, slotWidth + 1, 15 * Game1.pixelZoom)
 		{
 			RemoveButtonSprite = new(269, 471, 14, 15);
 			RemoveButtonBounds = new Rectangle(slotWidth - 28 * Game1.pixelZoom, -1 + Game1.pixelZoom * 3, 14 * Game1.pixelZoom, 15 * Game1.pixelZoom);
@@ -28,7 +28,7 @@ namespace AutoTrasher.Components.Elements
 
 		public override void receiveLeftClick(int x, int y)
 		{
-			if (greyedOut || RemoveButtonBounds.Contains(x, y)) return;
+			if (greyedOut || !RemoveButtonBounds.Contains(x, y)) return;
 
 			Toggle((TButton)this);
 		}

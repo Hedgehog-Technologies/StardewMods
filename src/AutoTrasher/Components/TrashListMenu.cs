@@ -33,9 +33,6 @@ namespace AutoTrasher.Components
 		private int _currentItemIndex;
 		private bool _isScrolling;
 
-		private TitleMenu REMOVEME;
-		private CharacterCustomization REMOVEME2;
-
 		public TrashListMenu(IMonitor monitor, ModConfig config)
 		{
 			_monitor = monitor;
@@ -92,7 +89,7 @@ namespace AutoTrasher.Components
 					_options.Count - ItemsPerPage,
 					Math.Max(0, (int)Math.Round((_options.Count - ItemsPerPage) * (double)((y - _scrollbarRunner.Y) / (float)_scrollbarRunner.Height))));
 
-				// SetScrollBarToCurrentIndex();
+				SetScrollbarToCurrentIndex();
 
 				if (num == _scrollbar.bounds.Y) return;
 
@@ -100,10 +97,9 @@ namespace AutoTrasher.Components
 			}
 			else
 			{
-				var optionsOffset = _optionsSlotHeld + _currentItemIndex;
-				if (_optionsSlotHeld == -1 || optionsOffset >= _options.Count) return;
+				if (_optionsSlotHeld == -1 || _optionsSlotHeld + _currentItemIndex >= _options.Count) return;
 
-				_options[optionsOffset].leftClickHeld(x - _optionSlots[_optionsSlotHeld].bounds.X, y - _optionSlots[_optionsSlotHeld].bounds.Y);
+				_options[_currentItemIndex + _optionsSlotHeld].leftClickHeld(x - _optionSlots[_optionsSlotHeld].bounds.X, y - _optionSlots[_optionsSlotHeld].bounds.Y);
 			}
 		}
 
@@ -143,10 +139,9 @@ namespace AutoTrasher.Components
 
 			base.releaseLeftClick(x, y);
 
-			var optionOffset = _optionsSlotHeld + _currentItemIndex;
-			if (_optionsSlotHeld != -1 && optionOffset < _options.Count)
+			if (_optionsSlotHeld != -1 && _optionsSlotHeld + _currentItemIndex < _options.Count)
 			{
-				_options[optionOffset].leftClickReleased(x - _optionSlots[_optionsSlotHeld].bounds.X, y - _optionSlots[_optionsSlotHeld].bounds.Y);
+				_options[_currentItemIndex + _optionsSlotHeld].leftClickReleased(x - _optionSlots[_optionsSlotHeld].bounds.X, y - _optionSlots[_optionsSlotHeld].bounds.Y);
 			}
 
 			_optionsSlotHeld = -1;
@@ -182,7 +177,7 @@ namespace AutoTrasher.Components
 
 			_currentItemIndex = Math.Max(0, Math.Min(_options.Count - ItemsPerPage, _currentItemIndex));
 
-			for (int idx = 0; idx < _optionSlots.Count; idx++)
+			for (int idx = 0; idx < _optionSlots.Count; ++idx)
 			{
 				if (_optionSlots[idx].bounds.Contains(x, y) && _currentItemIndex + idx < _options.Count && _options[_currentItemIndex + idx].bounds.Contains(x - _optionSlots[idx].bounds.X, y - _optionSlots[idx].bounds.Y - 5))
 				{
@@ -331,7 +326,7 @@ namespace AutoTrasher.Components
 
 		private void SetScrollbarToCurrentIndex()
 		{
-			if (_options.Any()) return;
+			if (!_options.Any()) return;
 
 			_scrollbar.bounds.Y = _scrollbarRunner.Height / Math.Max(1, _options.Count - ItemsPerPage + 1) * _currentItemIndex + _upArrow.bounds.Bottom + Game1.pixelZoom;
 
@@ -343,14 +338,14 @@ namespace AutoTrasher.Components
 		private void DownArrowPressed()
 		{
 			_downArrow.scale = _downArrow.baseScale;
-			_currentItemIndex++;
+			++_currentItemIndex;
 			SetScrollbarToCurrentIndex();
 		}
 
 		private void UpArrowPressed()
 		{
 			_upArrow.scale = _upArrow.baseScale;
-			_currentItemIndex--;
+			--_currentItemIndex;
 			SetScrollbarToCurrentIndex();
 		}
 	}

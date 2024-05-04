@@ -11,31 +11,12 @@ namespace AutoTrasher
 
 		public KeybindList ToggleTrasherKeybind { get; set; }
 		public KeybindList OpenMenu { get; set; }
+		public KeybindList SetTrash { get; set; }
 		public List<string> TrashItems { get; set; }
 
 		public ModConfig()
 		{
 			ResetToDefault();
-		}
-
-		public void AddHelper(IModHelper helper)
-		{
-			_helper = helper;
-		}
-
-		public void RemoveTrashItem(string itemId)
-		{
-			TrashItems.Remove(itemId);
-			_helper?.WriteConfig(this);
-		}
-
-		private void ResetToDefault()
-		{
-			ToggleTrasherKeybind = new KeybindList(
-				new Keybind(SButton.LeftAlt, SButton.T),
-				new Keybind(SButton.RightAlt, SButton.T));
-
-			OpenMenu = new KeybindList(new Keybind(SButton.LeftAlt, SButton.L));
 
 			TrashItems = new List<string>
 			{
@@ -56,6 +37,38 @@ namespace AutoTrasher
 				"847", // Rotten Plant
 				"848" // Rotten Plant
 			};
+		}
+
+		public void AddHelper(IModHelper helper)
+		{
+			_helper = helper;
+		}
+
+		public void RemoveTrashItem(string itemId)
+		{
+			TrashItems.Remove(itemId);
+			_helper?.WriteConfig(this);
+		}
+
+		public void AddTrashItem(string itemId)
+		{
+			TrashItems.Add(itemId);
+			_helper?.WriteConfig(this);
+		}
+
+		private void ResetToDefault()
+		{
+			ToggleTrasherKeybind = new KeybindList(
+				new Keybind(SButton.LeftAlt, SButton.T),
+				new Keybind(SButton.RightAlt, SButton.T));
+
+			OpenMenu = new KeybindList(
+				new Keybind(SButton.LeftAlt, SButton.L),
+				new Keybind(SButton.RightAlt, SButton.L));
+
+			SetTrash = new KeybindList(
+				new Keybind(SButton.LeftAlt, SButton.X),
+				new Keybind(SButton.RightAlt, SButton.X));
 		}
 	}
 }

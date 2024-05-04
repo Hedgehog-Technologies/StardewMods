@@ -2,6 +2,9 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using AutoTrasher.Components;
+using StardewValley.Menus;
+
+using SObject = StardewValley.Object;
 
 namespace AutoTrasher
 {
@@ -24,26 +27,77 @@ namespace AutoTrasher
 
 		private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
 		{
-			if (Game1.activeClickableMenu is not null) return;
 
-			if (_config.ToggleTrasherKeybind.JustPressed())
+			if (Game1.activeClickableMenu is not null && _config.SetTrash.JustPressed())
 			{
-				_isTrasherActive = !_isTrasherActive;
+				if (Game1.activeClickableMenu is GameMenu menu && menu?.GetCurrentPage() is InventoryPage page)
+				{
+					var invMenu = page?.inventory;
+					var hoveredItem = invMenu?.getItemAt(Game1.getMouseX(), Game1.getMouseY());
+					var notifMessage = string.Empty;
+					var addNotifSubject = false;
 
-				if (_isTrasherActive)
-				{
-					Helper.Events.Player.InventoryChanged += OnInventoryChanged;
-				}
-				else
-				{
-					Helper.Events.Player.InventoryChanged -= OnInventoryChanged;
+					if (hoveredItem is not null)
+					{
+						if (hoveredItem is not SObject)
+						{
+							notifMessage = $"Cannot add {hoveredItem.DisplayName} to Trash List";
+						}
+						else if (!_config.TrashItems.Contains(hoveredItem.ItemId))
+						{
+							_config.AddTrashItem(hoveredItem.ItemId);
+							notifMessage = $"{hoveredItem.DisplayName} added to Trash List";
+							addNotifSubject = true;
+						}
+						else
+						{
+							notifMessage = $"{hoveredItem.DisplayName} already on Trash List";
+							addNotifSubject = true;
+						}
+					}
+					else
+					{
+						Monitor.Log($"No item selected when attempting to add item to Trash List", LogLevel.Debug);
+					}
+
+					if (notifMessage != string.Empty)
+					{
+						Monitor.Log(notifMessage, LogLevel.Info);
+
+						var message = new HUDMessage(notifMessage)
+						{
+							messageSubject = addNotifSubject ? hoveredItem : null,
+							type = $"autotrash_add_{hoveredItem?.ItemId ?? "-1"}",
+							whatType = HUDMessage.error_type
+						};
+
+						Game1.addHUDMessage(message);
+					}
 				}
 			}
-			else if (_config.OpenMenu.JustPressed())
+			else
 			{
-				if (Context.IsPlayerFree && Game1.currentMinigame == null)
+				if (_config.ToggleTrasherKeybind.JustPressed())
 				{
-					Game1.activeClickableMenu = new TrashListMenu(Monitor, _config);
+					_isTrasherActive = !_isTrasherActive;
+
+					if (_isTrasherActive)
+					{
+						Helper.Events.Player.InventoryChanged += OnInventoryChanged;
+						Game1.addHUDMessage(new HUDMessage("Auto Trasher has been ACTIVATED"));
+					}
+					else
+					{
+						Helper.Events.Player.InventoryChanged -= OnInventoryChanged;
+						Game1.addHUDMessage(new HUDMessage("Auto Trasher has been DEACTIVATED"));
+					}
+				}
+				else if (_config.OpenMenu.JustPressed())
+				{
+					if (Context.IsPlayerFree && Game1.currentMinigame == null)
+					{
+						Game1.activeClickableMenu = new TrashListMenu(Monitor, _config);
+					}
 				}
 			}
 		}
