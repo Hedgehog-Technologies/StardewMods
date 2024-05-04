@@ -14,9 +14,9 @@
     <MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
   </PropertyGroup>
 
-  <!-- <ItemGroup>
+  <ItemGroup>
     <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Required="false" />
-  </ItemGroup> -->
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />

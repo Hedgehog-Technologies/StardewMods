@@ -1,16 +1,19 @@
 using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
+using HedgeTech.Common.Interfaces;
 
 namespace AutoTrasher
 {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	public class ModConfig
 	{
+		private const string _gmcmUniqueId = "spacechase0.GenericModConfigMenu";
+
 		private IModHelper? _helper;
 
 		public KeybindList ToggleTrasherKeybind { get; set; }
-		public KeybindList OpenMenu { get; set; }
+		public KeybindList OpenTrashMenu { get; set; }
 		public KeybindList SetTrash { get; set; }
 		public List<string> TrashItems { get; set; }
 
@@ -39,6 +42,21 @@ namespace AutoTrasher
 			};
 		}
 
+		private void ResetToDefault()
+		{
+			ToggleTrasherKeybind = new KeybindList(
+				new Keybind(SButton.LeftAlt, SButton.T),
+				new Keybind(SButton.RightAlt, SButton.T));
+
+			OpenTrashMenu = new KeybindList(
+				new Keybind(SButton.LeftAlt, SButton.L),
+				new Keybind(SButton.RightAlt, SButton.L));
+
+			SetTrash = new KeybindList(
+				new Keybind(SButton.LeftAlt, SButton.X),
+				new Keybind(SButton.RightAlt, SButton.X));
+		}
+
 		public void AddHelper(IModHelper helper)
 		{
 			_helper = helper;
@@ -56,19 +74,48 @@ namespace AutoTrasher
 			_helper?.WriteConfig(this);
 		}
 
-		private void ResetToDefault()
+		public void RegisterModConfigMenu(IModHelper helper, IManifest manifest)
 		{
-			ToggleTrasherKeybind = new KeybindList(
-				new Keybind(SButton.LeftAlt, SButton.T),
-				new Keybind(SButton.RightAlt, SButton.T));
+			if (!helper.ModRegistry.IsLoaded(_gmcmUniqueId)) return;
 
-			OpenMenu = new KeybindList(
-				new Keybind(SButton.LeftAlt, SButton.L),
-				new Keybind(SButton.RightAlt, SButton.L));
+			var gmcmApi = helper.ModRegistry.GetApi<IGenericModConfigMenu>(_gmcmUniqueId);
+			if (gmcmApi is null) return;
 
-			SetTrash = new KeybindList(
-				new Keybind(SButton.LeftAlt, SButton.X),
-				new Keybind(SButton.RightAlt, SButton.X));
+			try
+			{
+				gmcmApi.Unregister(manifest);
+			}
+			catch { }
+
+			gmcmApi.Register(
+				mod: manifest,
+				reset: ResetToDefault,
+				save: () => helper.WriteConfig(this));
+
+			gmcmApi.AddSectionTitle(
+				mod: manifest,
+				text: () => "General");
+
+			gmcmApi.AddKeybindList(
+				mod: manifest,
+				name: () => "Toggle Trasher Keybind",
+				tooltip: () => "Keybinding to toggle the Auto Trasher on and off.",
+				getValue: () => ToggleTrasherKeybind,
+				setValue: val => ToggleTrasherKeybind = val);
+
+			gmcmApi.AddKeybindList(
+				mod: manifest,
+				name: () => "Open Trash List Menu Keybind",
+				tooltip: () => "Keybinding to open the Trash List Menu.",
+				getValue: () => OpenTrashMenu,
+				setValue: val => OpenTrashMenu = val);
+
+			gmcmApi.AddKeybindList(
+				mod: manifest,
+				name: () => "Add Item to Trash List Keybind",
+				tooltip: () => "Keybinding to add the currently hovered inventory item to the trash list.",
+				getValue: () => SetTrash,
+				setValue: val => SetTrash = val);
 		}
 	}
 }
