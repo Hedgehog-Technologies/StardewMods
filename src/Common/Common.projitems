@@ -15,14 +15,14 @@
     <Folder Include="$(MSBuildThisFileDirectory)Utilities\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)extensions\DictionaryExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)extensions\FruitTreeExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)extensions\ListExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)extensions\SemanticVersionExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)extensions\StringExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)extensions\TreeExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)helpers\JsonHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)interfaces\IGenericModConfigMenu.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)utilities\ItemUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DictionaryExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\FruitTreeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ListExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\SemanticVersionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\StringExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\TreeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\JsonHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IGenericModConfigMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ItemUtilities.cs" />
   </ItemGroup>
 </Project>
