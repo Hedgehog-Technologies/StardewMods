@@ -43,9 +43,9 @@ jobs:
         run: dotnet build --force ${{ steps.split.outputs._0 }} -c Release -p:BuildConfig=GITHUB
         working-directory: src
 
-      - name: Test output
-        run: |
-          echo 'src/${{ steps.split.outputs._0 }}/bin/Release/net6.0/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip'
+      # - name: Test output
+      #   run: |
+      #     echo 'src/${{ steps.split.outputs._0 }}/bin/Release/net6.0/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip'
 
       - name: Bundle Content Packs
         if: ${{ steps.split.outputs._0 == 'AutoForager' }}
@@ -53,7 +53,6 @@ jobs:
           cd "src/Content Packs"
           for i in */; do cd "$i"; for j in */; do zip -r "${j%/}.zip" "$j"; done; cd ..; done
           cd ../..
-
 
       - name: Create GitHub Release
         uses: 'marvinpinto/action-automatic-releases@v1.2.1'
