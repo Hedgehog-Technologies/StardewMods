@@ -64,7 +64,7 @@ jobs:
           prerelease: false
           automatic_release_tag: ${{ steps.split.outputs._1 }}+${{ steps.split.outputs._0 }}
           files: |
-            src/${{ steps.split.outputs._0 }}/bin/Release/net6.0/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip
+            src/_releases/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip
             src/Content Packs/**/*.zip
 
         env:
