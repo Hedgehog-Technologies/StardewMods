@@ -295,7 +295,7 @@ namespace AutoTrasher.Components
 			var slotWidth = _optionSlots[0].bounds.Width;
 
 			_options.Clear();
-			foreach (var item in _config.TrashItems)
+			foreach (var item in _config.TrashList)
 			{
 				var itemName = ItemUtilities.GetItemNameFromId(item) ?? item;
 
@@ -305,7 +305,7 @@ namespace AutoTrasher.Components
 					toggle: () =>
 					{
 						var confDialog = new ConfirmationDialog(
-							$"Are you sure you want to remove {itemName} from the Trash List?",
+							I18n.Confirm_Remove(itemName),
 							(Farmer _) => RemoveTrashItem(item),
 							(Farmer _) => CloseConfirmationDialog());
 

@@ -1,3 +1,21 @@
-{
-  "none": "none"
+﻿{
+  "Confirm.Remove": "Are you sure you want to remove {{itemName}} from the Trash List?",
+
+  "Log.No.Item": "No item selected when attempting to add item to Trash List",
+
+  "Notification.Add.Fail": "Cannot add {{itemName}} to Trash List",
+  "Notification.Add.Repeat": "{{itemName}} already on Trash List",
+  "Notification.Add.Success": "{{itemName}} added to Trash List",
+  "Notification.State": "Auto Trasher has been {{state}}",
+  "Notification.Trashed": "Automatically trashed {{itemName}}",
+
+  "Option.AddTrashKeybind.Name": "Add Item to Trash List Keybind",
+  "Option.AddTrashKeybind.Tooltip": "Keybinding to add the currently selected inventory item to the trash list",
+  "Option.OpenTrashMenuKeybind.Name": "Open Trash List Menu Keybind",
+  "Option.OpenTrashMenuKeybind.Tooltip": "Keybinding to open the Trash List Menu",
+  "Option.ToggleTrasherKeybind.Name": "Toggle Trasher Keybind",
+  "Option.ToggleTrasherKeybind.Tooltip": "Keybinding to toggle the Auto Trasher",
+
+  "State.Activated": "ACTIVATED",
+  "State.Deactivated": "DEACTIVATED"
 }

@@ -13,15 +13,15 @@ namespace AutoTrasher
 		private IModHelper? _helper;
 
 		public KeybindList ToggleTrasherKeybind { get; set; }
-		public KeybindList OpenTrashMenu { get; set; }
-		public KeybindList SetTrash { get; set; }
-		public List<string> TrashItems { get; set; }
+		public KeybindList OpenTrashMenuKeybind { get; set; }
+		public KeybindList AddTrashKeybind { get; set; }
+		public List<string> TrashList { get; set; }
 
 		public ModConfig()
 		{
 			ResetToDefault();
 
-			TrashItems = new List<string>
+			TrashList = new List<string>
 			{
 				"168", // Trash
 				"169", // Driftwood
@@ -29,30 +29,21 @@ namespace AutoTrasher
 				"171", // Broken CD
 				"172", // Soggy Newspaper
 				"747", // Rotten Plant
-				"748", // Rotten Plant
-
-				// REMOVE ME - TESTING ONLY
-				"268", // Trash
-				"269", // Driftwood
-				"270", // Broken Glasses
-				"271", // Broken CD
-				"272", // Soggy Newspaper
-				"847", // Rotten Plant
-				"848" // Rotten Plant
+				"748" // Rotten Plant
 			};
 		}
 
 		private void ResetToDefault()
 		{
 			ToggleTrasherKeybind = new KeybindList(
-				new Keybind(SButton.LeftAlt, SButton.T),
-				new Keybind(SButton.RightAlt, SButton.T));
+				new Keybind(SButton.LeftAlt, SButton.R),
+				new Keybind(SButton.RightAlt, SButton.R));
 
-			OpenTrashMenu = new KeybindList(
+			OpenTrashMenuKeybind = new KeybindList(
 				new Keybind(SButton.LeftAlt, SButton.L),
 				new Keybind(SButton.RightAlt, SButton.L));
 
-			SetTrash = new KeybindList(
+			AddTrashKeybind = new KeybindList(
 				new Keybind(SButton.LeftAlt, SButton.X),
 				new Keybind(SButton.RightAlt, SButton.X));
 		}
@@ -64,13 +55,13 @@ namespace AutoTrasher
 
 		public void RemoveTrashItem(string itemId)
 		{
-			TrashItems.Remove(itemId);
+			TrashList.Remove(itemId);
 			_helper?.WriteConfig(this);
 		}
 
 		public void AddTrashItem(string itemId)
 		{
-			TrashItems.Add(itemId);
+			TrashList.Add(itemId);
 			_helper?.WriteConfig(this);
 		}
 
@@ -98,24 +89,24 @@ namespace AutoTrasher
 
 			gmcmApi.AddKeybindList(
 				mod: manifest,
-				name: () => "Toggle Trasher Keybind",
-				tooltip: () => "Keybinding to toggle the Auto Trasher on and off.",
+				name: I18n.Option_ToggleTrasherKeybind_Name,
+				tooltip: I18n.Option_ToggleTrasherKeybind_Tooltip,
 				getValue: () => ToggleTrasherKeybind,
 				setValue: val => ToggleTrasherKeybind = val);
 
 			gmcmApi.AddKeybindList(
 				mod: manifest,
-				name: () => "Open Trash List Menu Keybind",
-				tooltip: () => "Keybinding to open the Trash List Menu.",
-				getValue: () => OpenTrashMenu,
-				setValue: val => OpenTrashMenu = val);
+				name: I18n.Option_OpenTrashMenuKeybind_Name,
+				tooltip: I18n.Option_OpenTrashMenuKeybind_Tooltip,
+				getValue: () => OpenTrashMenuKeybind,
+				setValue: val => OpenTrashMenuKeybind = val);
 
 			gmcmApi.AddKeybindList(
 				mod: manifest,
-				name: () => "Add Item to Trash List Keybind",
-				tooltip: () => "Keybinding to add the currently hovered inventory item to the trash list.",
-				getValue: () => SetTrash,
-				setValue: val => SetTrash = val);
+				name: I18n.Option_AddTrashKeybind_Name,
+				tooltip: I18n.Option_AddTrashKeybind_Tooltip,
+				getValue: () => AddTrashKeybind,
+				setValue: val => AddTrashKeybind = val);
 		}
 	}
 }
