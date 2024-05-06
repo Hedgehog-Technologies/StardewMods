@@ -64,6 +64,6 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 - This mod is player specific, each player that wants to utilize it must have it installed
 
 ## Releases
-Releases can be found [Github](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/23663) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/?????) site.
+Releases can be found [Github](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/23663) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-trasher) site.
 ### 1.0.0
 - Initial Release

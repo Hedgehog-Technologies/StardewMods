@@ -18,7 +18,7 @@ A collection of mods made for Stardew Valley using SMAPI.
   - A mod that allows players to automatically send items to the trash
   - [source](./src/AutoTrasher)
   - [Nexus Mods Page](https://www.nexusmods.com/stardewvalley/mods/23663)
-  - [CurseForge Page](https://www.curseforge.com/stardewvalley/mods/?????)
+  - [CurseForge Page](https://www.curseforge.com/stardewvalley/mods/auto-trasher)
 - **Full Fishing Bar**
   - A mod that allows players to trivialize the fishing mini game by setting the bobber bar to fill the entire possible range.
   - [source](./src/FullFishingBar)
