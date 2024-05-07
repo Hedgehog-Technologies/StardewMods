@@ -272,7 +272,7 @@ namespace AutoTrasher.Components
 			yPositionOnScreen = Game1.uiViewport.Height / 2 - height / 2;
 
 			// TITLE
-			_title = new ClickableComponent(new Rectangle(xPositionOnScreen + width / 2, yPositionOnScreen, Game1.tileSize * 4, Game1.tileSize), "Trash List");
+			_title = new ClickableComponent(new Rectangle(xPositionOnScreen + width / 2, yPositionOnScreen, Game1.tileSize * 4, Game1.tileSize), I18n.UI_Title());
 
 			// SCROLL UI
 			var scrollbarOffset = Game1.tileSize * 4 / 16;

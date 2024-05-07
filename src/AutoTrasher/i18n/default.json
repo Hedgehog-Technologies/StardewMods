@@ -17,5 +17,7 @@
   "Option.ToggleTrasherKeybind.Tooltip": "Keybinding to toggle the Auto Trasher",
 
   "State.Activated": "ACTIVATED",
-  "State.Deactivated": "DEACTIVATED"
+  "State.Deactivated": "DEACTIVATED",
+
+  "UI.Title": "Trash List"
 }
