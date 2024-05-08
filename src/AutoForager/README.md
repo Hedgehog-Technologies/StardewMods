@@ -65,6 +65,8 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.4.3
+- Add additional safeguards around players clicking through title menu quickly
 ### 3.4.2
 - Fix items incorrectly getting increased quality where they normally wouldn't
 ### 3.4.1
