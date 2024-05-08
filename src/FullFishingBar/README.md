@@ -35,20 +35,20 @@ Potential answers:
 ### Translation
 &nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By
 :--------: | :-------------: | :------------------: | :---------------: | :------------:
-Chinese    | ✔              | ❌                   | ❌                | n/a
-French     | ✔              | ❌                   | ❌                | n/a
-German     | ✔              | ❌                   | ❌                | n/a
-Hungarian  | ✔              | ❌                   | ❌                | n/a
-Italian    | ✔              | ❌                   | ❌                | n/a
-Japanese   | ✔              | ❌                   | ❌                | n/a
-Korean     | ✔              | ❌                   | ❌                | n/a
-Polish     | ✔              | ❌                   | ❌                | n/a
-Portuguese | ✔              | ❌                   | ❌                | n/a
-Russian    | ✔              | ❌                   | ❌                | n/a
-Spanish    | ✔              | ❌                   | ❌                | n/a
-Thai       | ✔              | ❌                   | ❌                | n/a
-Turkish    | ✔              | ❌                   | ❌                | n/a
-Ukrainian  | ✔              | ❌                   | ❌                | n/a
+Chinese    | ✔              | ✔                   | 🤖                | n/a
+French     | ✔              | ✔                   | 🤖                | n/a
+German     | ✔              | ✔                   | 🤖                | n/a
+Hungarian  | ✔              | ✔                   | 🤖                | n/a
+Italian    | ✔              | ✔                   | 🤖                | n/a
+Japanese   | ✔              | ✔                   | 🤖                | n/a
+Korean     | ✔              | ✔                   | 🤖                | n/a
+Polish     | ✔              | ✔                   | 🤖                | n/a
+Portuguese | ✔              | ✔                   | 🤖                | n/a
+Russian    | ✔              | ✔                   | 🤖                | n/a
+Spanish    | ✔              | ✔                   | 🤖                | n/a
+Thai       | ✔              | ✔                   | 🤖                | n/a
+Turkish    | ✔              | ✔                   | 🤖                | n/a
+Ukrainian  | ✔              | ✔                   | 🤖                | n/a
 
 ### Install
 1. Install the latest version of [SMAPI](https://smapi.io)
