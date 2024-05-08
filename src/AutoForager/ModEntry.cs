@@ -322,7 +322,7 @@ namespace AutoForager
 		[EventPriority(EventPriority.High)]
 		private async void OnOneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
 		{
-			if (IsTitleMenuInteractable())
+			if (IsTitleMenuInteractable() || Context.IsPlayerFree)
 			{
 				Helper.Events.GameLoop.OneSecondUpdateTicked -= OnOneSecondUpdateTicked;
 
@@ -728,7 +728,7 @@ namespace AutoForager
 
 				// Tea Bushes
 				case 3:
-					if (_cbw.IsCustomBush(bush))
+					if (_cbw?.IsCustomBush(bush) ?? false)
 					{
 						var shakeOffItem = bush.modData[CustomBushWrapper.ShakeOffItemKey];
 
@@ -837,14 +837,14 @@ namespace AutoForager
 					}
 				}
 
-				if (_bushBloomItems.TryGetValue(obj.Key, out var bushCategory))
+				if (_bushBloomItems?.TryGetValue(obj.Key, out var bushCategory) ?? false)
 				{
 					obj.Value.CustomFields ??= new();
 					obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushKey, "true");
 					obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushBloomCategory, bushCategory);
 				}
 
-				if (_customTeaBushItems.TryGetValue(obj.Key, out var customBushCategory))
+				if (_customTeaBushItems?.TryGetValue(obj.Key, out var customBushCategory) ?? false)
 				{
 					obj.Value.CustomFields ??= new();
 					obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushKey, "true");
