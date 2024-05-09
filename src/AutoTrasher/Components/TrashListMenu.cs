@@ -26,6 +26,7 @@ namespace AutoTrasher.Components
 		private ClickableTextureComponent _upArrow;
 		private ClickableTextureComponent _downArrow;
 		private ClickableTextureComponent _scrollbar;
+		private readonly List<ClickableComponent> _tabs;
 		private Rectangle _scrollbarRunner;
 
 		private string _hoverText;
@@ -33,23 +34,36 @@ namespace AutoTrasher.Components
 		private int _currentItemIndex;
 		private bool _isScrolling;
 
-		public TrashListMenu(IMonitor monitor, ModConfig config)
+		public MenuTab CurrentTab { get; }
+
+		public TrashListMenu(IMonitor monitor, ModConfig config, bool isNewMenu = true)
 		{
 			_monitor = monitor;
 			_config = config;
 
 			_optionSlots = new();
 			_options = new();
+			_tabs = new();
 
+			CurrentTab = 0;
 
 			_hoverText = string.Empty;
 			_optionsSlotHeld = -1;
 			_currentItemIndex = 0;
 
-			Game1.playSound("bigSelect");
+			Game1.playSound(isNewMenu
+				? "bigSelect"     // menu open
+				: "smallSelect"); // tab select
 
 			ResetComponents();
 			SetOptions();
+			ResetComponents();
+		}
+
+		public TrashListMenu(MenuTab initialTab, IMonitor monitor, ModConfig config)
+			: this(monitor, config, false)
+		{
+			CurrentTab = initialTab;
 		}
 
 		public void ExitIfValid()
@@ -113,6 +127,40 @@ namespace AutoTrasher.Components
 			{
 				GetActiveOption()?.receiveKeyPress(key);
 			}
+		}
+
+		public override void receiveGamePadButton(Buttons b)
+		{
+			// Navigate tabs
+			if (b is Buttons.LeftShoulder or Buttons.RightShoulder)
+			{
+				var index = _tabs.FindIndex(p => p.name == CurrentTab.ToString());
+
+				if (b == Buttons.LeftShoulder)
+				{
+					index--;
+				}
+				else if (b == Buttons.RightShoulder)
+				{
+					index++;
+				}
+
+				if (index >= _tabs.Count)
+				{
+					index = 0;
+				}
+				else
+				{
+					index = _tabs.Count - 1;
+				}
+
+				// open menu with new index
+				var tabId = GetTabId(_tabs[index]);
+				Game1.activeClickableMenu = new TrashListMenu(tabId, _monitor, _config);
+			}
+
+			// send to active menu
+			(GetActiveOption() as BaseOptionsElement)?.ReceiveButtonPress(b.ToSButton());
 		}
 
 		public override void receiveScrollWheelAction(int direction)
@@ -188,6 +236,16 @@ namespace AutoTrasher.Components
 					break;
 				}
 			}
+
+			foreach (var tab in _tabs)
+			{
+				if (tab.bounds.Contains(x, y))
+				{
+					var tabId = GetTabId(tab);
+					Game1.activeClickableMenu = new TrashListMenu(tabId, _monitor, _config);
+					break;
+				}
+			}
 		}
 
 		public override void performHoverAction(int x, int y)
@@ -213,17 +271,7 @@ namespace AutoTrasher.Components
 			Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen, width, height, false, true);
 
 			// Draw Title Box
-			{
-				var bounds = Game1.dialogueFont.MeasureString(_title.name);
-				var outerWidth = (int)bounds.X + ButtonBorderWidth * 2;
-				var outerHeight = (int)bounds.Y + Game1.tileSize / 3;
-				var offsetX = -outerWidth / 2;
-
-				drawTextureBox(b, Game1.menuTexture, new Rectangle(0, 256, 60, 60), _title.bounds.X + offsetX, _title.bounds.Y, outerWidth, outerHeight + Game1.tileSize / 16, Color.White * 1f, drawShadow: true);
-
-				var innerDrawPosition = new Vector2(_title.bounds.X + ButtonBorderWidth + offsetX, _title.bounds.Y + ButtonBorderWidth);
-				Utility.drawTextWithShadow(b, _title.name, Game1.dialogueFont, innerDrawPosition, Game1.textColor);
-			}
+			UIHelpers.DrawTab(_title.bounds.X, _title.bounds.Y, Game1.dialogueFont, _title.name, 1);
 
 			b.End();
 			b.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp);
@@ -242,6 +290,12 @@ namespace AutoTrasher.Components
 
 			if (!GameMenu.forcePreventClose)
 			{
+				foreach (var tab in _tabs)
+				{
+					var tabId = GetTabId(tab);
+					UIHelpers.DrawTab(tab.bounds.X + tab.bounds.Width, tab.bounds.Y, Game1.smallFont, tab.label, 2, CurrentTab == tabId ? 1F : 0.7F);
+				}
+
 				// Draw Scrollbar when scrolling can happen
 				if (_options.Count > ItemsPerPage)
 				{
@@ -274,6 +328,21 @@ namespace AutoTrasher.Components
 			// TITLE
 			_title = new ClickableComponent(new Rectangle(xPositionOnScreen + width / 2, yPositionOnScreen, Game1.tileSize * 4, Game1.tileSize), I18n.UI_Title());
 
+			// TABS
+			{
+				var i = 0;
+				var labelX = (int)(xPositionOnScreen - Game1.tileSize * 4.8f);
+				var labelY = (int)(yPositionOnScreen + Game1.tileSize * 1.5f);
+				var labelHeight = (int)(Game1.tileSize * 0.9F);
+
+				_tabs.Clear();
+				_tabs.AddRange(new[]
+				{
+					new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i++, Game1.tileSize * 5, Game1.tileSize), MenuTab.TrashList.ToString(), I18n.UI_Tabs_TrashList()),
+					new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i++, Game1.tileSize * 5, Game1.tileSize), MenuTab.ReclaimList.ToString(), I18n.UI_Tabs_ReclaimList())
+				});
+			}
+
 			// SCROLL UI
 			var scrollbarOffset = Game1.tileSize * 4 / 16;
 			_upArrow = new ClickableTextureComponent("up-arrow", new Rectangle(xPositionOnScreen + width + scrollbarOffset, yPositionOnScreen + Game1.tileSize, 11 * Game1.pixelZoom, 12 * Game1.pixelZoom), "", "", Game1.mouseCursors, new Rectangle(421, 459, 11, 12), Game1.pixelZoom);
@@ -295,22 +364,33 @@ namespace AutoTrasher.Components
 			var slotWidth = _optionSlots[0].bounds.Width;
 
 			_options.Clear();
-			foreach (var item in _config.TrashList)
+
+			switch (CurrentTab)
 			{
-				var itemName = ItemUtilities.GetItemNameFromId(item) ?? item;
-
-				_options.Add(new TrashOptionsButton(
-					label: itemName,
-					slotWidth: slotWidth,
-					toggle: () =>
+				case MenuTab.TrashList:
+					foreach (var item in _config.TrashList)
 					{
-						var confDialog = new ConfirmationDialog(
-							I18n.Confirm_Remove(itemName),
-							(Farmer _) => RemoveTrashItem(item),
-							(Farmer _) => CloseConfirmationDialog());
+						var itemName = ItemUtilities.GetItemNameFromId(item) ?? item;
 
-						SetChildMenu(confDialog);
-					}));
+						_options.Add(new TrashOptionsButton(
+							label: itemName,
+							slotWidth: slotWidth,
+							toggle: () =>
+							{
+								var confDialog = new ConfirmationDialog(
+									I18n.Confirm_Remove(itemName),
+									(Farmer _) => RemoveTrashItem(item),
+									(Farmer _) => CloseConfirmationDialog());
+
+								SetChildMenu(confDialog);
+							}));
+					}
+
+					break;
+
+				case MenuTab.ReclaimList:
+					// TODO: Track and fill options for reclaim list
+					break;
 			}
 
 			SetScrollbarToCurrentIndex();
@@ -381,6 +461,16 @@ namespace AutoTrasher.Components
 			_upArrow.scale = _upArrow.baseScale;
 			--_currentItemIndex;
 			SetScrollbarToCurrentIndex();
+		}
+
+		private MenuTab GetTabId(ClickableComponent tab)
+		{
+			if (!Enum.TryParse(tab.name, out MenuTab tabId))
+			{
+				throw new InvalidOperationException($"Couldn't parse tab name '{tab.name}'.");
+			}
+
+			return tabId;
 		}
 	}
 }

@@ -19,5 +19,7 @@
   "State.Activated": "ACTIVATED",
   "State.Deactivated": "DEACTIVATED",
 
-  "UI.Title": "Trash List"
+  "UI.Tabs.TrashList": "Trash List",
+  "UI.Tabs.ReclaimList": "Reclaim List",
+  "UI.Title": "Auto Trasher Menu"
 }
