@@ -42,7 +42,7 @@ namespace AutoTrasher
 
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
-			_config.RegisterModConfigMenu(Helper, ModManifest);
+			_config.RegisterModConfigMenu(Helper, ModManifest, _reclaimList);
 		}
 
 		private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
