@@ -4,13 +4,23 @@ namespace HedgeTech.Common.Classes
 {
 	public class LimitedList<T>
 	{
-		private readonly int _maxSize;
-		private List<T> _items;
+		private readonly List<T> _items;
+		private int _maxSize;
+
+		public int Count => _items.Count;
 
 		public LimitedList(int maxSize)
 		{
 			_maxSize = maxSize;
 			_items = new();
+		}
+
+		public void UpdateMaxSize(int newMaxSize)
+		{
+			if (newMaxSize > 0)
+			{
+				_maxSize = newMaxSize;
+			}
 		}
 
 		public void Add(T item)
@@ -40,9 +50,9 @@ namespace HedgeTech.Common.Classes
 
 		public IEnumerable<T> GetEnumerator()
 		{
-			for (int i = 9; i >= 0; i--)
+			for (int i = _maxSize - 1; i >= 0; i--)
 			{
-				if (i > _items.Count) continue;
+				if (i >= _items.Count) continue;
 
 				yield return _items[i];
 			}

@@ -8,17 +8,20 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using AutoTrasher.Components.Elements;
+using HedgeTech.Common.Classes;
 using HedgeTech.Common.Utilities;
 
 namespace AutoTrasher.Components
 {
 	internal class TrashListMenu : IClickableMenu
 	{
-		private const int ButtonBorderWidth = 4 * Game1.pixelZoom;
 		private const int ItemsPerPage = 10;
 
 		private readonly IMonitor _monitor;
 		private readonly ModConfig _config;
+
+		private readonly LimitedList<Item> _reclaimItems;
+		private readonly List<Item> _ignoreItems;
 
 		private readonly List<ClickableComponent> _optionSlots;
 		private readonly List<OptionsElement> _options;
@@ -36,10 +39,12 @@ namespace AutoTrasher.Components
 
 		public MenuTab CurrentTab { get; }
 
-		public TrashListMenu(IMonitor monitor, ModConfig config, bool isNewMenu = true)
+		public TrashListMenu(LimitedList<Item> reclaimItems, List<Item> ignoreItems, IMonitor monitor, ModConfig config, bool isNewMenu = true)
 		{
 			_monitor = monitor;
 			_config = config;
+			_reclaimItems = reclaimItems;
+			_ignoreItems = ignoreItems;
 
 			_optionSlots = new();
 			_options = new();
@@ -60,10 +65,13 @@ namespace AutoTrasher.Components
 			ResetComponents();
 		}
 
-		public TrashListMenu(MenuTab initialTab, IMonitor monitor, ModConfig config)
-			: this(monitor, config, false)
+		public TrashListMenu(MenuTab initialTab, LimitedList<Item> reclaimItems, List<Item> ignoreItems, IMonitor monitor, ModConfig config)
+			: this(reclaimItems, ignoreItems, monitor, config, false)
 		{
 			CurrentTab = initialTab;
+			ResetComponents();
+			SetOptions();
+			ResetComponents();
 		}
 
 		public void ExitIfValid()
@@ -156,7 +164,7 @@ namespace AutoTrasher.Components
 
 				// open menu with new index
 				var tabId = GetTabId(_tabs[index]);
-				Game1.activeClickableMenu = new TrashListMenu(tabId, _monitor, _config);
+				Game1.activeClickableMenu = new TrashListMenu(tabId, _reclaimItems, _ignoreItems, _monitor, _config);
 			}
 
 			// send to active menu
@@ -242,7 +250,8 @@ namespace AutoTrasher.Components
 				if (tab.bounds.Contains(x, y))
 				{
 					var tabId = GetTabId(tab);
-					Game1.activeClickableMenu = new TrashListMenu(tabId, _monitor, _config);
+					_monitor.Log($"got Tab {tabId}");
+					Game1.activeClickableMenu = new TrashListMenu(tabId, _reclaimItems, _ignoreItems, _monitor, _config);
 					break;
 				}
 			}
@@ -339,7 +348,7 @@ namespace AutoTrasher.Components
 				_tabs.AddRange(new[]
 				{
 					new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i++, Game1.tileSize * 5, Game1.tileSize), MenuTab.TrashList.ToString(), I18n.UI_Tabs_TrashList()),
-					new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i++, Game1.tileSize * 5, Game1.tileSize), MenuTab.ReclaimList.ToString(), I18n.UI_Tabs_ReclaimList())
+					new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i++ + (int)(labelHeight * 0.5), Game1.tileSize * 5, Game1.tileSize), MenuTab.ReclaimList.ToString(), I18n.UI_Tabs_ReclaimList())
 				});
 			}
 
@@ -368,28 +377,56 @@ namespace AutoTrasher.Components
 			switch (CurrentTab)
 			{
 				case MenuTab.TrashList:
-					foreach (var item in _config.TrashList)
+					if (_config.TrashList.Count > 0)
 					{
-						var itemName = ItemUtilities.GetItemNameFromId(item) ?? item;
+						foreach (var item in _config.TrashList)
+						{
+							var itemName = ItemUtilities.GetItemNameFromId(item) ?? item;
 
-						_options.Add(new TrashOptionsButton(
-							label: itemName,
-							slotWidth: slotWidth,
-							toggle: () =>
-							{
-								var confDialog = new ConfirmationDialog(
-									I18n.Confirm_Remove(itemName),
-									(Farmer _) => RemoveTrashItem(item),
-									(Farmer _) => CloseConfirmationDialog());
+							_options.Add(new TrashOptionsButton(
+								label: itemName,
+								slotWidth: slotWidth,
+								toggle: () =>
+								{
+									var confDialog = new ConfirmationDialog(
+										I18n.Confirm_Remove(itemName),
+										(Farmer _) => RemoveTrashItem(item),
+										(Farmer _) => CloseConfirmationDialog());
 
-								SetChildMenu(confDialog);
-							}));
+									SetChildMenu(confDialog);
+								}));
+						}
+					}
+					else
+					{
+						_options.Add(new OptionsElement(I18n.UI_TrashList_NoItems()));
 					}
 
 					break;
 
 				case MenuTab.ReclaimList:
-					// TODO: Track and fill options for reclaim list
+					if (_reclaimItems.Count > 0)
+					{
+						foreach (var item in _reclaimItems.GetEnumerator())
+						{
+							_options.Add(new ReclaimOptionsButton(
+								label: $"{item.DisplayName} x{item.Stack}",
+								slotWidth: slotWidth,
+								toggle: () =>
+								{
+									var confDialog = new ConfirmationDialog(
+										I18n.Confirm_Reclaim(item.DisplayName),
+										(Farmer _) => ReclaimTrashItem(item),
+										(Farmer _) => CloseConfirmationDialog());
+
+									SetChildMenu(confDialog);
+								}));
+						}
+					}
+					else
+					{
+						_options.Add(new OptionsElement(I18n.UI_ReclaimList_NoItems()));
+					}
 					break;
 			}
 
@@ -410,9 +447,41 @@ namespace AutoTrasher.Components
 		private void RemoveTrashItem(string itemId)
 		{
 			CloseConfirmationDialog();
-			_config.RemoveTrashItem(itemId);
+			_config.RemoveTrashItemFromTrashList(itemId);
 			ResetComponents();
 			SetOptions();
+		}
+
+		private void ReclaimTrashItem(Item item)
+		{
+			CloseConfirmationDialog();
+
+			if (Game1.player.couldInventoryAcceptThisItem(item))
+			{
+				var reclaimCost = Utility.getTrashReclamationPrice(item, Game1.player);
+
+				if (reclaimCost > 0)
+				{
+					if (Game1.player.Money < reclaimCost)
+					{
+						Game1.addHUDMessage(new HUDMessage(I18n.Notification_Reclaim_NotEnoughMoney(item.DisplayName, reclaimCost)) { noIcon = true });
+						return;
+					}
+
+					Game1.player.Money -= reclaimCost;
+				}
+
+				_ignoreItems.Add(item);
+				_reclaimItems.Remove(item);
+				Game1.player.addItemToInventory(item);
+
+				ResetComponents();
+				SetOptions();
+			}
+			else
+			{
+				Game1.addHUDMessage(new HUDMessage(I18n.Notification_Reclaim_Fail(item.DisplayName)) { noIcon = true });
+			}
 		}
 
 		private OptionsElement? GetActiveOption()
