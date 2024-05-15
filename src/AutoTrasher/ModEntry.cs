@@ -12,9 +12,6 @@ using SObject = StardewValley.Object;
 
 namespace AutoTrasher
 {
-	/// <summary>
-	/// The mod entry point.
-	/// </summary>
 	public class ModEntry : Mod
 	{
 		private const string _trasherMessageType = "autotrash_{0}";
@@ -52,8 +49,7 @@ namespace AutoTrasher
 			{
 				if (Game1.activeClickableMenu is GameMenu menu && menu?.GetCurrentPage() is InventoryPage page)
 				{
-					var invMenu = page?.inventory;
-					var hoveredItem = invMenu?.getItemAt(Game1.getMouseX(), Game1.getMouseY());
+					var hoveredItem = page.hoveredItem;
 					var notifMessage = string.Empty;
 					var addNotifSubject = false;
 
