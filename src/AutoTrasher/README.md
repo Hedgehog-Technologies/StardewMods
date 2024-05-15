@@ -65,5 +65,9 @@ Ukrainian  | ✔              | ✔                   | 🤖                | n/
 
 ## Releases
 Releases can be found [Github](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/23663) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-trasher) site.
+### 1.1.0
+- Add Reclaim item functionality
+- Items will not be trashed immediately from inventory when added to Trash List
+- Fix issues with adding trash items when UI scaling not at 100%
 ### 1.0.0
 - Initial Release

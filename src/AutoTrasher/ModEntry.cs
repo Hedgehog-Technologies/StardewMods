@@ -1,21 +1,23 @@
+using System.Collections.Generic;
+using System.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using AutoTrasher.Components;
 using StardewValley.Menus;
+using AutoTrasher.Components;
+using HedgeTech.Common.Classes;
+using HedgeTech.Common.Extensions;
 
 using SObject = StardewValley.Object;
-using System.Linq;
-using HedgeTech.Common.Extensions;
 
 namespace AutoTrasher
 {
-	/// <summary>
-	/// The mod entry point.
-	/// </summary>
 	public class ModEntry : Mod
 	{
 		private const string _trasherMessageType = "autotrash_{0}";
+
+		private readonly LimitedList<Item> _reclaimList = new(10);
+		private readonly List<Item> _ignoreItems = new();
 
 		private ModConfig _config = new();
 		private bool _isTrasherActive = true;
@@ -27,6 +29,8 @@ namespace AutoTrasher
 			_config = helper.ReadConfig<ModConfig>();
 			_config.AddHelper(helper);
 
+			_reclaimList.UpdateMaxSize(_config.ReclaimableItemCount);
+
 			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
@@ -35,7 +39,7 @@ namespace AutoTrasher
 
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
-			_config.RegisterModConfigMenu(Helper, ModManifest);
+			_config.RegisterModConfigMenu(Helper, ModManifest, _reclaimList);
 		}
 
 		private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
@@ -45,8 +49,7 @@ namespace AutoTrasher
 			{
 				if (Game1.activeClickableMenu is GameMenu menu && menu?.GetCurrentPage() is InventoryPage page)
 				{
-					var invMenu = page?.inventory;
-					var hoveredItem = invMenu?.getItemAt(Game1.getMouseX(), Game1.getMouseY());
+					var hoveredItem = page.hoveredItem;
 					var notifMessage = string.Empty;
 					var addNotifSubject = false;
 
@@ -54,17 +57,18 @@ namespace AutoTrasher
 					{
 						if (hoveredItem is not SObject)
 						{
-							notifMessage = I18n.Notification_Add_Fail(hoveredItem.DisplayName);
+							notifMessage = I18n.Notification_AddTrash_Fail(hoveredItem.DisplayName);
 						}
 						else if (!_config.TrashList.Contains(hoveredItem.ItemId))
 						{
-							_config.AddTrashItem(hoveredItem.ItemId);
-							notifMessage = I18n.Notification_Add_Success(hoveredItem.DisplayName);
+							_config.AddTrashItemToTrashList(hoveredItem.ItemId);
+							RemoveItemFromInventory(hoveredItem);
+							notifMessage = I18n.Notification_AddTrash_Success(hoveredItem.DisplayName);
 							addNotifSubject = true;
 						}
 						else
 						{
-							notifMessage = I18n.Notification_Add_Repeat(hoveredItem.DisplayName);
+							notifMessage = I18n.Notification_AddTrash_Repeat(hoveredItem.DisplayName);
 							addNotifSubject = true;
 						}
 					}
@@ -112,7 +116,7 @@ namespace AutoTrasher
 					}
 					else if (_config.OpenTrashMenuKeybind.JustPressed())
 					{
-						Game1.activeClickableMenu = new TrashListMenu(Monitor, _config);
+						Game1.activeClickableMenu = new TrashListMenu(_reclaimList, _ignoreItems, Monitor, _config);
 					}
 				}
 			}
@@ -126,6 +130,12 @@ namespace AutoTrasher
 			{
 				if (item is null) continue;
 				if (!_config.TrashList.Contains(item.ItemId)) continue;
+
+				if (_ignoreItems.Contains(item))
+				{
+					_ignoreItems.Remove(item);
+					continue;
+				}
 
 				var message = new HUDMessage(I18n.Notification_Trashed(item.DisplayName))
 				{
@@ -168,7 +178,7 @@ namespace AutoTrasher
 			}
 		}
 
-		private static void RemoveItemFromInventory(Item item)
+		private void RemoveItemFromInventory(Item item)
 		{
 			var reclamationPrice = Utility.getTrashReclamationPrice(item, Game1.player);
 
@@ -178,6 +188,7 @@ namespace AutoTrasher
 				Game1.soundBank.PlayCue("coin");
 			}
 
+			_reclaimList.Add(item);
 			Game1.player.removeItemFromInventory(item);
 			Game1.soundBank.PlayCue("trashcan");
 		}
