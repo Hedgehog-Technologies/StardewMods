@@ -18,7 +18,7 @@ namespace AutoForager
 		private const string _gmcmUniqueId = "spacechase0.GenericModConfigMenu";
 
 		private readonly ForageableItemTracker _forageableTracker;
-		private IComparer<string> _comparer = new CategoryComparer();
+		private CategoryComparer _comparer = new();
 		private IMonitor? _monitor;
 		private JsonHelper _jsonHelper;
 
@@ -75,6 +75,11 @@ namespace AutoForager
 			_monitor = monitor;
 			_comparer = new CategoryComparer(packs);
 			_jsonHelper = jsonHelper;
+		}
+
+		public void AddFtmCategories(Dictionary<string, string> ftmCategories)
+		{
+			_comparer.AddFtmCategories(ftmCategories);
 		}
 
 		public void ResetToDefault()

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace AutoForager.Helpers
 {
@@ -150,6 +150,25 @@ namespace AutoForager.Helpers
 
 		private static readonly Dictionary<string, string> _knownCategoryLookup = new()
 		{
+			{ "107", "Category.Animal" },    // Dinosaur Egg
+			{ "174", "Category.Animal" },    // Large Egg (white)
+			{ "176", "Category.Animal" },    // Egg (white)
+			{ "180", "Category.Animal" },    // Egg (brown)
+			{ "182", "Category.Animal" },    // Large Egg (brown)
+			{ "289", "Category.Animal" },    // Ostrich Egg
+			{ "305", "Category.Animal" },    // Void Egg
+			{ "413", "Category.Animal" },    // Blue Slime Egg
+			{ "430", "Category.Animal" },    // Truffle
+			{ "437", "Category.Animal" },    // Red Slime Egg
+			{ "439", "Category.Animal" },    // Purple Slime Egg
+			{ "440", "Category.Animal" },    // Wool
+			{ "442", "Category.Animal" },    // Duck Egg
+			{ "444", "Category.Animal" },    // Duck Feather
+			{ "446", "Category.Animal" },    // Rabbit's Foot
+			{ "680", "Category.Animal" },    // Green Slime Egg
+			{ "857", "Category.Animal" },    // Tiger Slime Egg
+			{ "928", "Category.Animal" },    // Golden Egg
+
 			{ "18", "Category.Spring" },     // Daffodil
 			{ "22", "Category.Spring" },     // Dandelion
 			{ "20", "Category.Spring" },     // Leek
@@ -193,7 +212,6 @@ namespace AutoForager.Helpers
 			{ "829",  "Category.Special" },  // Ginger
 			{ "Moss", "Category.Special" },  // Moss
 			{ "399",  "Category.Special" },  // Sping Onion
-			{ "430",  "Category.Special" },  // Truffle
 		};
 		public static Dictionary<string, string> KnownCategoryLookup => _knownCategoryLookup;
 

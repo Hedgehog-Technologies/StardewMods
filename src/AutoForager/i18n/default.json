@@ -2,6 +2,7 @@
   "Action.Shake.Future": "Shake",
   "Action.Dig.Future": "Dig Up",
 
+  "Category.Animal": "Animals",
   "Category.Beach": "Beach",
   "Category.BushBlooms": "Bush Blooms",
   "Category.CustomBushes": "Custom Bushes",
@@ -94,6 +95,7 @@
   "Subject.GingerRoots": "Ginger roots",
   "Subject.SalmonberryBushes": "Salmonberry bushes",
   "Subject.SeedSpot": "Seed Spot",
+  "Subject.SpawnableForageIds": "spawnable forage ids",
   "Subject.TeaBushes": "Tea bushes",
   "Subject.WalnutBushes": "Walnut bushes"
 }
