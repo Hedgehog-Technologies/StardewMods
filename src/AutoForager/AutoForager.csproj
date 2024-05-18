@@ -7,7 +7,7 @@
     <Name>Auto Forager</Name>
     <Authors>Jag3Dagster</Authors>
     <Description>Automatically forage items simply by moving near them.</Description>
-    <Version>3.4.3</Version>
+    <Version>3.5.0</Version>
     <UpdateKeys>Nexus:7736</UpdateKeys>
 
     <MinimumApiVersion>auto</MinimumApiVersion>
@@ -19,6 +19,7 @@
     <SMAPIDependency Include="NCarigon.BushBloomMod" Required="false" />
     <SMAPIDependency Include="Pathoschild.ContentPatcher" Required="false" />
     <SMAPIDependency Include="furyx639.CustomBush" Required="false" />
+    <SMAPIDependency Include="Esca.FarmTypeManager" Required="false" />
   </ItemGroup>
 
   <ItemGroup>

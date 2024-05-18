@@ -27,9 +27,6 @@ using Constants = AutoForager.Helpers.Constants;
 
 namespace AutoForager
 {
-	/// <summary>
-	/// The mod entry point.
-	/// </summary>
 	public class ModEntry : Mod
 	{
 		private ModConfig _config;
@@ -58,6 +55,9 @@ namespace AutoForager
 
 		private CustomBushWrapper _cbw;
 		private readonly Dictionary<string, string> _customTeaBushItems;
+
+		private FarmTypeManagerWrapper _ftm;
+		private readonly Dictionary<string, string> _ftmForageables;
 
 		#region Asset Cache
 
@@ -177,19 +177,41 @@ namespace AutoForager
 			_cpWildTrees = new();
 			_bushBloomItems = new();
 			_customTeaBushItems = new();
+			_ftmForageables = new();
 
 			_overrideItemIds = new()
 			{
+				"(O)107", // Dinosaur Egg
 				"(O)152", // Seaweed
+				"(O)174", // Large Egg (white)
+				"(O)176", // Egg (white)
+				"(O)180", // Egg (brown)
+				"(O)182", // Large Egg (brown)
+				"(O)289", // Ostrich Egg
+				"(O)296", // Salmonberry
+				"(O)305", // Void Egg
 				"(O)416", // Snow Yam
 				"(O)430", // Truffle
+				"(O)440", // Wool
+				"(O)442", // Duck Egg
+				"(O)444", // Duck Feather
+				"(O)446", // Rabbit's Foot
+				"(O)613", // Apple
+				"(O)634", // Apricot
+				"(O)635", // Orange
+				"(O)636", // Peach
+				"(O)637", // Pomegranate
+				"(O)638", // Cherry
 				"(O)851", // Magma Cap
+				"(O)928", // Golden Egg
 				"(O)Moss" // Moss
 			};
 
 			_ignoreItemIds = new()
 			{
-				"(O)78"   // Cave Carrot
+				"(O)78",  // Cave Carrot
+				"(O)463", // Drum Block
+				"(O)464", // Flute Block
 			};
 
 			_forageableTracker = ForageableItemTracker.Instance;
@@ -221,7 +243,7 @@ namespace AutoForager
 			helper.Events.Content.LocaleChanged += OnLocaleChanged;
 			helper.Events.GameLoop.DayEnding += OnDayEnding;
 			helper.Events.GameLoop.DayStarted += OnDayStarted;
-			helper.Events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
+			helper.Events.GameLoop.UpdateTicked += InitializeMod;
 			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
 			helper.Events.Player.Warped += OnPlayerWarped;
@@ -320,11 +342,11 @@ namespace AutoForager
 		}
 
 		[EventPriority(EventPriority.High)]
-		private async void OnOneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
+		private async void InitializeMod(object? sender, UpdateTickedEventArgs e)
 		{
 			if (IsTitleMenuInteractable() || Context.IsPlayerFree)
 			{
-				Helper.Events.GameLoop.OneSecondUpdateTicked -= OnOneSecondUpdateTicked;
+				Helper.Events.GameLoop.UpdateTicked -= InitializeMod;
 
 				_bbw = new BushBloomWrapper(Monitor, Helper);
 				var schedules = await _bbw.UpdateSchedules();
@@ -368,6 +390,38 @@ namespace AutoForager
 					}
 				}
 
+				_ftm = new FarmTypeManagerWrapper(Monitor, Helper);
+				var ftmForageables = _ftm.UpdateForageIds();
+
+				foreach (var kvp in ftmForageables)
+				{
+					var cpUniqueName = kvp.Key;
+					var cpName = kvp.Key;
+					var cpMod = Helper.ModRegistry.Get(cpUniqueName);
+
+					if (cpMod is not null)
+					{
+						cpName = cpMod.Manifest.Name;
+					}
+
+					Monitor.Log($"{cpName} - {cpUniqueName}", LogLevel.Debug);
+
+					foreach (var value in kvp.Value)
+					{
+						var itemId = ItemUtilities.GetItemIdFromName(value) ?? value;
+
+						if (_ftmForageables.ContainsKey(itemId))
+						{
+							Monitor.Log($"\tFound repeat forageable: {itemId}", LogLevel.Debug);
+						}
+						else
+						{
+							Monitor.Log($"\tFound new forageable: {itemId}", LogLevel.Debug);
+							_ftmForageables.Add(itemId, cpName);
+						}
+					}
+				}
+
 				try
 				{
 					Helper.GameContent.InvalidateCache(Constants.ObjectsAssetName);
@@ -382,6 +436,7 @@ namespace AutoForager
 				ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
 				LocationCache = Game1.content.Load<Dictionary<string, LocationData>>(Constants.LocationsAssetName);
 
+				_config.AddFtmCategories(_ftmForageables);
 				_config.RegisterModConfigMenu(Helper, ModManifest);
 				_config.UpdateEnabled(Helper);
 
@@ -579,8 +634,8 @@ namespace AutoForager
 
 						_trackingCounts[Constants.ForageableKey].AddOrIncrement(objItem.DisplayName);
 					}
-					else if ((obj.QualifiedItemId.IEquals("(O)590") && _config.ForageArtifactSpots)
-						|| (obj.QualifiedItemId.IEquals("(O)SeedSpot") && _config.ForageSeedSpots))
+					else if ((_config.ForageArtifactSpots && obj.QualifiedItemId.IEquals("(O)590"))
+						|| (_config.ForageSeedSpots && obj.QualifiedItemId.IEquals("(O)SeedSpot")))
 					{
 						if (_config.RequireHoe && !Game1.player.Items.Any(i => i is Hoe))
 						{
@@ -613,6 +668,22 @@ namespace AutoForager
 							obj.performToolAction(tool);
 							_trackingCounts[Constants.ForageableKey].AddOrIncrement(obj.DisplayName);
 						}
+					}
+					else if (IsHarvestableMachine(obj))
+					{
+						var heldObj = obj.heldObject.Value;
+						Game1.createItemDebris(heldObj, vec * 64.0f, -1, null, -1);
+
+						obj.heldObject.Value = null;
+						obj.readyForHarvest.Value = false;
+						obj.showNextIndex.Value = false;
+
+						if (Constants.BigCraftableXpLookup.TryGetValue(obj.QualifiedItemId, out var xpAmount))
+						{
+							Game1.player.gainExperience(2, xpAmount);
+						}
+
+						_trackingCounts[Constants.ForageableKey].AddOrIncrement(heldObj.DisplayName);
 					}
 				}
 
@@ -778,6 +849,19 @@ namespace AutoForager
 			return true;
 		}
 
+		private bool IsHarvestableMachine(SObject obj)
+		{
+			if (!obj.bigCraftable.Value) return false;
+
+			var isMushroomBox = _config.ForageMushroomBoxes && obj.QualifiedItemId.IEquals("(BC)128");
+			var isMushroomLog = _config.ForageMushroomLogs && obj.QualifiedItemId.IEquals("(BC)MushroomLog");
+			var isTapper = _config.ForageTappers && obj.HasContextTag("tapper_item");
+
+			return (isMushroomBox || isMushroomLog || isTapper)
+				&& obj.readyForHarvest.Value
+				&& obj.heldObject.Value is not null;
+		}
+
 		private void EditFruitTrees(IAssetData asset)
 		{
 			var fruitTreeData = asset.AsDictionary<string, FruitTreeData>();
@@ -805,6 +889,7 @@ namespace AutoForager
 			foreach (var obj in objectData.Data)
 			{
 				if (_ignoreItemIds.Any(i => obj.Key.IEquals(i.Substring(3)))) continue;
+				if (obj.Value.Category == SObject.litterCategory) continue;
 
 				string? category = null;
 
@@ -829,7 +914,7 @@ namespace AutoForager
 				if (category is not null)
 				{
 					obj.Value.CustomFields ??= new();
-					obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldForageableKey, "true");
+					obj.Value.CustomFields.TryAdd(Constants.CustomFieldForageableKey, "true");
 
 					if (category != string.Empty)
 					{
@@ -840,15 +925,22 @@ namespace AutoForager
 				if (_bushBloomItems?.TryGetValue(obj.Key, out var bushCategory) ?? false)
 				{
 					obj.Value.CustomFields ??= new();
-					obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushKey, "true");
-					obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushBloomCategory, bushCategory);
+					obj.Value.CustomFields.TryAdd(Constants.CustomFieldBushKey, "true");
+					obj.Value.CustomFields.TryAdd(Constants.CustomFieldBushBloomCategory, bushCategory);
 				}
 
 				if (_customTeaBushItems?.TryGetValue(obj.Key, out var customBushCategory) ?? false)
 				{
 					obj.Value.CustomFields ??= new();
-					obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldBushKey, "true");
-					obj.Value.CustomFields.AddOrUpdate(Constants.CustomFieldCustomBushCategory, customBushCategory);
+					obj.Value.CustomFields.TryAdd(Constants.CustomFieldBushKey, "true");
+					obj.Value.CustomFields.TryAdd(Constants.CustomFieldCustomBushCategory, customBushCategory);
+				}
+
+				if (_ftmForageables?.TryGetValue(obj.Key, out var ftmCategory) ?? false)
+				{
+					obj.Value.CustomFields ??= new();
+					obj.Value.CustomFields.TryAdd(Constants.CustomFieldForageableKey, "true");
+					obj.Value.CustomFields.TryAdd(Constants.CustomFieldCategoryKey, ftmCategory);
 				}
 			}
 		}

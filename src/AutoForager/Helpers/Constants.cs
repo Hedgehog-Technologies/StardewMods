@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace AutoForager.Helpers
 {
@@ -150,6 +150,20 @@ namespace AutoForager.Helpers
 
 		private static readonly Dictionary<string, string> _knownCategoryLookup = new()
 		{
+			{ "107", "Category.Animal" },    // Dinosaur Egg
+			{ "442", "Category.Animal" },    // Duck Egg
+			{ "444", "Category.Animal" },    // Duck Feather
+			{ "180", "Category.Animal" },    // Egg (brown)
+			{ "176", "Category.Animal" },    // Egg (white)
+			{ "928", "Category.Animal" },    // Golden Egg
+			{ "182", "Category.Animal" },    // Large Egg (brown)
+			{ "174", "Category.Animal" },    // Large Egg (white)
+			{ "289", "Category.Animal" },    // Ostrich Egg
+			{ "446", "Category.Animal" },    // Rabbit's Foot
+			{ "430", "Category.Animal" },    // Truffle
+			{ "305", "Category.Animal" },    // Void Egg
+			{ "440", "Category.Animal" },    // Wool
+
 			{ "18", "Category.Spring" },     // Daffodil
 			{ "22", "Category.Spring" },     // Dandelion
 			{ "20", "Category.Spring" },     // Leek
@@ -190,10 +204,16 @@ namespace AutoForager.Helpers
 			{ "90", "Category.Desert" },     // Cactus Fruit
 			{ "88", "Category.Desert" },     // Coconut
 
+			{ "613",  "Category.Special" },  // Apple
+			{ "634",  "Category.Special" },  // Apricot
+			{ "638",  "Category.Special" },  // Cherry
 			{ "829",  "Category.Special" },  // Ginger
 			{ "Moss", "Category.Special" },  // Moss
+			{ "635",  "Cateogry.Special" },  // Orange
+			{ "636",  "Category.Special" },  // Peach
+			{ "637",  "Category.Special" },  // Pomegranate
+			{ "296",  "Category.Special" },  // Salmonberry
 			{ "399",  "Category.Special" },  // Sping Onion
-			{ "430",  "Category.Special" },  // Truffle
 		};
 		public static Dictionary<string, string> KnownCategoryLookup => _knownCategoryLookup;
 
@@ -232,5 +252,12 @@ namespace AutoForager.Helpers
 			"410"  // Blackberry
 		};
 		public static List<string> VanillaBushBlooms => _vanillaBushBlooms;
+
+		private static readonly Dictionary<string, int> _bigCraftableXpLookup = new()
+		{
+			{ "(BC)128", 5 },
+			{ "(BC)MushroomLog", 5 }
+		};
+		public static Dictionary<string, int> BigCraftableXpLookup => _bigCraftableXpLookup;
 	}
 }

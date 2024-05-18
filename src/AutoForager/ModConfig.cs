@@ -18,7 +18,7 @@ namespace AutoForager
 		private const string _gmcmUniqueId = "spacechase0.GenericModConfigMenu";
 
 		private readonly ForageableItemTracker _forageableTracker;
-		private IComparer<string> _comparer = new CategoryComparer();
+		private CategoryComparer _comparer = new();
 		private IMonitor? _monitor;
 		private JsonHelper _jsonHelper;
 
@@ -41,6 +41,12 @@ namespace AutoForager
 		public bool ForageArtifactSpots { get; set; }
 
 		public bool ForageSeedSpots { get; set; }
+
+		public bool ForageMushroomBoxes { get; set; }
+
+		public bool ForageMushroomLogs { get; set; }
+
+		public bool ForageTappers { get; set; }
 
 		public Dictionary<string, Dictionary<string, bool>> ForageToggles { get; set; }
 
@@ -77,6 +83,11 @@ namespace AutoForager
 			_jsonHelper = jsonHelper;
 		}
 
+		public void AddFtmCategories(Dictionary<string, string> ftmCategories)
+		{
+			_comparer.AddFtmCategories(ftmCategories);
+		}
+
 		public void ResetToDefault()
 		{
 			ToggleForagerKeybind = new KeybindList(
@@ -92,6 +103,9 @@ namespace AutoForager
 
 			ForageArtifactSpots = true;
 			ForageSeedSpots = true;
+			ForageMushroomBoxes = true;
+			ForageMushroomLogs = true;
+			ForageTappers = true;
 
 			foreach (var toggleDict in ForageToggles)
 			{
@@ -248,6 +262,7 @@ namespace AutoForager
 					gmcmApi.AddBoolOption(
 						mod: manifest,
 						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
+						tooltip: () => $"{item.ItemId} - {item.InternalName}",
 						getValue: () => item.IsEnabled,
 						setValue: val =>
 						{
@@ -295,6 +310,7 @@ namespace AutoForager
 					gmcmApi.AddBoolOption(
 						mod: manifest,
 						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
+						tooltip: () => $"{item.ItemId} - {item.InternalName}",
 						getValue: () => item.IsEnabled,
 						setValue: val =>
 						{
@@ -442,6 +458,39 @@ namespace AutoForager
 				getValue: () => ForageSeedSpots,
 				setValue: (val) => ForageSeedSpots = val);
 
+			// Mushroom Boxes
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_MushroomBoxes()),
+				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
+					I18n.Action_Forage_Future().ToLowerInvariant(),
+					I18n.Subject_MushroomBoxes(),
+					I18n.Reward_Mushrooms()),
+				getValue: () => ForageMushroomBoxes,
+				setValue: (val) => ForageMushroomBoxes = val);
+
+			// Mushroom Logs
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_MushroomLogs()),
+				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
+					I18n.Action_Forage_Future().ToLowerInvariant(),
+					I18n.Subject_MushroomLogs(),
+					I18n.Reward_Mushrooms()),
+				getValue: () => ForageMushroomLogs,
+				setValue: (val) => ForageMushroomLogs = val);
+
+			// Tappers
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_Tappers()),
+				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
+					I18n.Action_Forage_Future().ToLowerInvariant(),
+					I18n.Subject_Tappers(),
+					I18n.Reward_TappedTree()),
+				getValue: () => ForageTappers,
+				setValue: (val) => ForageTappers = val);
+
 			gmcmApi.AddParagraph(
 				mod: manifest,
 				text: I18n.Page_Forageables_Description);
@@ -457,6 +506,7 @@ namespace AutoForager
 					gmcmApi.AddBoolOption(
 						mod: manifest,
 						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
+						tooltip: () => $"{item.ItemId} - {item.InternalName}",
 						getValue: () => item.IsEnabled,
 						setValue: val =>
 						{

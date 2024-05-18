@@ -1,7 +1,9 @@
 ﻿{
-  "Action.Shake.Future": "Shake",
   "Action.Dig.Future": "Dig Up",
+  "Action.Forage.Future": "Forage",
+  "Action.Shake.Future": "Shake",
 
+  "Category.Animal": "Animals",
   "Category.Beach": "Beach",
   "Category.BushBlooms": "Bush Blooms",
   "Category.CustomBushes": "Custom Bushes",
@@ -76,7 +78,9 @@
   "Reward.Buried.Items": "Buried Items",
   "Reward.Buried.Seeds": "Buried Seeds",
   "Reward.GoldenWalnuts": "Golden Walnuts",
+  "Reward.Mushrooms": "Mushrooms",
   "Reward.Salmonberries": "Salmonberries",
+  "Reward.TappedTree": "Tree Byproducts",
   "Reward.TeaLeaves": "Tea Leaves",
 
   "Section.Bushes.Text": "Bush Toggles",
@@ -92,8 +96,12 @@
   "Subject.Bushes": "bushes",
   "Subject.BushBloomSchedules": "bush bloom schedules",
   "Subject.GingerRoots": "Ginger roots",
+  "Subject.MushroomBoxes": "Mushroom Boxes",
+  "Subject.MushroomLogs": "Mushroom Logs",
   "Subject.SalmonberryBushes": "Salmonberry bushes",
   "Subject.SeedSpot": "Seed Spot",
+  "Subject.SpawnableForageIds": "spawnable forage ids",
+  "Subject.Tappers": "Tappers",
   "Subject.TeaBushes": "Tea bushes",
   "Subject.WalnutBushes": "Walnut bushes"
 }
