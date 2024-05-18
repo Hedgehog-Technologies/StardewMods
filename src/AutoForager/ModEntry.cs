@@ -209,9 +209,11 @@ namespace AutoForager
 
 			_ignoreItemIds = new()
 			{
-				"(O)78",  // Cave Carrot
-				"(O)463", // Drum Block
-				"(O)464", // Flute Block
+				"(O)78",       // Cave Carrot
+				"(O)463",      // Drum Block
+				"(O)464",      // Flute Block
+				"(O)590",      // Artifact Spot
+				"(O)SeedSpot", // Seed Spot
 			};
 
 			_forageableTracker = ForageableItemTracker.Instance;
