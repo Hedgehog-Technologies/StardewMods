@@ -70,11 +70,14 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
 ### 3.5.0
-- Add automatic integration with Farm Type Manager
+- Add automatic integration with [Farm Type Manager](https://www.nexusmods.com/stardewvalley/mods/3231)
   - Content packs should no longer be needed going forward but will continue to work
   - Category names will likely be different as they are now pulled from the FTM content pack instead of the AF content packs
+  - Minimum version: **1.20.0**
   - Shoutout to [Esca-MMC](https://github.com/Esca-MMC) for supplying the API
+- Add options to forage Mushroom Boxes, Mushroom Logs, and Tappers
 - Add Animal products as a category for vanilla animal products
+- Add vanilla Fruit forageable toggles to help with the Fruit Bat cave option
 ### 3.4.3
 - Add additional safeguards around players clicking through title menu quickly
 ### 3.4.2

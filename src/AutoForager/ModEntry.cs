@@ -27,9 +27,6 @@ using Constants = AutoForager.Helpers.Constants;
 
 namespace AutoForager
 {
-	/// <summary>
-	/// The mod entry point.
-	/// </summary>
 	public class ModEntry : Mod
 	{
 		private ModConfig _config;
@@ -191,51 +188,30 @@ namespace AutoForager
 				"(O)180", // Egg (brown)
 				"(O)182", // Large Egg (brown)
 				"(O)289", // Ostrich Egg
+				"(O)296", // Salmonberry
 				"(O)305", // Void Egg
-				"(O)413", // Blue Slime Egg
 				"(O)416", // Snow Yam
 				"(O)430", // Truffle
-				"(O)437", // Red Slime Egg
-				"(O)439", // Purple Slime Egg
 				"(O)440", // Wool
 				"(O)442", // Duck Egg
 				"(O)444", // Duck Feather
 				"(O)446", // Rabbit's Foot
-				"(O)680", // Green Slime Egg
+				"(O)613", // Apple
+				"(O)634", // Apricot
+				"(O)635", // Orange
+				"(O)636", // Peach
+				"(O)637", // Pomegranate
+				"(O)638", // Cherry
 				"(O)851", // Magma Cap
-				"(O)857", // Tiger Slime Egg
 				"(O)928", // Golden Egg
 				"(O)Moss" // Moss
 			};
 
 			_ignoreItemIds = new()
 			{
-				"(O)2",   // Diamond Stone
-				"(O)4",   // Ruby Stone
-				"(O)76",  // Frozen Geode Stone
 				"(O)78",  // Cave Carrot
-				"(O)290", // Iron Stone
-				"(O)294", // Twig
-				"(O)295", // Twig
-				"(O)313", // Weeds - Fiber or Mixed Seeds
-				"(O)314", // Weeds - Fiber or Mixed Seeds
-				"(O)315", // Weeds - Fiber or Mixed Seeds
-				"(O)316", // Weeds - Fiber or Mixed Seeds
-				"(O)317", // Weeds - Fiber or Mixed Seeds
-				"(O)318", // Weeds - Fiber or Mixed Seeds
-				"(O)319", // Ice Crystal
-				"(O)320", // Ice Crystal
-				"(O)321", // Ice Crystal
-				"(O)343", // Stone Only Node
-				"(O)450", // Stone Only Node
 				"(O)463", // Drum Block
 				"(O)464", // Flute Block
-				"(O)668", // Stone Node with Coal
-				"(O)670", // Stone Node with Coal
-				"(O)751", // Copper Stone
-				"(O)760", // Stone Node
-				"(O)762", // Stone Node
-				"(O)765", // Iridium Stone
 			};
 
 			_forageableTracker = ForageableItemTracker.Instance;
@@ -436,7 +412,7 @@ namespace AutoForager
 
 						if (_ftmForageables.ContainsKey(itemId))
 						{
-							Monitor.Log($"Found repeat forageable: {itemId}", LogLevel.Debug);
+							Monitor.Log($"\tFound repeat forageable: {itemId}", LogLevel.Debug);
 						}
 						else
 						{
@@ -658,8 +634,8 @@ namespace AutoForager
 
 						_trackingCounts[Constants.ForageableKey].AddOrIncrement(objItem.DisplayName);
 					}
-					else if ((obj.QualifiedItemId.IEquals("(O)590") && _config.ForageArtifactSpots)
-						|| (obj.QualifiedItemId.IEquals("(O)SeedSpot") && _config.ForageSeedSpots))
+					else if ((_config.ForageArtifactSpots && obj.QualifiedItemId.IEquals("(O)590"))
+						|| (_config.ForageSeedSpots && obj.QualifiedItemId.IEquals("(O)SeedSpot")))
 					{
 						if (_config.RequireHoe && !Game1.player.Items.Any(i => i is Hoe))
 						{
@@ -692,6 +668,22 @@ namespace AutoForager
 							obj.performToolAction(tool);
 							_trackingCounts[Constants.ForageableKey].AddOrIncrement(obj.DisplayName);
 						}
+					}
+					else if (IsHarvestableMachine(obj))
+					{
+						var heldObj = obj.heldObject.Value;
+						Game1.createItemDebris(heldObj, vec * 64.0f, -1, null, -1);
+
+						obj.heldObject.Value = null;
+						obj.readyForHarvest.Value = false;
+						obj.showNextIndex.Value = false;
+
+						if (Constants.BigCraftableXpLookup.TryGetValue(obj.QualifiedItemId, out var xpAmount))
+						{
+							Game1.player.gainExperience(2, xpAmount);
+						}
+
+						_trackingCounts[Constants.ForageableKey].AddOrIncrement(heldObj.DisplayName);
 					}
 				}
 
@@ -857,6 +849,19 @@ namespace AutoForager
 			return true;
 		}
 
+		private bool IsHarvestableMachine(SObject obj)
+		{
+			if (!obj.bigCraftable.Value) return false;
+
+			var isMushroomBox = _config.ForageMushroomBoxes && obj.QualifiedItemId.IEquals("(BC)128");
+			var isMushroomLog = _config.ForageMushroomLogs && obj.QualifiedItemId.IEquals("(BC)MushroomLog");
+			var isTapper = _config.ForageTappers && obj.HasContextTag("tapper_item");
+
+			return (isMushroomBox || isMushroomLog || isTapper)
+				&& obj.readyForHarvest.Value
+				&& obj.heldObject.Value is not null;
+		}
+
 		private void EditFruitTrees(IAssetData asset)
 		{
 			var fruitTreeData = asset.AsDictionary<string, FruitTreeData>();
@@ -884,6 +889,7 @@ namespace AutoForager
 			foreach (var obj in objectData.Data)
 			{
 				if (_ignoreItemIds.Any(i => obj.Key.IEquals(i.Substring(3)))) continue;
+				if (obj.Value.Category == SObject.litterCategory) continue;
 
 				string? category = null;
 
