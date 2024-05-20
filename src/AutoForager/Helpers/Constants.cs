@@ -209,7 +209,7 @@ namespace AutoForager.Helpers
 			{ "638",  "Category.Special" },  // Cherry
 			{ "829",  "Category.Special" },  // Ginger
 			{ "Moss", "Category.Special" },  // Moss
-			{ "635",  "Cateogry.Special" },  // Orange
+			{ "635",  "Category.Special" },  // Orange
 			{ "636",  "Category.Special" },  // Peach
 			{ "637",  "Category.Special" },  // Pomegranate
 			{ "296",  "Category.Special" },  // Salmonberry
