@@ -512,10 +512,6 @@ namespace AutoForager
 						{
 							item.IsEnabled = val;
 							ForageToggles[Constants.ForagingToggleKey].AddOrUpdate(item.InternalName, val);
-							if (_forageableTracker.ArtifactForageables.TryGetItem(item.QualifiedItemId, out var artifact) && artifact is not null)
-							{
-								artifact.IsEnabled = val;
-							}
 							UpdateEnabled();
 						});
 				}

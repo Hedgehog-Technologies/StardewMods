@@ -109,27 +109,31 @@ namespace AutoForager
 		{
 			if (data is Dictionary<string, FruitTreeData> fruitTreeData)
 			{
+				Monitor.Log("Parsing Fruit Tree Data", LogLevel.Debug);
+
 				_forageableTracker.FruitTreeForageables.Clear();
 				_forageableTracker.FruitTreeForageables.AddRange(ForageableItem.ParseFruitTreeData(fruitTreeData, _config?.ForageToggles[Constants.FruitTreeToggleKey], Monitor));
 				_forageableTracker.FruitTreeForageables.SortByDisplayName();
-				Monitor.Log("Parsing Fruit Tree Data", LogLevel.Debug);
 			}
 			else if (data is Dictionary<string, LocationData> locationData)
 			{
 				if (ObjectCache is null || ObjectCache.Count == 0)
 				{
-					ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
 					Monitor.Log("Sub-Location: Grabbing Object Data", LogLevel.Debug);
+
+					ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
 				}
 
-				_forageableTracker.ArtifactForageables.Clear();
-				_forageableTracker.ArtifactForageables.AddRange(ForageableItem.ParseLocationData(ObjectCache, locationData, _config?.ForageToggles[Constants.ForagingToggleKey]));
-				_forageableTracker.ArtifactForageables.SortByDisplayName();
 				Monitor.Log("Parsing Location Data", LogLevel.Debug);
+
+				_forageableTracker.ObjectForageables.AddOrMergeCustomFieldsRange(ForageableItem.ParseLocationData(locationData, _config?.ForageToggles[Constants.ForagingToggleKey], Monitor));
+				_forageableTracker.ObjectForageables.SortByDisplayName();
 			}
 			else if (data is Dictionary<string, ObjectData> objectData)
 			{
 				var parsedObjectForageableItems = ForageableItem.ParseObjectData(objectData, _config, Monitor);
+
+				Monitor.Log("Parsing Object Data", LogLevel.Debug);
 
 				_forageableTracker.ObjectForageables.Clear();
 				_forageableTracker.ObjectForageables.AddRange(parsedObjectForageableItems.Item1);
@@ -139,27 +143,26 @@ namespace AutoForager
 				_forageableTracker.BushForageables.AddRange(parsedObjectForageableItems.Item2);
 				_forageableTracker.BushForageables.SortByDisplayName();
 
-				Monitor.Log("Parsing Object Data", LogLevel.Debug);
-
 				if (LocationCache is not null && LocationCache.Count > 0)
 				{
-					_forageableTracker.ArtifactForageables.Clear();
-					_forageableTracker.ArtifactForageables.AddRange(ForageableItem.ParseLocationData(objectData, LocationCache, _config?.ForageToggles[Constants.ForagingToggleKey]));
-					_forageableTracker.ArtifactForageables.SortByDisplayName();
 					Monitor.Log("Sub-Object: Parsing Location Data", LogLevel.Debug);
+					_forageableTracker.ObjectForageables.AddOrMergeCustomFieldsRange(ForageableItem.ParseLocationData(LocationCache, _config?.ForageToggles[Constants.ForagingToggleKey], Monitor));
+					_forageableTracker.ObjectForageables.SortByDisplayName();
 				}
 			}
 			else if (data is Dictionary<string, WildTreeData> wildTreeData)
 			{
+				Monitor.Log("Parsing Wild Tree Data", LogLevel.Debug);
+
 				_forageableTracker.WildTreeForageables.Clear();
 				_forageableTracker.WildTreeForageables.AddRange(ForageableItem.ParseWildTreeData(wildTreeData, _config?.ForageToggles[Constants.WildTreeToggleKey], Monitor));
 				_forageableTracker.WildTreeForageables.SortByDisplayName();
-				Monitor.Log("Parsing Wild Tree Data", LogLevel.Debug);
 			}
 
 			if (_config is not null && _gameStarted)
 			{
 				Monitor.Log("Reregistering Generic Mod Config Menu", LogLevel.Debug);
+
 				_config.RegisterModConfigMenu(Helper, ModManifest);
 			}
 		}
@@ -633,6 +636,8 @@ namespace AutoForager
 					// Forageable Item
 					if (_forageableTracker.ObjectForageables.TryGetItem(obj.QualifiedItemId, out var objItem) && (objItem?.IsEnabled ?? false))
 					{
+						if (!obj.IsSpawnedObject) continue;
+
 						ForageItem(obj, vec, Utility.CreateDaySaveRandom(vec.X, vec.Y * 777f), 7, true);
 
 						Game1.player.currentLocation.removeObject(vec, false);

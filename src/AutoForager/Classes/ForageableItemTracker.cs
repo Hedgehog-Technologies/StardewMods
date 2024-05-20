@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace AutoForager.Classes
@@ -11,9 +11,6 @@ namespace AutoForager.Classes
 		public static ForageableItemTracker Instance => _lazyInstance.Value;
 
 		// ---------- Trackers ---------- //
-
-		private readonly List<ForageableItem> _artifactForageables;
-		public List<ForageableItem> ArtifactForageables => _artifactForageables;
 
 		private readonly List<ForageableItem> _bushForageables;
 		public List<ForageableItem> BushForageables => _bushForageables;
@@ -34,7 +31,6 @@ namespace AutoForager.Classes
 
 		private ForageableItemTracker()
 		{
-			_artifactForageables = new();
 			_bushForageables = new();
 			_caveForageables = new();
 			_fruitTreeForageables = new();
