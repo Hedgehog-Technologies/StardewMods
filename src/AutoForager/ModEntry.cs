@@ -210,9 +210,13 @@ namespace AutoForager
 			_ignoreItemIds = new()
 			{
 				"(O)78",       // Cave Carrot
+				"(O)166",      // Treasure Chest
 				"(O)463",      // Drum Block
 				"(O)464",      // Flute Block
 				"(O)590",      // Artifact Spot
+				"(O)922",      // Supply Crate
+				"(O)923",      // Supply Crate
+				"(O)924",      // Supply Crate
 				"(O)SeedSpot", // Seed Spot
 			};
 
@@ -1103,7 +1107,7 @@ namespace AutoForager
 			Game1.player.gainExperience(2, xpGained);
 			Game1.createItemDebris(obj.getOne(), vec, -1, null, -1);
 
-			if (checkGatherer && professions.Contains(13) && random.NextDouble() < 0.2)
+			if (checkGatherer && isForage && professions.Contains(13) && random.NextDouble() < 0.2)
 			{
 				Game1.player.gainExperience(2, xpGained);
 				Game1.createItemDebris(obj.getOne(), vec, -1, null, -1);
