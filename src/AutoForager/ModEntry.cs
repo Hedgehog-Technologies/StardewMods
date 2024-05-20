@@ -681,10 +681,9 @@ namespace AutoForager
 						obj.showNextIndex.Value = false;
 						obj.ResetParentSheetIndex();
 
-						if (obj.HasContextTag("tapper_item"))
+						if (obj.HasContextTag("tapper_item") && feature is Tree tree)
 						{
-							var tree = feature as Tree;
-							tree?.UpdateTapperProduct(obj, heldObj);
+							tree.UpdateTapperProduct(obj, heldObj);
 						}
 
 						if (Constants.BigCraftableXpLookup.TryGetValue(obj.QualifiedItemId, out var xpAmount))
