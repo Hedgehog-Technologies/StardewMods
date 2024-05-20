@@ -69,6 +69,8 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.5.2
+- Fix tappers being delayed by a day when auto foraged from
 ### 3.5.1
 - Fix picking up artifact and seed spots
 ### 3.5.0

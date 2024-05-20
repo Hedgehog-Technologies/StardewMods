@@ -679,6 +679,13 @@ namespace AutoForager
 						obj.heldObject.Value = null;
 						obj.readyForHarvest.Value = false;
 						obj.showNextIndex.Value = false;
+						obj.ResetParentSheetIndex();
+
+						if (obj.HasContextTag("tapper_item"))
+						{
+							var tree = feature as Tree;
+							tree?.UpdateTapperProduct(obj, heldObj);
+						}
 
 						if (Constants.BigCraftableXpLookup.TryGetValue(obj.QualifiedItemId, out var xpAmount))
 						{
