@@ -683,6 +683,8 @@ namespace AutoForager
 					else if (IsHarvestableMachine(obj))
 					{
 						var heldObj = obj.heldObject.Value;
+						heldObj.FixQuality();
+						heldObj.FixStackSize();
 						Game1.createItemDebris(heldObj, vec * 64.0f, -1, null, -1);
 
 						obj.heldObject.Value = null;
