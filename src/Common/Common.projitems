@@ -24,6 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\TreeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\JsonHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IContentPatcherApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Interfaces\IGenericModConfigMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\ItemUtilities.cs" />
   </ItemGroup>

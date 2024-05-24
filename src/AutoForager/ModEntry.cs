@@ -121,7 +121,7 @@ namespace AutoForager
 				{
 					Monitor.Log("Sub-Location: Grabbing Object Data", LogLevel.Debug);
 
-					ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
+					ObjectCache = DataLoader.Objects(Game1.content);
 				}
 
 				Monitor.Log("Parsing Location Data", LogLevel.Debug);
@@ -268,19 +268,19 @@ namespace AutoForager
 
 			if (name.IEquals(Constants.FruitTreesAssetName))
 			{
-				FruitTreeCache = Game1.content.Load<Dictionary<string, FruitTreeData>>(Constants.FruitTreesAssetName);
+				FruitTreeCache = DataLoader.FruitTrees(Game1.content);
 			}
 			else if (name.IEquals(Constants.LocationsAssetName))
 			{
-				LocationCache = Game1.content.Load<Dictionary<string, LocationData>>(Constants.LocationsAssetName);
+				LocationCache = DataLoader.Locations(Game1.content);
 			}
 			else if (name.IEquals(Constants.ObjectsAssetName))
 			{
-				ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
+				ObjectCache = DataLoader.Objects(Game1.content);
 			}
 			else if (name.IEquals(Constants.WildTreesAssetName))
 			{
-				WildTreeCache = Game1.content.Load<Dictionary<string, WildTreeData>>(Constants.WildTreesAssetName);
+				WildTreeCache = DataLoader.WildTrees(Game1.content);
 			}
 		}
 
@@ -307,10 +307,10 @@ namespace AutoForager
 		{
 			ItemRegistry.ResetCache();
 
-			FruitTreeCache = Game1.content.Load<Dictionary<string, FruitTreeData>>(Constants.FruitTreesAssetName);
-			WildTreeCache = Game1.content.Load<Dictionary<string, WildTreeData>>(Constants.WildTreesAssetName);
-			ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
-			LocationCache = Game1.content.Load<Dictionary<string, LocationData>>(Constants.LocationsAssetName);
+			FruitTreeCache = DataLoader.FruitTrees(Game1.content);
+			WildTreeCache = DataLoader.WildTrees(Game1.content);
+			ObjectCache = DataLoader.Objects(Game1.content);
+			LocationCache = DataLoader.Locations(Game1.content);
 
 			_config.UpdateUtilities(Monitor, Helper.ContentPacks.GetOwned(), _jsonHelper);
 			_config.RegisterModConfigMenu(Helper, ModManifest);
@@ -350,7 +350,6 @@ namespace AutoForager
 			_previousTilePosition = Game1.player.Tile;
 		}
 
-		[EventPriority(EventPriority.High)]
 		private async void InitializeMod(object? sender, UpdateTickedEventArgs e)
 		{
 			if (IsTitleMenuInteractable() || Context.IsPlayerFree)
@@ -440,10 +439,10 @@ namespace AutoForager
 					Monitor.Log($"{ex.Message}{Environment.NewLine}{ex.StackTrace}", LogLevel.Warn);
 				}
 
-				FruitTreeCache = Game1.content.Load<Dictionary<string, FruitTreeData>>(Constants.FruitTreesAssetName);
-				WildTreeCache = Game1.content.Load<Dictionary<string, WildTreeData>>(Constants.WildTreesAssetName);
-				ObjectCache = Game1.content.Load<Dictionary<string, ObjectData>>(Constants.ObjectsAssetName);
-				LocationCache = Game1.content.Load<Dictionary<string, LocationData>>(Constants.LocationsAssetName);
+				FruitTreeCache = DataLoader.FruitTrees(Game1.content);
+				WildTreeCache = DataLoader.WildTrees(Game1.content);
+				ObjectCache = DataLoader.Objects(Game1.content);
+				LocationCache = DataLoader.Locations(Game1.content);
 
 				_config.AddFtmCategories(_ftmForageables);
 				_config.RegisterModConfigMenu(Helper, ModManifest);
