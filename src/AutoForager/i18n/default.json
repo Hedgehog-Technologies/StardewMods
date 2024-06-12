@@ -85,9 +85,11 @@
   "Reward.TappedTree": "Tree Byproducts",
   "Reward.TeaLeaves": "Tea Leaves",
 
+  "Section.Advanced.Text": "Advanced",
   "Section.Bushes.Text": "Bush Toggles",
   "Section.FruitTrees.Text": "Fruit Tree Toggles",
   "Section.General.Text": "General Options",
+  "Section.TogglePages.Text": "Categorized Toggles",
   "Section.WildTree.Text": "Wild Tree Toggles",
 
   "State.Activated": "ACTIVATED",

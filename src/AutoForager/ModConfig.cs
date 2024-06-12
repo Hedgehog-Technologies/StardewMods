@@ -218,6 +218,10 @@ namespace AutoForager
 
 			/* Page Links Section */
 
+			gmcmApi.AddSectionTitle(
+				mod: manifest,
+				text: I18n.Section_TogglePages_Text);
+
 			gmcmApi.AddPageLink(
 				mod: manifest,
 				pageId: Constants.BushesPageId,
@@ -237,6 +241,12 @@ namespace AutoForager
 				mod: manifest,
 				pageId: Constants.WildTreesPageId,
 				text: I18n.Link_WildTrees_Text);
+
+			/* Advanced Section */
+
+			gmcmApi.AddSectionTitle(
+				mod: manifest,
+				text: I18n.Section_Advanced_Text);
 
 			gmcmApi.AddBoolOption(
 				mod: manifest,

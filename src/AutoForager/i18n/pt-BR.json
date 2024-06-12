@@ -85,9 +85,11 @@
   "Reward.TappedTree": "Tree Byproducts", // TODO
   "Reward.TeaLeaves": "Folhas de Chá",
 
+  "Section.Advanced.Text": "Advanced", // TODO
   "Section.Bushes.Text": "Alterrâncias de Bush",
   "Section.FruitTrees.Text": "Alternâncias de árvores frutíferas",
   "Section.General.Text": "Opções Gerais",
+  "Section.TogglePages.Text": "Categorized Toggles", // TODO
   "Section.WildTree.Text": "Alternâncias de Árvore Selvagem",
 
   "State.Activated": "ATIVADO",
