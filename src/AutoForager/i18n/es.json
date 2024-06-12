@@ -45,6 +45,8 @@
 
   "Note.ShakeWalnutBushes": "Estas nueces fueron pensadas para ser contenido más tardío del juego y difíciles de encontrar. Habilitar esta función aleatoriza este contenido hasta cierto punto.",
 
+  "Option.ElevateDebugLogs.Name": "Elevate Debug Logs", // TODO
+  "Option.ElevateDebugLogs.Tooltip": "Whether or not debug logging should be elevated to the SMAPI console", // TODO
   "Option.FruitsReadyToShake.Name": "Frutos mínimos listos para zarandear",
   "Option.FruitsReadyToShake.Tooltip": "Cantidad mínima de frutos que un Árbol Frutal debe tener para que AutoForager zarandée el árbol.",
   "Option.IgnoreMushroomLogTrees.Name": "Skip Moss-Covered Trees near{{whitespace}}Mushroom Logs?", // TODO

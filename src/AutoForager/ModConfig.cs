@@ -30,6 +30,7 @@ namespace AutoForager
 		public bool RequireHoe { get; set; }
 		public bool RequireToolMoss { get; set; }
 		public bool IgnoreMushroomLogTrees { get; set; }
+		public bool ElevateDebugLogs { get; set; }
 
 		private int _fruitsReadyToShake;
 		public int FruitsReadyToShake
@@ -99,6 +100,7 @@ namespace AutoForager
 			RequireHoe = true;
 			RequireToolMoss = true;
 			IgnoreMushroomLogTrees = true;
+			ElevateDebugLogs = false;
 			FruitsReadyToShake = Constants.MinFruitsReady;
 
 			ForageArtifactSpots = true;
@@ -235,6 +237,13 @@ namespace AutoForager
 				mod: manifest,
 				pageId: Constants.WildTreesPageId,
 				text: I18n.Link_WildTrees_Text);
+
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: I18n.Option_ElevateDebugLogs_Name,
+				tooltip: I18n.Option_ElevateDebugLogs_Tooltip,
+				getValue: () => ElevateDebugLogs,
+				setValue: (val) => ElevateDebugLogs = val);
 
 			/* Wild Trees */
 
@@ -547,6 +556,13 @@ namespace AutoForager
 			}
 
 			helper?.WriteConfig(this);
+		}
+
+		public LogLevel DebugLogLevel()
+		{
+			return ElevateDebugLogs
+				? LogLevel.Debug
+				: LogLevel.Trace;
 		}
 
 		private static void UpdateTrackerEnables(List<ForageableItem> items, Dictionary<string, bool> dict)
