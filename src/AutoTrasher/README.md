@@ -17,16 +17,22 @@ This mod allows users to specify items that they would like to automatically be 
   - Keybind(s) that are used to add an item to the Trash List
     - *Note:* You must be hovering over the item you wanted to add to the Trash List when using this functionality
   - *Default:* `LeftAlt + X, RightAlt + X`
+- `ReclaimableItemCount`
+  - Number of items to keep a history of as reclaimable
+  - *Default:* `10`
+- `AllowAllItems`
+  - Whether or not to allow adding all types of items to the Trash List
+  - *Default:* `false`
 - `TrashList`
   - List of Object Ids that will be automatically sent to the trash when entering your inventory
-    - *Note:* The Auto Trasher only works with Object type items from the `Data\Objects` data file
+    - *Note:* By **Default** the Auto Trasher only works with Object type items from the `Data\Objects` data file, this can be overriden by setting `AllowAllItems` to `true`
   - *Default:* `[ "168", "169", "170", "171", "172", "747", "748" ]`
     - *Note:* This list equates to `[ Trash, Driftwood, Broken Glasses, Broken CD, Soggy Newspaper, Rotten Plant, Rotten Plant ]`
 
 ### Translation
 &nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By
 :--------: | :-------------: | :------------------: | :---------------: | :------------:
-Chinese    | ✔              | ✔                   | 🤖                | n/a
+Chinese    | ✔              | ✔                   | ✔                | [Alvaire](https://www.nexusmods.com/stardewvalley/users/218635113)
 French     | ✔              | ✔                   | 🤖                | n/a
 German     | ✔              | ✔                   | 🤖                | n/a
 Hungarian  | ✔              | ✔                   | 🤖                | n/a
@@ -65,6 +71,11 @@ Ukrainian  | ✔              | ✔                   | 🤖                | n/
 
 ## Releases
 Releases can be found [Github](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/23663) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-trasher) site.
+### 1.2.0
+- Added an option in the config to allow all types of items to be added to the trash list
+  - This options defaults to off
+- Updated Chinese (simplified) translations
+  - Thanks to [Alvaire](https://www.nexusmods.com/stardewvalley/users/218635113) for the updated translations
 ### 1.1.0
 - Add Reclaim item functionality
 - Items will not be trashed immediately from inventory when added to Trash List

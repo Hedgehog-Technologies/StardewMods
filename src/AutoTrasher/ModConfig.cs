@@ -28,6 +28,8 @@ namespace AutoTrasher
 			get => _reclaimableItemCount;
 			set => _reclaimableItemCount = Math.Clamp(value, _minReclaimItems, _maxReclaimItems);
 		}
+
+		public bool AllowAllItems { get; set; }
 		public List<string> TrashList { get; set; }
 
 		public ModConfig()
@@ -59,6 +61,8 @@ namespace AutoTrasher
 			AddTrashKeybind = new KeybindList(
 				new Keybind(SButton.LeftAlt, SButton.X),
 				new Keybind(SButton.RightAlt, SButton.X));
+
+			AllowAllItems = false;
 
 			ReclaimableItemCount = 10;
 		}
@@ -135,6 +139,13 @@ namespace AutoTrasher
 					ReclaimableItemCount = val;
 					reclaimItems.UpdateMaxSize(ReclaimableItemCount);
 				});
+
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: I18n.Option_AllowAllItems_Name,
+				tooltip: I18n.Option_AllowAllItems_Tooltip,
+				getValue: () => AllowAllItems,
+				setValue: (val) => AllowAllItems = val);
 		}
 	}
 }

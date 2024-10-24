@@ -14,6 +14,8 @@
 
   "Option.AddTrashKeybind.Name": "Add Item to Trash List Keybind",
   "Option.AddTrashKeybind.Tooltip": "Keybinding to add the currently selected inventory item to the trash list",
+  "Option.AllowAllItems.Name": "Remove Trash List Item Restrictions",
+  "Option.AllowAllItems.Tooltip": "Allow all Item types to be added to the Trash List",
   "Option.ReclaimableItemCount.Name": "Maximum Reclaimable Item Amount",
   "Option.ReclaimableItemCount.Tooltip": "How many items to keep history of in the Reclaim Item List",
   "Option.OpenTrashMenuKeybind.Name": "Open Auto Trasher Menu Keybind",

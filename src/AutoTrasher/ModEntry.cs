@@ -55,13 +55,13 @@ namespace AutoTrasher
 
 					if (hoveredItem is not null)
 					{
-						if (hoveredItem is not SObject)
+						if (hoveredItem is not SObject && !_config.AllowAllItems)
 						{
 							notifMessage = I18n.Notification_AddTrash_Fail(hoveredItem.DisplayName);
 						}
-						else if (!_config.TrashList.Contains(hoveredItem.ItemId))
+						else if (!_config.TrashList.Contains(hoveredItem.QualifiedItemId))
 						{
-							_config.AddTrashItemToTrashList(hoveredItem.ItemId);
+							_config.AddTrashItemToTrashList(hoveredItem.QualifiedItemId);
 							RemoveItemFromInventory(hoveredItem);
 							notifMessage = I18n.Notification_AddTrash_Success(hoveredItem.DisplayName);
 							addNotifSubject = true;
@@ -84,7 +84,7 @@ namespace AutoTrasher
 						var message = new HUDMessage(notifMessage)
 						{
 							messageSubject = addNotifSubject ? hoveredItem : null,
-							type = $"autotrash_add_{hoveredItem?.ItemId ?? "-1"}",
+							type = $"autotrash_add_{hoveredItem?.QualifiedItemId ?? "-1"}",
 							whatType = HUDMessage.error_type
 						};
 
@@ -129,7 +129,7 @@ namespace AutoTrasher
 			foreach (var item in e.Added)
 			{
 				if (item is null) continue;
-				if (!_config.TrashList.Contains(item.ItemId)) continue;
+				if (!_config.TrashList.Contains(item.QualifiedItemId)) continue;
 
 				if (_ignoreItems.Contains(item))
 				{
@@ -162,7 +162,7 @@ namespace AutoTrasher
 					{
 						if (m.messageSubject is null) return false;
 
-						var isTrash = _config.TrashList.Contains(m.messageSubject.ItemId);
+						var isTrash = _config.TrashList.Contains(m.messageSubject.QualifiedItemId);
 						var isNotTrasherMessage = !m.type.IEquals(_trasherMessageType.FormatWith(m.messageSubject.Name));
 
 						return isTrash && isNotTrasherMessage;
