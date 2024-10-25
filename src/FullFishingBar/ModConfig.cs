@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 
@@ -19,13 +19,11 @@ namespace FullFishingBar
 		}
 
 		public bool ExceptBossFish { get; set; }
+		public bool AutoHook { get; set; }
 
 		public ModConfig()
 		{
-			IsEnabled = true;
-			OnlyCorkBobber = false;
-			_barSizePercentage = 1.0;
-			ExceptBossFish = false;
+			ResetToDefault();
 		}
 
 		public void ResetToDefault()
@@ -34,6 +32,7 @@ namespace FullFishingBar
 			OnlyCorkBobber = false;
 			_barSizePercentage = 1.0;
 			ExceptBossFish = false;
+			AutoHook = false;
 		}
 
 		public void RegisterModConfigMenu(IModHelper helper, IManifest manifest)
@@ -93,6 +92,13 @@ namespace FullFishingBar
 				tooltip: I18n.Option_ExceptBossFish_Tooltip,
 				getValue: () => ExceptBossFish,
 				setValue: (val) => ExceptBossFish = val);
+
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: I18n.Option_AutoHook_Name,
+				tooltip: I18n.Option_AutoHook_Tooltip,
+				getValue: () => AutoHook,
+				setValue: (val) => AutoHook = val);
 		}
 
 		public double GetBarSizePercentage() => Math.Clamp(_barSizePercentage, 0.1, 1.0);

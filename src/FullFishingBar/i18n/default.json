@@ -1,4 +1,6 @@
-{
+﻿{
+  "Option.AutoHook.Name": "Automatically Hook Fish?",
+  "Option.AutoHook.Tooltip": "Whether or not to automatically hook a fish when it nibbles on your line.",
   "Option.BarSizePercentage.Name": "Bobber Bar Size",
   "Option.BarSizePercentage.Tooltip": "What percentage of the playspace do you want the Bobber Bar to take up?",
   "Option.Enabled.Name": "Enabled?",
