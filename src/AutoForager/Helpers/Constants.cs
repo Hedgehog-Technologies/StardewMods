@@ -204,6 +204,12 @@ namespace AutoForager.Helpers
 			{ "90", "Category.Desert" },     // Cactus Fruit
 			{ "88", "Category.Desert" },     // Coconut
 
+			{ "852", "Category.Minerals" },  // Dragon Tooth
+			{ "86", "Category.Minerals" },   // Earth Crystal
+			{ "82", "Category.Minerals" },   // Fire Quartz
+			{ "84", "Category.Minerals" },   // Frozen Tear
+			{ "80", "Category.Minerals" },   // Quartz
+
 			{ "613",  "Category.Special" },  // Apple
 			{ "634",  "Category.Special" },  // Apricot
 			{ "638",  "Category.Special" },  // Cherry

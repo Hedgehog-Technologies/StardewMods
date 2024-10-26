@@ -30,12 +30,12 @@ namespace AutoForager
 	public class ModEntry : Mod
 	{
 		private ModConfig _config;
-		private JsonHelper _jsonHelper;
+		private readonly JsonHelper _jsonHelper;
 
 		private bool _isForagerActive = true;
 		private bool _gameStarted = false;
 		private Vector2 _previousTilePosition;
-		private List<Tree> _mushroomLogTrees = new();
+		private readonly List<Tree> _mushroomLogTrees = new();
 
 		private readonly List<string> _overrideItemIds;
 		private readonly List<string> _ignoreItemIds;
@@ -182,8 +182,11 @@ namespace AutoForager
 			_customTeaBushItems = new();
 			_ftmForageables = new();
 
-			_overrideItemIds = new()
-			{
+			_overrideItemIds = [
+				"(O)80",  // Quartz
+				"(O)82",  // Fire Quartz
+				"(O)84",  // Frozen Tear
+				"(O)86",  // Earth Crystal
 				"(O)107", // Dinosaur Egg
 				"(O)152", // Seaweed
 				"(O)174", // Large Egg (white)
@@ -206,12 +209,12 @@ namespace AutoForager
 				"(O)637", // Pomegranate
 				"(O)638", // Cherry
 				"(O)851", // Magma Cap
+				"(O)852", // Dragon Tooh
 				"(O)928", // Golden Egg
 				"(O)Moss" // Moss
-			};
+			];
 
-			_ignoreItemIds = new()
-			{
+			_ignoreItemIds = [
 				"(O)78",       // Cave Carrot
 				"(O)166",      // Treasure Chest
 				"(O)463",      // Drum Block
@@ -221,7 +224,7 @@ namespace AutoForager
 				"(O)923",      // Supply Crate
 				"(O)924",      // Supply Crate
 				"(O)SeedSpot", // Seed Spot
-			};
+			];
 
 			_forageableTracker = ForageableItemTracker.Instance;
 
@@ -773,9 +776,9 @@ namespace AutoForager
 				{
 					foreach (var vec in GetTilesToCheck(obj.TileLocation.ToPoint(), 3))
 					{
-						if (location.terrainFeatures.TryGetValue(vec, out var feat) && feat is Tree)
+						if (location.terrainFeatures.TryGetValue(vec, out var feat) && feat is Tree tree)
 						{
-							_mushroomLogTrees.AddDistinct((Tree)feat);
+							_mushroomLogTrees.AddDistinct(tree);
 						}
 					}
 				}

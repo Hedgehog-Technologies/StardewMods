@@ -69,6 +69,9 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.7.0
+- Add ability to auto-forage the following minerals
+  - Quartz, Earth Crystal, Frozen Tear, Fire Quartz, and Dragon Tooth
 ### 3.6.2
 - Adds French translations
   - Thanks to [WelshieFrenchie](https://github.com/WelshieFrenchie) for the contribution
