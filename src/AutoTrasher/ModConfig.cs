@@ -38,13 +38,13 @@ namespace AutoTrasher
 
 			TrashList = new List<string>
 			{
-				"168", // Trash
-				"169", // Driftwood
-				"170", // Broken Glasses
-				"171", // Broken CD
-				"172", // Soggy Newspaper
-				"747", // Rotten Plant
-				"748" // Rotten Plant
+				"(O)168", // Trash
+				"(O)169", // Driftwood
+				"(O)170", // Broken Glasses
+				"(O)171", // Broken CD
+				"(O)172", // Soggy Newspaper
+				"(O)747", // Rotten Plant
+				"(O)748" // Rotten Plant
 			};
 		}
 
@@ -67,9 +67,19 @@ namespace AutoTrasher
 			ReclaimableItemCount = 10;
 		}
 
-		public void AddHelper(IModHelper helper)
+		public void Initialize(IModHelper helper)
 		{
 			_helper = helper;
+
+			foreach (var item in new List<string>(TrashList))
+			{
+				if (!item.StartsWith('('))
+				{
+					TrashList.Remove(item);
+				}
+			}
+
+			helper.WriteConfig(this);
 		}
 
 		public void RemoveTrashItemFromTrashList(string itemId)

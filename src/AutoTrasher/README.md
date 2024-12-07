@@ -71,6 +71,10 @@ Ukrainian  | ✔              | ✔                   | 🤖                | n/
 
 ## Releases
 Releases can be found [Github](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/23663) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-trasher) site.
+### 1.2.1
+- Fix issue with default unqualified item ids
+  - Quick mitigation would be to remove the config to get the proper default values back
+  - Otherwise the mod will automatically remove any previously used, unqualified items from the list
 ### 1.2.0
 - Added an option in the config to allow all types of items to be added to the trash list
   - This options defaults to off

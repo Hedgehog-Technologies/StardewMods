@@ -27,7 +27,7 @@ namespace AutoTrasher
 			I18n.Init(helper.Translation);
 
 			_config = helper.ReadConfig<ModConfig>();
-			_config.AddHelper(helper);
+			_config.Initialize(helper);
 
 			_reclaimList.UpdateMaxSize(_config.ReclaimableItemCount);
 
