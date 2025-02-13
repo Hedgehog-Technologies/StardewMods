@@ -41,6 +41,6 @@ Italian    | [🤖](./src/AllowBeachSprinklers/i18n/it.json) | [❌](./src/AutoF
 Japanese   | [🤖](./src/AllowBeachSprinklers/i18n/ja.json) | [❌](./src/AutoForager/i18n)            | [🤖](./src/FullFishingBar/i18n/ja.json) | [🤖](./src/AutoTrasher/i18n/ja.json)
 Korean     | [🤖](./src/AllowBeachSprinklers/i18n/ko.json) | [❌](./src/AutoForager/i18n)            | [🤖](./src/FullFishingBar/i18n/ko.json) | [🤖](./src/AutoTrasher/i18n/ko.json)
 Portuguese | [🤖](./src/AllowBeachSprinklers/i18n/pt.json) | [❔](./src/AutoForager/i18n/pt-BR.json) | [🤖](./src/FullFishingBar/i18n/pt.json) | [🤖](./src/AutoTrasher/i18n/pt.json)
-Russian    | [🤖](./src/AllowBeachSprinklers/i18n/ru.json) | [❌](./src/AutoForager/i18n)            | [🤖](./src/FullFishingBar/i18n/ru.json) | [🤖](./src/AutoTrasher/i18n/ru.json)
+Russian    | [🤖](./src/AllowBeachSprinklers/i18n/ru.json) | [✔](./src/AutoForager/i18n/ru.json)     | [🤖](./src/FullFishingBar/i18n/ru.json) | [🤖](./src/AutoTrasher/i18n/ru.json)
 Spanish    | [🤖](./src/AllowBeachSprinklers/i18n/es.json) | [❔](./src/AutoForager/i18n/es.json)    | [🤖](./src/FullFishingBar/i18n/es.json) | [🤖](./src/AutoTrasher/i18n/es.json)
 Turkish    | [🤖](./src/AllowBeachSprinklers/i18n/tr.json) | [❌](./src/AutoForager/i18n)            | [🤖](./src/FullFishingBar/i18n/tr.json) | [🤖](./src/AutoTrasher/i18n/tr.json)
