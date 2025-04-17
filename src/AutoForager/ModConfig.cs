@@ -186,6 +186,8 @@ namespace AutoForager
 				fieldId: Constants.ShakeDistanceId,
 				name: I18n.Option_ShakeDistance_Name,
 				tooltip: () => I18n.Option_ShakeDistance_Tooltip(I18n.Option_UsePlayerMagnetism_Name()),
+				min: Constants.MinForageRadius,
+				max: Constants.MaxForageRadius,
 				getValue: () => ShakeDistance,
 				setValue: val => ShakeDistance = val);
 

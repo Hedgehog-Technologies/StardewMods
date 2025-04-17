@@ -148,6 +148,9 @@ namespace AutoForager.Helpers
 
 		#endregion
 
+		public const int MinForageRadius = 2;
+		public const int MaxForageRadius = 10;
+
 		private static readonly Dictionary<string, string> _knownCategoryLookup = new()
 		{
 			{ "107", "Category.Animal" },    // Dinosaur Egg

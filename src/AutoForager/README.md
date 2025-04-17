@@ -23,7 +23,7 @@ You can find a breakdown of the config values [here](./docs/config.md)
 ### Translation
 &nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By
 :--------: | :-------------: | :------------------: | :---------------: | :------------:
-Chinese    | ✔              | ✔                    | ❌                | [Krobus](https://www.nexusmods.com/users/127351118)
+Chinese    | ✔              | ✔                    | ✔                | [Krobus](https://www.nexusmods.com/users/127351118), [Qianguang](https://www.nexusmods.com/users/196008176)
 French     | ✔              | ✔                    | ✔                 | [WelshieFrenchie](https://github.com/WelshieFrenchie)
 German     | ✔              | ❌                   | ❌                | n/a
 Hungarian  | ✔              | ❌                   | ❌                | n/a
@@ -69,6 +69,10 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.7.2
+- Force clamp forageable radius to at least 2 tiles and at most 10 tiles
+- Update Chinese translations
+  - Thanks to [Qianguang](https://www.nexusmods.com/users/196008176) for the contribution
 ### 3.7.1
 - Add Russian translations
   - Thanks to [Ognejar](https://github.com/Ognejar) for the contribution
