@@ -646,7 +646,13 @@ namespace AutoForager
 
 						ForageItem(obj, vec, Utility.CreateDaySaveRandom(vec.X, vec.Y * 777f), 7, true);
 
-						Game1.player.currentLocation.removeObject(vec, false);
+						if (Game1.player.currentLocation.removeObject(vec, false) == null)
+						{
+							// Failed to remove object the proper way for some reason (likely because custom object didn't have canBeGrabbed flag set to true)
+							// Lets force it to prevent infinite spawns
+							Game1.player.currentLocation.objects.Remove(vec);
+						}
+
 						Game1.playSound("harvest");
 
 						_trackingCounts[Constants.ForageableKey].AddOrIncrement(objItem.DisplayName);
