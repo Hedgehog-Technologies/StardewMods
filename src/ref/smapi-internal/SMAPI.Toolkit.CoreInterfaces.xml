@@ -37,9 +37,6 @@
         <member name="P:StardewModdingAPI.IManifest.Dependencies">
             <summary>The other mods that must be loaded before this mod.</summary>
         </member>
-        <member name="P:StardewModdingAPI.IManifest.PrivateAssemblies">
-            <summary>The assemblies in the mod folder which should only be referenced by this mod. These will be ignored when another mod tries to use assemblies with the same names.</summary>
-        </member>
         <member name="P:StardewModdingAPI.IManifest.UpdateKeys">
             <summary>The namespaced mod IDs to query for updates (like <c>Nexus:541</c>).</summary>
         </member>
@@ -66,15 +63,6 @@
         </member>
         <member name="P:StardewModdingAPI.IManifestDependency.IsRequired">
             <summary>Whether the dependency must be installed to use the mod.</summary>
-        </member>
-        <member name="T:StardewModdingAPI.IManifestPrivateAssembly">
-            <summary>An assembly which should only be referenced by the current mod. It will be ignored when another mod tries to use an assembly with the same name.</summary>
-        </member>
-        <member name="P:StardewModdingAPI.IManifestPrivateAssembly.Name">
-            <summary>The assembly name without metadata, like 'Newtonsoft.Json'.</summary>
-        </member>
-        <member name="P:StardewModdingAPI.IManifestPrivateAssembly.UsedDynamically">
-            <summary>Whether to disable warnings that an assembly seems to be unused, e.g. because it's accessed via reflection.</summary>
         </member>
         <member name="T:StardewModdingAPI.ISemanticVersion">
             <summary>A semantic version with an optional release tag.</summary>
