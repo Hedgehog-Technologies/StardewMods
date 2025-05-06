@@ -29,6 +29,7 @@ namespace AutoForager
 		public int ShakeDistance { get; set; }
 		public bool RequireHoe { get; set; }
 		public bool RequireToolMoss { get; set; }
+		public bool RequirePan { get; set; }
 		public bool IgnoreMushroomLogTrees { get; set; }
 		public bool ElevateDebugLogs { get; set; }
 
@@ -48,6 +49,7 @@ namespace AutoForager
 		public bool ForageMushroomLogs { get; set; }
 
 		public bool ForageTappers { get; set; }
+		public bool ForagePanningSpots { get; set; }
 
 		public Dictionary<string, Dictionary<string, bool>> ForageToggles { get; set; }
 
@@ -99,6 +101,7 @@ namespace AutoForager
 			ShakeDistance = 2;
 			RequireHoe = true;
 			RequireToolMoss = true;
+			RequirePan = true;
 			IgnoreMushroomLogTrees = true;
 			ElevateDebugLogs = false;
 			FruitsReadyToShake = Constants.MinFruitsReady;
@@ -108,6 +111,7 @@ namespace AutoForager
 			ForageMushroomBoxes = true;
 			ForageMushroomLogs = true;
 			ForageTappers = true;
+			ForagePanningSpots = true;
 
 			foreach (var toggleDict in ForageToggles)
 			{
@@ -206,6 +210,15 @@ namespace AutoForager
 				tooltip: I18n.Option_RequireToolMoss_Tooltip,
 				getValue: () => RequireToolMoss,
 				setValue: val => RequireToolMoss = val);
+
+			// RequirePan
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				fieldId: Constants.RequirePanId,
+				name: I18n.Option_RequirePan_Name,
+				tooltip: I18n.Option_RequirePan_Tooltip,
+				getValue: () => RequirePan,
+				setValue: val => RequirePan = val);
 
 			// IgnoreMushroomLogTrees
 			gmcmApi.AddBoolOption(
@@ -464,7 +477,7 @@ namespace AutoForager
 					I18n.Subject_ArtifactSpot(),
 					I18n.Reward_Buried_Items()),
 				getValue: () => ForageArtifactSpots,
-				setValue: (val) => ForageArtifactSpots = val);
+				setValue: val => ForageArtifactSpots = val);
 
 			// Seed Spots
 			gmcmApi.AddBoolOption(
@@ -475,7 +488,7 @@ namespace AutoForager
 					I18n.Subject_SeedSpot(),
 					I18n.Reward_Buried_Seeds()),
 				getValue: () => ForageSeedSpots,
-				setValue: (val) => ForageSeedSpots = val);
+				setValue: val => ForageSeedSpots = val);
 
 			// Mushroom Boxes
 			gmcmApi.AddBoolOption(
@@ -486,7 +499,7 @@ namespace AutoForager
 					I18n.Subject_MushroomBoxes(),
 					I18n.Reward_Mushrooms()),
 				getValue: () => ForageMushroomBoxes,
-				setValue: (val) => ForageMushroomBoxes = val);
+				setValue: val => ForageMushroomBoxes = val);
 
 			// Mushroom Logs
 			gmcmApi.AddBoolOption(
@@ -497,7 +510,7 @@ namespace AutoForager
 					I18n.Subject_MushroomLogs(),
 					I18n.Reward_Mushrooms()),
 				getValue: () => ForageMushroomLogs,
-				setValue: (val) => ForageMushroomLogs = val);
+				setValue: val => ForageMushroomLogs = val);
 
 			// Tappers
 			gmcmApi.AddBoolOption(
@@ -508,7 +521,17 @@ namespace AutoForager
 					I18n.Subject_Tappers(),
 					I18n.Reward_TappedTree()),
 				getValue: () => ForageTappers,
-				setValue: (val) => ForageTappers = val);
+				setValue: val => ForageTappers = val);
+
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_PanningSpots()),
+				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
+					I18n.Action_Sift_Future().ToLowerInvariant(),
+					I18n.Subject_PanningSpots(),
+					I18n.Reward_Ores()),
+				getValue: () => ForagePanningSpots,
+				setValue: val => ForagePanningSpots = val);
 
 			gmcmApi.AddParagraph(
 				mod: manifest,

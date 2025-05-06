@@ -12,6 +12,7 @@ using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.Locations;
 using StardewValley.GameData.Objects;
 using StardewValley.GameData.WildTrees;
+using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
@@ -723,6 +724,69 @@ namespace AutoForager
 					if (CheckBush(largeBush))
 					{
 						largeBush.performUseAction(vec);
+					}
+				}
+
+				// Paning location
+				if (_config.ForagePanningSpots)
+				{
+					var orePanVector = Game1.currentLocation.orePanPoint?.Value.ToVector2() ?? Vector2.Zero;
+					if (!orePanVector.Equals(Vector2.Zero) && orePanVector.Equals(vec))
+					{
+						var panItem = _config.RequirePan
+							? Game1.player.Items.FirstOrDefault(i => i is Pan, null) as Pan
+							: new Pan();
+
+						if (panItem != null)
+						{
+							var items = panItem.getPanItems(Game1.currentLocation, Game1.player);
+
+							if (items is not null && items.Count > 0)
+							{
+								var dist = Game1.player.TilePoint - (Game1.currentLocation.orePanPoint?.Value ?? Point.Zero);
+								var normal = dist.ToVector2();
+								normal.Normalize();
+
+								var currentVec = orePanVector;
+								while (currentVec != Game1.player.Tile)
+								{
+									currentVec += normal;
+
+									if (Game1.currentLocation.isTileLocationOpen(currentVec))
+									{
+										// once more for good measure
+										currentVec += normal;
+
+										foreach (var item in items)
+										{
+											if (item is not null)
+											{
+												Game1.createItemDebris(item, currentVec * 64.0f, -1);
+												_trackingCounts[Constants.ForageableKey].AddOrIncrement(item.DisplayName);
+											}
+										}
+
+										Game1.currentLocation.localSound("coin", orePanVector / 64f);
+										Game1.currentLocation.orePanPoint!.Value = Point.Zero;
+
+										for (int i = 0; i < panItem.UpgradeLevel - 1; i++)
+										{
+											if (Game1.currentLocation.performOrePanTenMinuteUpdate(Game1.random))
+											{
+												break;
+											}
+
+											if (Game1.random.NextDouble() < 0.5 && Game1.currentLocation.performOrePanTenMinuteUpdate(Game1.random) && !(Game1.currentLocation is IslandNorth))
+											{
+												break;
+											}
+										}
+
+										break;
+									}
+								}
+							}
+						}
 					}
 				}
 			}
