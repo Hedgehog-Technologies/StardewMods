@@ -467,10 +467,9 @@ namespace AutoForager
 			_previousTilePosition = Game1.player.Tile;
 			var playerTileLocationPoint = Game1.player.TilePoint;
 			var playerMagnetism = Game1.player.GetAppliedMagneticRadius();
-			var radius = Math.Clamp(
-				_config.UsePlayerMagnetism ? playerMagnetism / Game1.tileSize : _config.ShakeDistance,
-				Constants.MinForageRadius,
-				Constants.MaxForageRadius);
+			var radius = _config.UsePlayerMagnetism
+				? playerMagnetism / Game1.tileSize
+				: _config.ShakeDistance;
 
 			foreach (var vec in GetTilesToCheck(playerTileLocationPoint, radius))
 			{
