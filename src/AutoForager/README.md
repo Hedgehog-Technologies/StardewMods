@@ -23,8 +23,8 @@ You can find a breakdown of the config values [here](./docs/config.md)
 ### Translation
 &nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By
 :--------: | :-------------: | :------------------: | :---------------: | :------------:
-Chinese    | ✔              | ✔                    | ✔                | [Krobus](https://www.nexusmods.com/users/127351118), [Qianguang](https://www.nexusmods.com/users/196008176)
-French     | ✔              | ✔                    | ✔                 | [WelshieFrenchie](https://github.com/WelshieFrenchie)
+Chinese    | ✔              | ✔                    | ❌                | [Krobus](https://www.nexusmods.com/users/127351118), [Qianguang](https://www.nexusmods.com/users/196008176)
+French     | ✔              | ✔                    | ❌                 | [WelshieFrenchie](https://github.com/WelshieFrenchie)
 German     | ✔              | ❌                   | ❌                | n/a
 Hungarian  | ✔              | ❌                   | ❌                | n/a
 Italian    | ✔              | ❌                   | ❌                | n/a
@@ -32,7 +32,7 @@ Japanese   | ✔              | ❌                   | ❌                | n/a
 Korean     | ✔              | ❌                   | ❌                | n/a
 Polish     | ✔              | ❌                   | ❌                | n/a
 Portuguese | ✔              | ✔                    | ❌                | [NARCOAZAZAL](https://www.nexusmods.com/users/200703680)
-Russian    | ✔              | ✔                   | ✔                | [Ognejar](https://github.com/Ognejar)
+Russian    | ✔              | ✔                   | ❌                | [Ognejar](https://github.com/Ognejar)
 Spanish    | ✔              | ✔                    | ❌                | [ElviraCroft](https://github.com/ElviraCroft)
 Thai       | ✔              | ❌                   | ❌                | n/a
 Turkish    | ✔              | ❌                   | ❌                | n/a
@@ -69,6 +69,11 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 
 ## Releases
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
+### 3.8.0
+- Add ability to forage panning spots
+- Fix issue caused by generated forageables that would lead to infinitely foraging some items
+- Revert previous change to clamp forageable radius
+  - It became clear that some power users prefer to have a much larger radius and their computers are able to handle it, so I have reverted this change and instead recommend anyone having issues to disable "Use Player Magnetism" and set a value in Shake Distance that works for your circumstances
 ### 3.7.2
 - Force clamp forageable radius to at least 2 tiles and at most 10 tiles
 - Update Chinese translations
