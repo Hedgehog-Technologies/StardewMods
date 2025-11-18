@@ -79,16 +79,21 @@ namespace AutoForager.Classes
 						var fruitData = ItemRegistry.GetData(fruit.ItemId);
 						fruitData ??= ItemRegistry.GetData("(O)" + fruit.ItemId);
 
-						if (fruitData is not null)
+						if (fruitData is null)
 						{
-							if (configValues is not null && configValues.TryGetValue(fruitData.InternalName, out var configEnabled))
-							{
-								enabled = configEnabled;
-							}
-
-							forageItems.AddDistinct(new ForageableItem(fruitData, customFields, enabled));
+							monitor?.Log($"Failed to retrieve data for {fruit.ItemId} while parsing fruit tree with key: {kvp.Key}.{Environment.NewLine}" +
+								$"\tThis is likely due to a misconfiguration from the mod that tree is added by.{Environment.NewLine}" +
+								$"\tPlease reach out to that tree mod author with this information to get it fixed.{Environment.NewLine}" +
+								$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Warn);
+							continue;
 						}
-					}
+
+						if (configValues is not null && configValues.TryGetValue(fruitData.InternalName, out var configEnabled))
+						{
+							enabled = configEnabled;
+						}
+
+						forageItems.AddDistinct(new ForageableItem(fruitData, customFields, enabled));
 					catch (Exception ex)
 					{
 						monitor?.Log($"{kvp.Key} - {fruit?.ItemId} - {fruit?.ObjectInternalName}{Environment.NewLine}{ex.Message}{Environment.NewLine}{ex.StackTrace}", LogLevel.Error);
@@ -129,6 +134,15 @@ namespace AutoForager.Classes
 
 						var enabled = true;
 						var seedData = ItemRegistry.GetData(seedItem);
+
+						if (seedData is null)
+						{
+							monitor?.Log($"Failed to retrieve data for {seedItem} while parsing wild tree with key: {kvp.Key}.{Environment.NewLine}" +
+								$"\tThis is likely due to a misconfiguration from the mod that tree is added by.{Environment.NewLine}" +
+								$"\tPlease reach out to that tree mod author with this information to get it fixed.{Environment.NewLine}" +
+								$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Warn);
+							continue;
+						}
 
 						if (configValues is not null && configValues.TryGetValue(seedData.InternalName, out var configEnabled))
 						{
@@ -233,17 +247,23 @@ namespace AutoForager.Classes
 					var itemData = ItemRegistry.GetData(qualifiedItemId);
 					var internalName = itemData?.InternalName;
 
-					if (itemData is not null && internalName is not null)
+					if (itemData is null || internalName is null)
 					{
-						var enabled = true;
-
-						if (configValues is not null && configValues.TryGetValue(internalName, out var configEnabled))
-						{
-							enabled = configEnabled;
-						}
-
-						forageItems.AddDistinct(new ForageableItem(itemData, new() { { Constants.CustomFieldCategoryKey, "Locations" } }, enabled));
+						monitor?.Log($"Failed to retrieve data for {forageObj.ItemId} while parsing location: {location.DisplayName}.{Environment.NewLine}" +
+							$"\tThis is likely due to a misconfiguration from the mod that location is added by.{Environment.NewLine}" +
+							$"\tPlease reach out to that location mod author with this information to get it fixed.{Environment.NewLine}" +
+							$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Warn);
+						continue;
 					}
+
+					var enabled = true;
+
+					if (configValues is not null && configValues.TryGetValue(internalName, out var configEnabled))
+					{
+						enabled = configEnabled;
+					}
+
+					forageItems.AddDistinct(new ForageableItem(itemData, new() { { Constants.CustomFieldCategoryKey, "Locations" } }, enabled));
 				}
 			}
 
