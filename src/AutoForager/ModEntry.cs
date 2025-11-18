@@ -36,7 +36,8 @@ namespace AutoForager
 		private bool _isForagerActive = true;
 		private bool _gameStarted = false;
 		private Vector2 _previousTilePosition;
-		private readonly List<Tree> _mushroomLogTrees = new();
+		private readonly List<Tree> _mushroomLogTrees = [];
+		private readonly object _mushroomLogTreesLock = new();
 
 		private readonly List<string> _overrideItemIds;
 		private readonly List<string> _ignoreItemIds;
@@ -371,7 +372,7 @@ namespace AutoForager
 					{
 						if (_bushBloomItems.ContainsKey(itemId))
 						{
-							Monitor.LogOnce($"Already found an item with ItemId [{itemId}] with category [{_bushBloomItems[itemId]}] when trying to add category [{I18n.Category_BushBlooms()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+							Monitor.LogOnce($"Already found an item with ItemId [{itemId}] with category [{_bushBloomItems[itemId]}] when trying to add category [{I18n.Category_BushBlooms()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Info);
 						}
 						else
 						{
@@ -392,7 +393,7 @@ namespace AutoForager
 					{
 						if (_customTeaBushItems.ContainsKey(itemId))
 						{
-							Monitor.LogOnce($"Already found an item with ItemID [{itemId}] with category [{_customTeaBushItems[itemId]}] when trying to add category [{I18n.Category_CustomBushes()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Warn);
+							Monitor.LogOnce($"Already found an item with ItemID [{itemId}] with category [{_customTeaBushItems[itemId]}] when trying to add category [{I18n.Category_CustomBushes()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Info);
 						}
 						else
 						{
@@ -511,10 +512,15 @@ namespace AutoForager
 								&& _forageableTracker.ObjectForageables.TryGetItem("(O)Moss", out var mossItem)
 								&& (mossItem?.IsEnabled ?? false))
 							{
-								if (_config.IgnoreMushroomLogTrees
-									&& (_mushroomLogTrees.Contains(tree)
-										|| _mushroomLogTrees.Any(t => t.Tile.Equals(tree.Tile))))
-									continue;
+								var isMushroomLogTree = false;
+
+								lock (_mushroomLogTreesLock)
+								{
+									isMushroomLogTree = _mushroomLogTrees.Contains(tree)
+										|| _mushroomLogTrees.Any(t => t.Tile.Equals(tree.Tile));
+								}
+
+								if (_config.IgnoreMushroomLogTrees && isMushroomLogTree) continue;
 
 								Tool tool = new GenericTool { lastUser = Game1.player };
 
@@ -837,20 +843,23 @@ namespace AutoForager
 		{
 			var locObjects = location.Objects;
 
-			_mushroomLogTrees.Clear();
-
-			foreach (var kvp in locObjects.Pairs)
+			lock (_mushroomLogTreesLock)
 			{
-				var obj = kvp.Value;
-				if (obj is null) continue;
+				_mushroomLogTrees.Clear();
 
-				if (obj.QualifiedItemId.IEquals("(BC)MushroomLog"))
+				foreach (var kvp in locObjects.Pairs)
 				{
-					foreach (var vec in GetTilesToCheck(obj.TileLocation.ToPoint(), 3))
+					var obj = kvp.Value;
+					if (obj is null) continue;
+
+					if (obj.QualifiedItemId.IEquals("(BC)MushroomLog"))
 					{
-						if (location.terrainFeatures.TryGetValue(vec, out var feat) && feat is Tree tree)
+						foreach (var vec in GetTilesToCheck(obj.TileLocation.ToPoint(), 3))
 						{
-							_mushroomLogTrees.AddDistinct(tree);
+							if (location.terrainFeatures.TryGetValue(vec, out var feat) && feat is Tree tree)
+							{
+								_mushroomLogTrees.AddDistinct(tree);
+							}
 						}
 					}
 				}
