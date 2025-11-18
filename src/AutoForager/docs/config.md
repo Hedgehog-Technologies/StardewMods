@@ -1,4 +1,4 @@
-# Configuration Values
+﻿# Configuration Values
 
 ## General Options
 ### ToggleForagerKeybind
@@ -20,6 +20,10 @@
 - *Default* - **1**
 
 ## Forage Toggles
+
+> [!NOTE]
+> These are vanilla default values. Your config file may have additional toggles depending on what other mods you have installed.
+
 ### BushToggles
 #### Salmonberry
 - Whether or not bushes will be shaken during Salmonberry season
