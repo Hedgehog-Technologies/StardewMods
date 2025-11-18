@@ -36,8 +36,8 @@ namespace AutoForager
 		private bool _isForagerActive = true;
 		private bool _gameStarted = false;
 		private Vector2 _previousTilePosition;
-		private readonly List<Tree> _mushroomLogTrees = [];
-		private readonly object _mushroomLogTreesLock = new();
+		private readonly List<Tree> _mushroomLogTrees;
+		private readonly object _mushroomLogTreesLock;
 
 		private readonly List<string> _overrideItemIds;
 		private readonly List<string> _ignoreItemIds;
@@ -63,7 +63,7 @@ namespace AutoForager
 
 		#region Asset Cache
 
-		private Dictionary<string, FruitTreeData> _fruitTreeCache = new();
+		private Dictionary<string, FruitTreeData> _fruitTreeCache = [];
 		private Dictionary<string, FruitTreeData> FruitTreeCache
 		{
 			get => _fruitTreeCache;
@@ -74,7 +74,7 @@ namespace AutoForager
 			}
 		}
 
-		private Dictionary<string, LocationData> _locationCache = new();
+		private Dictionary<string, LocationData> _locationCache = [];
 		private Dictionary<string, LocationData> LocationCache
 		{
 			get => _locationCache;
@@ -85,7 +85,7 @@ namespace AutoForager
 			}
 		}
 
-		private Dictionary<string, ObjectData> _objectCache = new();
+		private Dictionary<string, ObjectData> _objectCache = [];
 		private Dictionary<string, ObjectData> ObjectCache
 		{
 			get => _objectCache;
@@ -96,7 +96,7 @@ namespace AutoForager
 			}
 		}
 
-		private Dictionary<string, WildTreeData> _wildTreeCache = new();
+		private Dictionary<string, WildTreeData> _wildTreeCache = [];
 		private Dictionary<string, WildTreeData> WildTreeCache
 		{
 			get => _wildTreeCache;
@@ -177,12 +177,15 @@ namespace AutoForager
 			_jsonHelper = new();
 			_gameStarted = false;
 
-			_cpForageables = new();
-			_cpFruitTrees = new();
-			_cpWildTrees = new();
-			_bushBloomItems = new();
-			_customTeaBushItems = new();
-			_ftmForageables = new();
+			_mushroomLogTrees = [];
+			_mushroomLogTreesLock = new();
+
+			_cpForageables = [];
+			_cpFruitTrees = [];
+			_cpWildTrees = [];
+			_bushBloomItems = [];
+			_customTeaBushItems = [];
+			_ftmForageables = [];
 
 			_overrideItemIds = [
 				"(O)80",  // Quartz
