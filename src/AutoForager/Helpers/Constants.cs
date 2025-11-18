@@ -92,8 +92,8 @@ namespace AutoForager.Helpers
 
 		private const string _fieldIdPrefix = "AutoForager.";
 
-		private const string _isForagerActiveId = _fieldIdPrefix + "IsForagerActive";
-		public static string IsForagerActiveId => _isForagerActiveId;
+		private const string _autoForagingEnabledId = _fieldIdPrefix + "AutoForagingEnabled";
+		public static string AutoForagingEnabledId => _autoForagingEnabledId;
 
 		private const string _toggleForagerId = _fieldIdPrefix + "ToggleForager";
 		public static string ToggleForagerId => _toggleForagerId;

@@ -33,7 +33,6 @@ namespace AutoForager
 		private ModConfig _config;
 		private readonly JsonHelper _jsonHelper;
 
-		private bool _isForagerActive = true;
 		private bool _gameStarted = false;
 		private Vector2 _previousTilePosition;
 		private readonly List<Tree> _mushroomLogTrees;
@@ -261,7 +260,7 @@ namespace AutoForager
 			helper.Events.GameLoop.DayEnding += OnDayEnding;
 			helper.Events.GameLoop.DayStarted += OnDayStarted;
 			helper.Events.GameLoop.UpdateTicked += InitializeMod;
-			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+			if (_config.AutoForagingEnabled) helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
 			helper.Events.Player.Warped += OnPlayerWarped;
 			helper.Events.World.ObjectListChanged += OnObjectListChanged;
@@ -806,17 +805,17 @@ namespace AutoForager
 			if (Game1.activeClickableMenu is not null) return;
 			if (!_config.ToggleForagerKeybind.JustPressed()) return;
 
-			_isForagerActive = !_isForagerActive;
+			_config.AutoForagingEnabled = !_config.AutoForagingEnabled;
 			Task.Run(() => Helper.WriteConfig(_config)).ContinueWith(t =>
 				Monitor.Log(t.Status == TaskStatus.RanToCompletion ? "Config saved successfully!" : $"Saving config unsuccessful {t.Status}", _config.DebugLogLevel()));
 
-			var state = _isForagerActive ? I18n.State_Activated() : I18n.State_Deactivated();
+			var state = _config.AutoForagingEnabled ? I18n.State_Activated() : I18n.State_Deactivated();
 			var message = I18n.Message_AutoForagerToggled(state);
 
 			Monitor.Log(message, LogLevel.Info);
 			Game1.addHUDMessage(new HUDMessage(message) { noIcon = true });
 
-			if (_isForagerActive)
+			if (_config.AutoForagingEnabled)
 			{
 				Helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 			}

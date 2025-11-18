@@ -24,6 +24,7 @@ namespace AutoForager
 
 		#region General Properties
 
+		public bool AutoForagingEnabled { get; set; }
 		public KeybindList ToggleForagerKeybind { get; set; } = new();
 		public bool UsePlayerMagnetism { get; set; }
 		public int ShakeDistance { get; set; }
@@ -97,6 +98,7 @@ namespace AutoForager
 				new Keybind(SButton.LeftAlt, SButton.H),
 				new Keybind(SButton.RightAlt, SButton.H));
 
+			AutoForagingEnabled = true;
 			UsePlayerMagnetism = false;
 			ShakeDistance = 2;
 			RequireHoe = true;
@@ -165,6 +167,14 @@ namespace AutoForager
 			gmcmApi.AddSectionTitle(
 				mod: manifest,
 				text: I18n.Section_General_Text);
+
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				fieldId: Constants.AutoForagingEnabledId,
+				name: I18n.Option_AutoForagingEnabled_Name,
+				tooltip: I18n.Option_AutoForagingEnabled_Tooltip,
+				getValue: () => AutoForagingEnabled,
+				setValue: val => AutoForagingEnabled = val);
 
 			// ToggleForager
 			gmcmApi.AddKeybindList(
