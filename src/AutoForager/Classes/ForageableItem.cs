@@ -94,6 +94,7 @@ namespace AutoForager.Classes
 						}
 
 						forageItems.AddDistinct(new ForageableItem(fruitData, customFields, enabled));
+					}
 					catch (Exception ex)
 					{
 						monitor?.Log($"{kvp.Key} - {fruit?.ItemId} - {fruit?.ObjectInternalName}{Environment.NewLine}{ex.Message}{Environment.NewLine}{ex.StackTrace}", LogLevel.Error);
