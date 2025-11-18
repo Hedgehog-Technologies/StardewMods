@@ -1,6 +1,8 @@
 ﻿# Release Notes
 
-## 3.8.1
+## 3.9.0
+- Made Auto Forager enabled state persistent across game sessions
+- Fix inconsistent behavior with ignoring trees near mushroom logs
 - Improve messaging when around pre-launch parsing fails for some items
 ## 3.8.0
 - Add ability to forage panning spots
