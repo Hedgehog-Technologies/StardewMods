@@ -719,7 +719,7 @@ namespace AutoForager
 
 						if (Constants.BigCraftableXpLookup.TryGetValue(obj.QualifiedItemId, out var xpAmount))
 						{
-							Game1.player.gainExperience(2, xpAmount);
+							Game1.player.gainExperience(Farmer.foragingSkill, xpAmount);
 						}
 
 						_trackingCounts[Constants.ForageableKey].AddOrIncrement(heldObj.DisplayName);
@@ -1178,6 +1178,7 @@ namespace AutoForager
 			var foragingLevel = (float)Game1.player.ForagingLevel;
 			var professions = Game1.player.professions;
 			var isForage = obj.isForage();
+			var skill = obj.isAnimalProduct() ? Farmer.farmingSkill : Farmer.foragingSkill;
 
 			if (professions.Contains(16) && isForage)
 			{
@@ -1197,12 +1198,12 @@ namespace AutoForager
 
 			vec *= 64.0f;
 
-			Game1.player.gainExperience(2, xpGained);
+			Game1.player.gainExperience(skill, xpGained);
 			Game1.createItemDebris(obj.getOne(), vec, -1, null, -1);
 
 			if (checkGatherer && isForage && professions.Contains(13) && random.NextDouble() < 0.2)
 			{
-				Game1.player.gainExperience(2, xpGained);
+				Game1.player.gainExperience(Farmer.foragingSkill, xpGained);
 				Game1.createItemDebris(obj.getOne(), vec, -1, null, -1);
 			}
 		}

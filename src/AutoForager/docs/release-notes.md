@@ -4,6 +4,7 @@
 Released TBD
 - Made Auto Forager enabled state persistent across game sessions
 - Fix inconsistent behavior with ignoring trees near mushroom logs
+- Give farming xp for farm animal products
 - Improve config state between game sessions for dynamically loaded content
 - Improve messaging when around pre-launch parsing fails for some items
 ## 3.8.0
