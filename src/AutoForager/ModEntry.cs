@@ -248,7 +248,7 @@ namespace AutoForager
 			I18n.Init(helper.Translation);
 			var packs = helper.ContentPacks.GetOwned();
 
-			_config = helper.ReadConfig<ModConfig>();
+			_config.Merge(helper.ReadConfig<ModConfig>());
 			_config.UpdateUtilities(Monitor, packs, _jsonHelper);
 			_config.UpdateEnabled(helper);
 
@@ -491,7 +491,7 @@ namespace AutoForager
 								|| (tree.GetData().ShakeItems?.Any(s => _forageableTracker.WildTreeForageables.Any(i => (s.ItemId.Contains(i.QualifiedItemId) || s.ItemId.Contains(i.ItemId)) && i.IsEnabled)) ?? false)))
 							{
 								tree.performUseAction(tree.Tile);
-								Monitor.Log($"Tree shaken: {string.Join(", ", seedItemIds)}", _config.DebugLogLevel());
+								Monitor.Log($"Tree shaken: Seeds: {string.Join(", ", seedItemIds)}; Items: {string.Join(", ", tree.GetData().ShakeItems?.Select(s => s.ItemId) ?? [])}", _config.DebugLogLevel());
 
 								foreach (var id in seedItemIds)
 								{

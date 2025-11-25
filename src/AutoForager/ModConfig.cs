@@ -140,6 +140,41 @@ namespace AutoForager
 			}
 		}
 
+		public void Merge(ModConfig b)
+		{
+			this.AutoForagingEnabled = b.AutoForagingEnabled;
+			this.ToggleForagerKeybind = b.ToggleForagerKeybind;
+			this.UsePlayerMagnetism = b.UsePlayerMagnetism;
+			this.ShakeDistance = b.ShakeDistance;
+			this.RequireHoe = b.RequireHoe;
+			this.RequireToolMoss = b.RequireToolMoss;
+			this.RequirePan = b.RequirePan;
+			this.IgnoreMushroomLogTrees = b.IgnoreMushroomLogTrees;
+			this.ElevateDebugLogs = b.ElevateDebugLogs;
+			this.FruitsReadyToShake = b.FruitsReadyToShake;
+			this.ForageArtifactSpots = b.ForageArtifactSpots;
+			this.ForageSeedSpots = b.ForageSeedSpots;
+			this.ForageMushroomBoxes = b.ForageMushroomBoxes;
+			this.ForageMushroomLogs = b.ForageMushroomLogs;
+			this.ForageTappers = b.ForageTappers;
+			this.ForagePanningSpots = b.ForagePanningSpots;
+
+			foreach (var kvp in b.ForageToggles)
+			{
+				if (!this.ForageToggles.ContainsKey(kvp.Key))
+				{
+					this.ForageToggles[kvp.Key] = new Dictionary<string, bool>(kvp.Value);
+				}
+				else
+				{
+					foreach (var innerKvp in kvp.Value)
+					{
+						this.ForageToggles[kvp.Key][innerKvp.Key] = innerKvp.Value;
+					}
+				}
+			}
+		}
+
 		public void RegisterModConfigMenu(IModHelper helper, IManifest manifest)
 		{
 			if (!helper.ModRegistry.IsLoaded(_gmcmUniqueId)) return;
@@ -621,8 +656,6 @@ namespace AutoForager
 					item.IsEnabled = toggle.Value;
 				}
 			}
-
-			dict.Clear();
 
 			foreach (var item in items)
 			{
