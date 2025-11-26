@@ -1,7 +1,7 @@
 ﻿# Release Notes
 
 ## 3.9.0
-Released TBD
+Released 2025-11-25
 - Made auto foraging state persistent across game sessions
 - Fix inconsistent behavior with ignoring trees near mushroom logs
 - Give farming xp for farm animal products
