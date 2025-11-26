@@ -2,7 +2,7 @@
 
 ## 3.9.0
 Released TBD
-- Made Auto Forager enabled state persistent across game sessions
+- Made auto foraging state persistent across game sessions
 - Fix inconsistent behavior with ignoring trees near mushroom logs
 - Give farming xp for farm animal products
 - Improve config state between game sessions for dynamically loaded content
