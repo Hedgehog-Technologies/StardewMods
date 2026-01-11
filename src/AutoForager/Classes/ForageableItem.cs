@@ -253,7 +253,7 @@ namespace AutoForager.Classes
 						if (forageObj.ItemId.Contains("RANDOM", StringComparison.OrdinalIgnoreCase))
 						{
 							monitor?.Log($"Found a RANDOM forage item entry while parsing location: {TokenParser.ParseText(location.DisplayName)}. Skipping over it as it cannot be parsed.{Environment.NewLine}" +
-								$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Info);)
+								$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Info);
 						}
 						else
 						{
