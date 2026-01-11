@@ -250,10 +250,19 @@ namespace AutoForager.Classes
 
 					if (itemData is null || internalName is null)
 					{
-						monitor?.Log($"Failed to retrieve data for {forageObj.ItemId} while parsing location: {location.DisplayName}.{Environment.NewLine}" +
-							$"\tThis is likely due to a misconfiguration from the mod that location is added by.{Environment.NewLine}" +
-							$"\tPlease reach out to that location mod author with this information to get it fixed.{Environment.NewLine}" +
-							$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Warn);
+						if (forageObj.ItemId.Contains("RANDOM", StringComparison.OrdinalIgnoreCase))
+						{
+							monitor?.Log($"Found a RANDOM forage item entry while parsing location: {TokenParser.ParseText(location.DisplayName)}. Skipping over it as it cannot be parsed.{Environment.NewLine}" +
+								$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Info);)
+						}
+						else
+						{
+							monitor?.Log($"Failed to retrieve data for {forageObj.ItemId} while parsing location: {TokenParser.ParseText(location.DisplayName)}.{Environment.NewLine}" +
+								$"\tThis is likely due to a misconfiguration from the mod that location is added by.{Environment.NewLine}" +
+								$"\tPlease reach out to that location mod author with this information to get it fixed.{Environment.NewLine}" +
+								$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Warn);
+						}
+
 						continue;
 					}
 
