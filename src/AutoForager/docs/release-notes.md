@@ -1,5 +1,9 @@
 ﻿# Release Notes
 
+## 3.9.1
+Released 2026-1-11
+- Fix issue where some log messages weren't being detokenized properly
+- Ignore "RANDOM (O)" item id when parsing forageables
 ## 3.9.0
 Released 2025-11-25
 - Made auto foraging state persistent across game sessions
