@@ -1,5 +1,9 @@
 ﻿# Release Notes
 
+## 3.9.2
+Released 2026-1-11
+- Fix issue where sometimes custom forage objects would be missing an ItemId when parsed from locations
+- Refactor forageable parsing to be more robust
 ## 3.9.1
 Released 2026-1-11
 - Fix issue where some log messages weren't being detokenized properly
