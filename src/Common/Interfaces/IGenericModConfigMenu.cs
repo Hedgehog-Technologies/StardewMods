@@ -9,6 +9,7 @@ namespace HedgeTech.Common.Interfaces
 {
 	public interface IGenericModConfigMenu
 	{
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 		/*********
 		** Methods
 		*********/
@@ -32,6 +33,7 @@ namespace HedgeTech.Common.Interfaces
 		/// <param name="text">The title text shown in the form.</param>
 		/// <param name="tooltip">The tooltip text shown when the cursor hovers on the title, or <c>null</c> to disable the tooltip.</param>
 		void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
+
 
 		/// <summary>Add a paragraph of text at the current position in the form.</summary>
 		/// <param name="mod">The mod's manifest.</param>
@@ -172,5 +174,6 @@ namespace HedgeTech.Common.Interfaces
 		/// <summary>Remove a mod from the config UI and delete all its options and pages.</summary>
 		/// <param name="mod">The mod's manifest.</param>
 		void Unregister(IManifest mod);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 	}
 }
