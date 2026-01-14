@@ -54,6 +54,13 @@ jobs:
       #     for i in */; do cd "$i"; for j in */; do zip -r "${j%/}.zip" "$j"; done; cd ..; done
       #     cd ../..
 
+      - name: Rename build zips
+        shell: pwsh
+        run: |
+          Rename-Item `
+            "src/_releases/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip" `
+            "src/_releases/${{ steps.split_outputs._0 }}.${{ steps.split.outputs._1 }}.zip"
+
       - name: Create GitHub Release
         uses: 'marvinpinto/action-automatic-releases@v1.2.1'
         id: auto_release
@@ -62,7 +69,14 @@ jobs:
           title: '${{ steps.split.outputs._0 }} @ v${{ steps.split.outputs._1 }}'
           prerelease: false
           automatic_release_tag: ${{ steps.split.outputs._1 }}+${{ steps.split.outputs._0 }}
-          files: 'src/_releases/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip'
+          files: 'src/_releases/${{ steps.split.outputs._0 }}.${{ steps.split.outputs._1 }}.zip'
+
+      - name: Generate attestations
+        uses: actions/attest-build-provenance@v2
+        id: attestation-step
+        with:
+          subject-path: |
+            src/_releases/${{ steps.split.outputs._0 }}.${{ steps.split.outputs._1 }}.zip
 
         env:
           CI: false
