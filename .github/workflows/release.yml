@@ -11,6 +11,7 @@ jobs:
     name: Build and created tagged release
     runs-on: ubuntu-latest
     permissions:
+      contents: write
       id-token: write
       attestations: write
 
@@ -63,14 +64,22 @@ jobs:
           mv "src/_releases/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip" "src/_releases/${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}.zip"
 
       - name: Create GitHub Release
-        uses: 'marvinpinto/action-automatic-releases@v1.2.1'
-        id: auto_release
+        uses: ncipollo/release-action@v1
         with:
-          repo_token: '${{ secrets.GITHUB_TOKEN }}'
-          title: '${{ steps.split.outputs._0 }} @ v${{ steps.split.outputs._1 }}'
-          prerelease: false
-          automatic_release_tag: ${{ steps.split.outputs._1 }}+${{ steps.split.outputs._0 }}
-          files: 'src/_releases/${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}.zip'
+          artifacts: 'src/_releases/${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}.zip'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.split.outputs._1 }}+${{ steps.split.outputs._0 }}
+          name: '${{ steps.split.outputs._0 }} @ v${{ steps.split.outputs._1 }}'
+
+      # - name: Create GitHub Release
+      #   uses: 'marvinpinto/action-automatic-releases@v1.2.1'
+      #   id: auto_release
+      #   with:
+      #     repo_token: '${{ secrets.GITHUB_TOKEN }}'
+      #     title: '${{ steps.split.outputs._0 }} @ v${{ steps.split.outputs._1 }}'
+      #     prerelease: false
+      #     automatic_release_tag: ${{ steps.split.outputs._1 }}+${{ steps.split.outputs._0 }}
+      #     files: 'src/_releases/${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}.zip'
 
       - name: Generate attestations
         uses: actions/attest-build-provenance@v2
