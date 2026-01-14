@@ -1,5 +1,8 @@
 ﻿# Release Notes
 
+## 3.9.3
+Released 2026-1-14
+- Fix issue where parsing some items from fruit trees would look for runtime conditionals
 ## 3.9.2
 Released 2026-1-11
 - Fix issue where sometimes custom forage objects would be missing an ItemId when parsed from locations
