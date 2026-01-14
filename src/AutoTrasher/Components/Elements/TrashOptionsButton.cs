@@ -34,7 +34,7 @@ namespace AutoTrasher.Components.Elements
 			_toggle((TButton)this);
 		}
 
-		public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu context = null)
+		public override void draw(SpriteBatch b, int slotX, int slotY, IClickableMenu? context = null)
 		{
 			DrawElement(b, slotX, slotY, context);
 			Utility.drawWithShadow(b, Game1.mouseCursors, new Vector2(_removeButtonBounds.X + slotX, _removeButtonBounds.Y + slotY), _removeButtonSprite, Color.White, 0.0f, Vector2.Zero, Game1.pixelZoom * 0.75f, false, 0.15f);

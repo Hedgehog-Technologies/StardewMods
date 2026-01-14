@@ -25,10 +25,10 @@ namespace AutoTrasher.Components
 
 		private readonly List<ClickableComponent> _optionSlots;
 		private readonly List<OptionsElement> _options;
-		private ClickableComponent _title;
-		private ClickableTextureComponent _upArrow;
-		private ClickableTextureComponent _downArrow;
-		private ClickableTextureComponent _scrollbar;
+		private ClickableComponent? _title;
+		private ClickableTextureComponent? _upArrow;
+		private ClickableTextureComponent? _downArrow;
+		private ClickableTextureComponent? _scrollbar;
 		private readonly List<ClickableComponent> _tabs;
 		private Rectangle _scrollbarRunner;
 
@@ -46,9 +46,9 @@ namespace AutoTrasher.Components
 			_reclaimItems = reclaimItems;
 			_ignoreItems = ignoreItems;
 
-			_optionSlots = new();
-			_options = new();
-			_tabs = new();
+			_optionSlots = [];
+			_options = [];
+			_tabs = [];
 
 			CurrentTab = 0;
 
@@ -96,6 +96,7 @@ namespace AutoTrasher.Components
 		public override void leftClickHeld(int x, int y)
 		{
 			if (GameMenu.forcePreventClose) return;
+			if (_scrollbar is null || _upArrow is null) return;
 
 			base.leftClickHeld(x, y);
 
@@ -209,6 +210,7 @@ namespace AutoTrasher.Components
 		public override void receiveLeftClick(int x, int y, bool playSound = true)
 		{
 			if (GameMenu.forcePreventClose) return;
+			if (_downArrow is null || _upArrow is null || _scrollbar is null) return;
 
 			base.receiveLeftClick(x, y, playSound);
 
@@ -260,6 +262,7 @@ namespace AutoTrasher.Components
 		public override void performHoverAction(int x, int y)
 		{
 			if (GameMenu.forcePreventClose) return;
+			if (_upArrow is null || _downArrow is null || _scrollbar is null) return;
 
 			_hoverText = string.Empty;
 			_upArrow.tryHover(x, y);
@@ -269,6 +272,8 @@ namespace AutoTrasher.Components
 
 		public override void draw(SpriteBatch b)
 		{
+			if (_title is null || _upArrow is null || _downArrow is null || _scrollbar is null) return;
+
 			if (!Game1.options.showMenuBackground)
 			{
 				b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.4f);
@@ -497,6 +502,7 @@ namespace AutoTrasher.Components
 
 		private void SetScrollbarToCurrentIndex()
 		{
+			if (_scrollbar is null || _upArrow is null || _downArrow is null) return;
 			if (!_options.Any()) return;
 
 			if (_options.Count > ItemsPerPage)
@@ -520,6 +526,8 @@ namespace AutoTrasher.Components
 
 		private void DownArrowPressed()
 		{
+			if (_downArrow is null) return;
+
 			_downArrow.scale = _downArrow.baseScale;
 			++_currentItemIndex;
 			SetScrollbarToCurrentIndex();
@@ -527,6 +535,8 @@ namespace AutoTrasher.Components
 
 		private void UpArrowPressed()
 		{
+			if (_upArrow is null) return;
+
 			_upArrow.scale = _upArrow.baseScale;
 			--_currentItemIndex;
 			SetScrollbarToCurrentIndex();
