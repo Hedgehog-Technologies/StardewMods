@@ -1,7 +1,8 @@
-using System;
-using System.Collections.Generic;
+using AutoForager.Extensions;
+using HedgeTech.Common.Extensions;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData;
 using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.Locations;
 using StardewValley.GameData.Objects;
@@ -9,11 +10,12 @@ using StardewValley.GameData.WildTrees;
 using StardewValley.Internal;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.TokenizableStrings;
-using AutoForager.Extensions;
-using HedgeTech.Common.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-using SObject = StardewValley.Object;
 using Constants = AutoForager.Helpers.Constants;
+using SObject = StardewValley.Object;
 
 namespace AutoForager.Classes
 {
@@ -71,36 +73,41 @@ namespace AutoForager.Classes
 						if (customFields is null || !customFields.ContainsKey(Constants.CustomFieldForageableKey)) continue;
 
 						var enabled = true;
-						var fruitQueryData = ItemQueryResolver.TryResolve(fruit, queryContext, logError: (query, msg) => monitor?.Log($"Failed to parse Fruit Tree item query '{query}': {msg}", LogLevel.Warn));
+						var fruitItemIds = GetItemIds(fruit);
 
-						if (fruitQueryData.Count > 1)
+						foreach (var id in fruitItemIds)
 						{
-							monitor?.Log($"Found multiple items for fruit tree fruit entry [{fruit.ItemId ?? fruit.Id}] in tree: {kvp.Key}", LogLevel.Info);
-						}
-						else if (fruitQueryData.Count == 0)
-						{
-							monitor?.Log($"Failed to retrieve data for fruit tree fruit entry [{fruit.ItemId ?? fruit.Id}] in tree: {kvp.Key}.{Environment.NewLine}" +
-								$"\tThis is likely due to a misconfiguration from the mod that tree is added by.{Environment.NewLine}" +
-								$"\tPlease reach out to that tree mod author with this information to get it fixed.{Environment.NewLine}" +
-								$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Warn);
-							continue;
-						}
+							IList<ItemQueryResult> fruitQueryData = ItemQueryResolver.TryResolve(id, queryContext, logError: (query, msg) => monitor?.Log($"Failed to parse Fruit Tree item query '{query}': {msg}", LogLevel.Warn));
 
-						foreach (var result in fruitQueryData)
-						{
-							if (result == null || result.Item is not SObject sObj)
+							if (fruitQueryData.Count > 1)
 							{
-								monitor?.Log($"Failed to retrieve data for {fruit.ItemId ?? fruit.Id} while parsing fruit tree with key: {kvp.Key}.{Environment.NewLine}" +
+								monitor?.Log($"Found multiple items for fruit tree fruit entry [{id}] in tree: {kvp.Key}", LogLevel.Info);
+							}
+							else if (fruitQueryData.Count == 0)
+							{
+								monitor?.Log($"Failed to retrieve data for fruit tree fruit entry [{id}] in tree: {kvp.Key}.{Environment.NewLine}" +
+									$"\tThis is likely due to a misconfiguration from the mod that tree is added by.{Environment.NewLine}" +
+									$"\tPlease reach out to that tree mod author with this information to get it fixed.{Environment.NewLine}" +
 									$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Warn);
 								continue;
 							}
 
-							if (configValues is not null && configValues.TryGetValue(sObj.name, out var configEnabled))
+							foreach (var result in fruitQueryData)
 							{
-								enabled = configEnabled;
-							}
+								if (result == null || result.Item is not SObject sObj)
+								{
+									monitor?.Log($"Failed to retrieve data for {id} while parsing fruit tree with key: {kvp.Key}.{Environment.NewLine}" +
+										$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Warn);
+									continue;
+								}
 
-							forageItems.AddDistinct(new ForageableItem(sObj, customFields, enabled));
+								if (configValues is not null && configValues.TryGetValue(sObj.name, out var configEnabled))
+								{
+									enabled = configEnabled;
+								}
+
+								forageItems.AddDistinct(new ForageableItem(sObj, customFields, enabled));
+							}
 						}
 					}
 					catch (Exception ex)
@@ -331,6 +338,23 @@ namespace AutoForager.Classes
 			{
 				throw new ArgumentException($"Object is not a ${nameof(ForageableItem)}");
 			}
+		}
+
+		private static List<string> GetItemIds(ISpawnItemData data)
+		{
+			List<string> itemIds = [];
+
+			if (data.ItemId is not null)
+			{
+				itemIds.Add(data.ItemId);
+			}
+
+			if (data.RandomItemId is not null && data.RandomItemId.Any())
+			{
+				data.RandomItemId.ForEach(id => itemIds.AddDistinct(id));
+			}
+
+			return itemIds;
 		}
 	}
 }
