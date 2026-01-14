@@ -51,13 +51,13 @@ namespace AutoForager
 		private readonly Dictionary<string, string> _cpFruitTrees;
 		private readonly Dictionary<string, string> _cpWildTrees;
 
-		private BushBloomWrapper _bbw;
+		private BushBloomWrapper? _bbw;
 		private readonly Dictionary<string, string> _bushBloomItems;
 
-		private CustomBushWrapper _cbw;
+		private CustomBushWrapper? _cbw;
 		private readonly Dictionary<string, string> _customTeaBushItems;
 
-		private FarmTypeManagerWrapper _ftm;
+		private FarmTypeManagerWrapper? _ftm;
 		private readonly Dictionary<string, string> _ftmForageables;
 
 		#region Asset Cache

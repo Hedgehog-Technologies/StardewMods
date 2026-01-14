@@ -20,7 +20,7 @@ namespace AutoForager
 		private readonly ForageableItemTracker _forageableTracker;
 		private CategoryComparer _comparer = new();
 		private IMonitor? _monitor;
-		private JsonHelper _jsonHelper;
+		private JsonHelper? _jsonHelper;
 
 		#region General Properties
 
@@ -194,7 +194,7 @@ namespace AutoForager
 				save: () =>
 				{
 					helper.WriteConfig(this);
-					_monitor?.Log(_jsonHelper.Serialize(this), LogLevel.Trace);
+					if (_jsonHelper is not null) _monitor?.Log(_jsonHelper.Serialize(this), LogLevel.Trace);
 				});
 
 			/* General */
