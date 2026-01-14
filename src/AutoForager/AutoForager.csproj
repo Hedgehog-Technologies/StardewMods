@@ -12,19 +12,18 @@
 
     <MinimumApiVersion>auto</MinimumApiVersion>
     <MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
+    <MinimumGameVersion>auto</MinimumGameVersion>
+    <MinimumGameVersion_Behavior>Update</MinimumGameVersion_Behavior>
+
+    <Dependencies_VersionBehavior>Ignore</Dependencies_VersionBehavior>
   </PropertyGroup>
 
   <ItemGroup>
-    <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Required="false" />
-    <SMAPIDependency Include="NCarigon.BushBloomMod" Required="false" />
-    <SMAPIDependency Include="Pathoschild.ContentPatcher" Required="false" />
-    <SMAPIDependency Include="furyx639.CustomBush" Required="false" />
-    <SMAPIDependency Include="Esca.FarmTypeManager" Required="false" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.4.1" />
-    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.2.1" />
+    <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Required="false" Version="1.16" />
+    <SMAPIDependency Include="NCarigon.BushBloomMod" Required="false" Version="1.1.9" />
+    <SMAPIDependency Include="Pathoschild.ContentPatcher" Required="false" Version="2.0" />
+    <SMAPIDependency Include="furyx639.CustomBush" Required="false" Version="1.0.4" />
+    <SMAPIDependency Include="Esca.FarmTypeManager" Required="false" Version="1.20" />
   </ItemGroup>
 
   <Import Project="..\Common\Common.projitems" Label="Shared" />
