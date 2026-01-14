@@ -12,6 +12,7 @@ A collection of mods made for Stardew Valley using SMAPI.
 - **Auto Forager**
   - A mod that allows players to automatically shake bushes and trees as they walk by them
   - [source](./src/AutoForager)
+  - [release notes](./src/AutoForager/docs/release-notes.md)
   - [Nexus Mods Page](https://www.nexusmods.com/stardewvalley/mods/7736)
   - [CurseForge page](https://www.curseforge.com/stardewvalley/mods/auto-forager)
 - **Auto Trasher**
