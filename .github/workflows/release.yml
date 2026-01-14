@@ -19,10 +19,10 @@ jobs:
           msg: ${{ github.ref_name }}
           separator: '/'
 
-      # - name: Test split
-      #   run: |
-      #     echo ${{ steps.split.outputs._0 }}
-      #     echo ${{ steps.split.outputs._1 }}
+      - name: Test split
+        run: |
+          echo ${{ steps.split.outputs._0 }}
+          echo ${{ steps.split.outputs._1 }}
 
       - name: Checkout source code
         uses: actions/checkout@v4.1.1
