@@ -54,12 +54,10 @@ jobs:
       #     for i in */; do cd "$i"; for j in */; do zip -r "${j%/}.zip" "$j"; done; cd ..; done
       #     cd ../..
 
-      - name: Rename build zips
+      - name: Rename build zip
         shell: pwsh
         run: |
-          Rename-Item `
-            "src/_releases/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip" `
-            "src/_releases/${{ steps.split_outputs._0 }}.${{ steps.split.outputs._1 }}.zip"
+          mv "src/_releases/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip" "src/_releases/${{ steps.split_outputs._0 }}.${{ steps.split.outputs._1 }}.zip"
 
       - name: Create GitHub Release
         uses: 'marvinpinto/action-automatic-releases@v1.2.1'
