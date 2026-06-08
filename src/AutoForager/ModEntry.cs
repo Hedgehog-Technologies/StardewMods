@@ -164,7 +164,7 @@ namespace AutoForager
 			{
 				Monitor.Log("Reregistering Generic Mod Config Menu", _config.DebugLogLevel());
 
-				_config.RegisterModConfigMenu(Helper, ModManifest);
+				//_config.RegisterModConfigMenu(Helper, ModManifest);
 			}
 		}
 
@@ -249,7 +249,7 @@ namespace AutoForager
 			var packs = helper.ContentPacks.GetOwned();
 
 			_config.Merge(helper.ReadConfig<ModConfig>());
-			_config.UpdateUtilities(Monitor, packs, _jsonHelper);
+			//_config.UpdateUtilities(Monitor, packs, _jsonHelper);
 			_config.UpdateEnabled(helper);
 
 			ParseContentPacks(packs);
@@ -319,8 +319,8 @@ namespace AutoForager
 			ObjectCache = DataLoader.Objects(Game1.content);
 			LocationCache = DataLoader.Locations(Game1.content);
 
-			_config.UpdateUtilities(Monitor, Helper.ContentPacks.GetOwned(), _jsonHelper);
-			_config.RegisterModConfigMenu(Helper, ModManifest);
+			//_config.UpdateUtilities(Monitor, Helper.ContentPacks.GetOwned(), _jsonHelper);
+			//_config.RegisterModConfigMenu(Helper, ModManifest);
 			_config.UpdateEnabled(Helper);
 		}
 
@@ -453,7 +453,7 @@ namespace AutoForager
 				LocationCache = DataLoader.Locations(Game1.content);
 
 				_config.AddFtmCategories(_ftmForageables);
-				_config.RegisterModConfigMenu(Helper, ModManifest);
+				//_config.RegisterModConfigMenu(Helper, ModManifest);
 				_config.UpdateEnabled(Helper);
 
 				Monitor.Log(_jsonHelper.Serialize(_config), LogLevel.Trace);

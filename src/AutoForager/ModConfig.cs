@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HedgeTech.Common.Extensions;
-using HedgeTech.Common.Helpers;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using AutoForager.Classes;
-using AutoForager.Extensions;
-using HedgeTech.Common.Interfaces;
+using HedgeTech.Common.Extensions;
 
 using Constants = AutoForager.Helpers.Constants;
 
@@ -15,12 +12,8 @@ namespace AutoForager
 {
 	public class ModConfig
 	{
-		private const string _gmcmUniqueId = "spacechase0.GenericModConfigMenu";
-
 		private readonly ForageableItemTracker _forageableTracker;
 		private CategoryComparer _comparer = new();
-		private IMonitor? _monitor;
-		private JsonHelper? _jsonHelper;
 
 		#region General Properties
 
@@ -42,13 +35,9 @@ namespace AutoForager
 		}
 
 		public bool ForageArtifactSpots { get; set; }
-
 		public bool ForageSeedSpots { get; set; }
-
 		public bool ForageMushroomBoxes { get; set; }
-
 		public bool ForageMushroomLogs { get; set; }
-
 		public bool ForageTappers { get; set; }
 		public bool ForagePanningSpots { get; set; }
 
@@ -58,12 +47,12 @@ namespace AutoForager
 		public bool AnyBushEnabled() => _anyBushesEnabled;
 
 		public bool GetTeaBushesEnabled() => ForageToggles[Constants.BushToggleKey][Constants.TeaBushKey];
-		private void SetTeaBushesEnabled(bool value) => ForageToggles[Constants.BushToggleKey][Constants.TeaBushKey] = value;
+		public void SetTeaBushesEnabled(bool value) => ForageToggles[Constants.BushToggleKey][Constants.TeaBushKey] = value;
 
 		public bool GetWalnutBushesEnabled() => ForageToggles[Constants.BushToggleKey][Constants.WalnutBushKey];
-		private bool SetWalnutBushesEnabled(bool value) => ForageToggles[Constants.BushToggleKey][Constants.WalnutBushKey] = value;
+		public void SetWalnutBushesEnabled(bool value) => ForageToggles[Constants.BushToggleKey][Constants.WalnutBushKey] = value;
 
-		#endregion
+		#endregion General Properties
 
 		public ModConfig()
 		{
@@ -80,11 +69,9 @@ namespace AutoForager
 			ResetToDefault();
 		}
 
-		public void UpdateUtilities(IMonitor monitor, IEnumerable<IContentPack> packs, JsonHelper jsonHelper)
+		public void UpdateUtilities(IEnumerable<IContentPack> packs)
 		{
-			_monitor = monitor;
 			_comparer = new CategoryComparer(packs);
-			_jsonHelper = jsonHelper;
 		}
 
 		public void AddFtmCategories(Dictionary<string, string> ftmCategories)
@@ -171,436 +158,6 @@ namespace AutoForager
 					{
 						this.ForageToggles[kvp.Key][innerKvp.Key] = innerKvp.Value;
 					}
-				}
-			}
-		}
-
-		public void RegisterModConfigMenu(IModHelper helper, IManifest manifest)
-		{
-			if (!helper.ModRegistry.IsLoaded(_gmcmUniqueId)) return;
-
-			var gmcmApi = helper.ModRegistry.GetApi<IGenericModConfigMenu>(_gmcmUniqueId);
-			if (gmcmApi is null) return;
-
-			try
-			{
-				gmcmApi.Unregister(manifest);
-			}
-			catch { }
-
-			gmcmApi.Register(
-				mod: manifest,
-				reset: ResetToDefault,
-				save: () =>
-				{
-					helper.WriteConfig(this);
-					if (_jsonHelper is not null) _monitor?.Log(_jsonHelper.Serialize(this), LogLevel.Trace);
-				});
-
-			/* General */
-
-			gmcmApi.AddSectionTitle(
-				mod: manifest,
-				text: I18n.Section_General_Text);
-
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				fieldId: Constants.AutoForagingEnabledId,
-				name: I18n.Option_AutoForagingEnabled_Name,
-				tooltip: I18n.Option_AutoForagingEnabled_Tooltip,
-				getValue: () => AutoForagingEnabled,
-				setValue: val => AutoForagingEnabled = val);
-
-			// ToggleForager
-			gmcmApi.AddKeybindList(
-				mod: manifest,
-				fieldId: Constants.ToggleForagerId,
-				name: I18n.Option_ToggleForager_Name,
-				tooltip: I18n.Option_ToggleForager_Tooltip,
-				getValue: () => ToggleForagerKeybind,
-				setValue: val => ToggleForagerKeybind = val);
-
-			// UsePlayerMagnetism
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				fieldId: Constants.UsePlayerMagnetismId,
-				name: I18n.Option_UsePlayerMagnetism_Name,
-				tooltip: () => I18n.Option_UsePlayerMagnetism_Tooltip(I18n.Option_ShakeDistance_Name()),
-				getValue: () => UsePlayerMagnetism,
-				setValue: val => UsePlayerMagnetism = val);
-
-			// ShakeDistance
-			gmcmApi.AddNumberOption(
-				mod: manifest,
-				fieldId: Constants.ShakeDistanceId,
-				name: I18n.Option_ShakeDistance_Name,
-				tooltip: () => I18n.Option_ShakeDistance_Tooltip(I18n.Option_UsePlayerMagnetism_Name()),
-				getValue: () => ShakeDistance,
-				setValue: val => ShakeDistance = val);
-
-			// RequireHoe
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				fieldId: Constants.RequireHoeId,
-				name: () => I18n.Option_RequireHoe_Name(Environment.NewLine),
-				tooltip: I18n.Option_RequireHoe_Tooltip,
-				getValue: () => RequireHoe,
-				setValue: val => RequireHoe = val);
-
-			// RequireToolMoss
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				fieldId: Constants.RequireToolMossId,
-				name: () => I18n.Option_RequireToolMoss_Name(Environment.NewLine),
-				tooltip: I18n.Option_RequireToolMoss_Tooltip,
-				getValue: () => RequireToolMoss,
-				setValue: val => RequireToolMoss = val);
-
-			// RequirePan
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				fieldId: Constants.RequirePanId,
-				name: I18n.Option_RequirePan_Name,
-				tooltip: I18n.Option_RequirePan_Tooltip,
-				getValue: () => RequirePan,
-				setValue: val => RequirePan = val);
-
-			// IgnoreMushroomLogTrees
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				fieldId: Constants.IgnoreMushroomLogTreesId,
-				name: () => I18n.Option_IgnoreMushroomLogTrees_Name(Environment.NewLine),
-				tooltip: I18n.Option_IgnoreMushroomLogTrees_Tooltip,
-				getValue: () => IgnoreMushroomLogTrees,
-				setValue: (val) => IgnoreMushroomLogTrees = val);
-
-			/* Page Links Section */
-
-			gmcmApi.AddSectionTitle(
-				mod: manifest,
-				text: I18n.Section_TogglePages_Text);
-
-			gmcmApi.AddPageLink(
-				mod: manifest,
-				pageId: Constants.BushesPageId,
-				text: I18n.Link_Bushes_Text);
-
-			gmcmApi.AddPageLink(
-				mod: manifest,
-				pageId: Constants.ForageablesPageId,
-				text: I18n.Link_Forageables_Text);
-
-			gmcmApi.AddPageLink(
-				mod: manifest,
-				pageId: Constants.FruitTreesPageId,
-				text: I18n.Link_FruitTrees_Text);
-
-			gmcmApi.AddPageLink(
-				mod: manifest,
-				pageId: Constants.WildTreesPageId,
-				text: I18n.Link_WildTrees_Text);
-
-			/* Advanced Section */
-
-			gmcmApi.AddSectionTitle(
-				mod: manifest,
-				text: I18n.Section_Advanced_Text);
-
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				name: I18n.Option_ElevateDebugLogs_Name,
-				tooltip: I18n.Option_ElevateDebugLogs_Tooltip,
-				getValue: () => ElevateDebugLogs,
-				setValue: (val) => ElevateDebugLogs = val);
-
-			/* Wild Trees */
-
-			gmcmApi.AddPage(
-				mod: manifest,
-				pageId: Constants.WildTreesPageId,
-				pageTitle: I18n.Page_WildTrees_Title);
-
-			gmcmApi.AddSectionTitle(
-				mod: manifest,
-				text: I18n.Section_WildTree_Text);
-
-			gmcmApi.AddParagraph(
-				mod: manifest,
-				text: I18n.Page_WildTrees_Description);
-
-			foreach (var currentGroup in _forageableTracker.WildTreeForageables.GroupByCategory(helper, comparer: _comparer))
-			{
-				gmcmApi.AddSectionTitle(
-					mod: manifest,
-					text: () => currentGroup.Key);
-
-				foreach (var item in currentGroup)
-				{
-					gmcmApi.AddBoolOption(
-						mod: manifest,
-						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
-						tooltip: () => $"{item.ItemId} - {item.InternalName}",
-						getValue: () => item.IsEnabled,
-						setValue: val =>
-						{
-							item.IsEnabled = val;
-							ForageToggles[Constants.WildTreeToggleKey].AddOrUpdate(item.InternalName, val);
-							UpdateEnabled();
-						});
-				}
-			}
-
-			/* Fruit Trees */
-
-			gmcmApi.AddPage(
-				mod: manifest,
-				pageId: Constants.FruitTreesPageId,
-				pageTitle: I18n.Page_FruitTrees_Title);
-
-			// FruitsReadyToShake
-			gmcmApi.AddNumberOption(
-				mod: manifest,
-				fieldId: Constants.FruitsReadyToShakeId,
-				name: I18n.Option_FruitsReadyToShake_Name,
-				tooltip: I18n.Option_FruitsReadyToShake_Tooltip,
-				getValue: () => FruitsReadyToShake,
-				setValue: val => FruitsReadyToShake = val,
-				min: Constants.MinFruitsReady,
-				max: Constants.MaxFruitsReady);
-
-			gmcmApi.AddSectionTitle(
-				mod: manifest,
-				text: I18n.Section_FruitTrees_Text);
-
-			gmcmApi.AddParagraph(
-				mod: manifest,
-				text: I18n.Page_FruitTrees_Description);
-
-			foreach (var currentGroup in _forageableTracker.FruitTreeForageables.GroupByCategory(helper, comparer: _comparer))
-			{
-				gmcmApi.AddSectionTitle(
-					mod: manifest,
-					text: () => currentGroup.Key);
-
-				foreach (var item in currentGroup)
-				{
-					gmcmApi.AddBoolOption(
-						mod: manifest,
-						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
-						tooltip: () => $"{item.ItemId} - {item.InternalName}",
-						getValue: () => item.IsEnabled,
-						setValue: val =>
-						{
-							item.IsEnabled = val;
-							ForageToggles[Constants.FruitTreeToggleKey].AddOrUpdate(item.InternalName, val);
-							UpdateEnabled();
-						});
-				}
-			}
-
-			/* Bushes */
-
-			gmcmApi.AddPage(
-				mod: manifest,
-				pageId: Constants.BushesPageId,
-				pageTitle: I18n.Page_Bushes_Title);
-
-			gmcmApi.AddSectionTitle(
-				mod: manifest,
-				text: I18n.Section_Bushes_Text);
-
-			gmcmApi.AddParagraph(
-				mod: manifest,
-				text: I18n.Page_Bushes_Description);
-
-			// Bush Blooms
-			foreach (var currentGroup in _forageableTracker.BushForageables
-				.Where(b => b.CustomFields.ContainsKey(Constants.CustomFieldBushBloomCategory)).ToList()
-				.GroupByCategory(helper, Constants.CustomFieldBushBloomCategory, _comparer))
-			{
-				gmcmApi.AddSectionTitle(
-					mod: manifest,
-					text: () => currentGroup.Key);
-
-				foreach (var item in currentGroup)
-				{
-					gmcmApi.AddBoolOption(
-						mod: manifest,
-						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
-						tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-							I18n.Action_Shake_Future().ToLowerInvariant(),
-							I18n.Subject_Bushes(),
-							item.DisplayName),
-						getValue: () => item.IsEnabled,
-						setValue: val =>
-						{
-							item.IsEnabled = val;
-							ForageToggles[Constants.BushToggleKey].AddOrUpdate(item.InternalName, val);
-							UpdateEnabled();
-						});
-				}
-			}
-
-			// Custom Bushes
-			foreach (var currentGroup in _forageableTracker.BushForageables
-				.Where(b => b.CustomFields.ContainsKey(Constants.CustomFieldCustomBushCategory)).ToList()
-				.GroupByCategory(helper, Constants.CustomFieldCustomBushCategory, _comparer))
-			{
-				gmcmApi.AddSectionTitle(
-					mod: manifest,
-					text: () => currentGroup.Key);
-
-				foreach (var item in currentGroup)
-				{
-					gmcmApi.AddBoolOption(
-						mod: manifest,
-						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
-						tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-							I18n.Action_Shake_Future().ToLowerInvariant(),
-							I18n.Subject_Bushes(),
-							item.DisplayName),
-						getValue: () => item.IsEnabled,
-						setValue: val =>
-						{
-							item.IsEnabled = val;
-							ForageToggles[Constants.BushToggleKey].AddOrUpdate(item.InternalName, val);
-							UpdateEnabled();
-						});
-				}
-			}
-
-			gmcmApi.AddSectionTitle(
-				mod: manifest,
-				text: I18n.Category_Vanilla);
-
-			// ShakeTeaBushes
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				fieldId: Constants.ShakeTeaBushesId,
-				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_TeaBushes()),
-				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-					I18n.Action_Shake_Future().ToLowerInvariant(),
-					I18n.Subject_TeaBushes(),
-					I18n.Reward_TeaLeaves()),
-				getValue: GetTeaBushesEnabled,
-				setValue: val =>
-				{
-					SetTeaBushesEnabled(val);
-					UpdateEnabled();
-				});
-
-			// ShakeWalnutBushes
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				fieldId: Constants.ShakeWalnutBushesId,
-				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_WalnutBushes()),
-				tooltip: () => I18n.Option_ToggleAction_Description_Reward_Note(
-					I18n.Action_Shake_Future().ToLowerInvariant(),
-					I18n.Subject_WalnutBushes(),
-					I18n.Reward_GoldenWalnuts(),
-					I18n.Note_ShakeWalnutBushes()),
-				getValue: GetWalnutBushesEnabled,
-				setValue: val =>
-				{
-					SetWalnutBushesEnabled(val);
-					UpdateEnabled();
-				});
-
-			/* Forageables */
-
-			gmcmApi.AddPage(
-				mod: manifest,
-				pageId: Constants.ForageablesPageId,
-				pageTitle: I18n.Page_Forageables_Title);
-
-			// Artifact Spots
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_ArtifactSpot()),
-				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-					I18n.Action_Dig_Future().ToLowerInvariant(),
-					I18n.Subject_ArtifactSpot(),
-					I18n.Reward_Buried_Items()),
-				getValue: () => ForageArtifactSpots,
-				setValue: val => ForageArtifactSpots = val);
-
-			// Seed Spots
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_SeedSpot()),
-				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-					I18n.Action_Dig_Future().ToLowerInvariant(),
-					I18n.Subject_SeedSpot(),
-					I18n.Reward_Buried_Seeds()),
-				getValue: () => ForageSeedSpots,
-				setValue: val => ForageSeedSpots = val);
-
-			// Mushroom Boxes
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_MushroomBoxes()),
-				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-					I18n.Action_Forage_Future().ToLowerInvariant(),
-					I18n.Subject_MushroomBoxes(),
-					I18n.Reward_Mushrooms()),
-				getValue: () => ForageMushroomBoxes,
-				setValue: val => ForageMushroomBoxes = val);
-
-			// Mushroom Logs
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_MushroomLogs()),
-				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-					I18n.Action_Forage_Future().ToLowerInvariant(),
-					I18n.Subject_MushroomLogs(),
-					I18n.Reward_Mushrooms()),
-				getValue: () => ForageMushroomLogs,
-				setValue: val => ForageMushroomLogs = val);
-
-			// Tappers
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_Tappers()),
-				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-					I18n.Action_Forage_Future().ToLowerInvariant(),
-					I18n.Subject_Tappers(),
-					I18n.Reward_TappedTree()),
-				getValue: () => ForageTappers,
-				setValue: val => ForageTappers = val);
-
-			gmcmApi.AddBoolOption(
-				mod: manifest,
-				name: () => I18n.Option_ToggleAction_Name(I18n.Subject_PanningSpots()),
-				tooltip: () => I18n.Option_ToggleAction_Description_Reward(
-					I18n.Action_Sift_Future().ToLowerInvariant(),
-					I18n.Subject_PanningSpots(),
-					I18n.Reward_Ores()),
-				getValue: () => ForagePanningSpots,
-				setValue: val => ForagePanningSpots = val);
-
-			gmcmApi.AddParagraph(
-				mod: manifest,
-				text: I18n.Page_Forageables_Description);
-
-			foreach (var currentGroup in _forageableTracker.ObjectForageables.GroupByCategory(helper, comparer: _comparer))
-			{
-				gmcmApi.AddSectionTitle(
-					mod: manifest,
-					text: () => currentGroup.Key);
-
-				foreach (var item in currentGroup)
-				{
-					gmcmApi.AddBoolOption(
-						mod: manifest,
-						name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
-						tooltip: () => $"{item.ItemId} - {item.InternalName}",
-						getValue: () => item.IsEnabled,
-						setValue: val =>
-						{
-							item.IsEnabled = val;
-							ForageToggles[Constants.ForagingToggleKey].AddOrUpdate(item.InternalName, val);
-							UpdateEnabled();
-						});
 				}
 			}
 		}
