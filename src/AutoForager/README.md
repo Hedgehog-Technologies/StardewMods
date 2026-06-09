@@ -18,7 +18,7 @@ You can find a breakdown of the config values [here](./docs/config.md)
 ### Extensibility
 - Custom Trees and Fruit Trees should automatically get picked up and recognized by the AutoForager
 - If you are a mod maker working on custom Forageable items, to have your item recognized by the AutoForager all you need to do is add the context tag `forage_item` to the item definition
-  - Alternatively, you can create a [content pack](./docs/ContentPack.md) that can also help to categorize your custom forageables / trees
+  - Alternatively, you can create a [content pack](./docs/content-pack.md) that can also help to categorize your custom forageables / trees
 
 ### Translation
 &nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By
@@ -71,3 +71,42 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
 ### Release Notes
 You can find the release notes [here](./docs/release-notes.md)
+
+## For Developers
+
+### Architecture
+
+AutoForager uses a modular, handler-based architecture for maintainability and extensibility. 
+
+**Key Components:**
+- **Handlers**: Specialized classes for each foraging type (trees, bushes, objects, etc.)
+- **Services**: Business logic layer (asset management, configuration, content packs)
+- **Context Pattern**: Shared state and utilities for handlers
+
+For detailed architecture documentation, see [ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+### Project Structure
+```
+AutoForager/
+├── Handlers/          # Foraging logic (8 specialized handlers)
+├── Services/          # Business logic (Asset, ContentPack, Configuration)
+├── UI/                # User interface (GMCM menu builder)
+├── Classes/           # Core data models
+├── Extensions/        # Extension methods
+├── Integrations/      # External mod integrations
+└── Helpers/           # Constants and utilities
+```
+
+### Testing
+
+Before contributing or making changes:
+- See [TESTING.md](docs/TESTING.md) for comprehensive testing guide
+- See [QUICK_TEST.md](docs/QUICK_TEST.md) for quick validation
+
+### Contributing
+
+1. Read [ARCHITECTURE.md](docs/ARCHITECTURE.md) to understand the design
+2. Follow existing patterns (Handler, Service, Context)
+3. Test thoroughly using testing documentation
+4. Keep handlers focused and under 300 lines
+5. Update documentation for significant changes

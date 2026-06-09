@@ -1,4 +1,4 @@
-﻿# Configuration Values
+﻿# Configuration Values (Outdated)
 
 ## General Options
 ### AutoForagingEnabled
