@@ -37,20 +37,6 @@ namespace AutoForager.Handlers
 		public virtual int Priority => 100;
 
 		/// <summary>
-		/// Generates tiles to check around the player based on configured radius.
-		/// </summary>
-		protected IEnumerable<Vector2> GetTilesToCheck(Point origin, int radius)
-		{
-			for (int x = Math.Max(origin.X - radius, 0); x <= origin.X + radius; x++)
-			{
-				for (int y = Math.Max(origin.Y - radius, 0); y <= origin.Y + radius; y++)
-				{
-					yield return new Vector2(x, y);
-				}
-			}
-		}
-
-		/// <summary>
 		/// Logs a message at the configured debug level.
 		/// </summary>
 		protected void LogDebug(string message)

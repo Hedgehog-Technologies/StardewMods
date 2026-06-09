@@ -14,6 +14,7 @@ namespace AutoForager.Handlers
 	internal class PanningHandler : BaseForagingHandler
 	{
 		private const string PANNING_SOUND = "coin";
+
 		public override int Priority => 80; // Check panning last (special case)
 
 		/// <summary>

@@ -18,7 +18,7 @@ You can find a breakdown of the config values [here](./docs/config.md)
 ### Extensibility
 - Custom Trees and Fruit Trees should automatically get picked up and recognized by the AutoForager
 - If you are a mod maker working on custom Forageable items, to have your item recognized by the AutoForager all you need to do is add the context tag `forage_item` to the item definition
-  - Alternatively, you can create a [content pack](./docs/ContentPack.md) that can also help to categorize your custom forageables / trees
+  - Alternatively, you can create a [content pack](./docs/content-pack.md) that can also help to categorize your custom forageables / trees
 
 ### Translation
 &nbsp;     | No Translation  | Partial Translation  | Full Translation  | Translated By

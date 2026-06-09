@@ -31,7 +31,7 @@ namespace AutoForager.Handlers
 			return isArtifactSpot || isSeedSpot;
 		}
 
-		public void Handle(SObject obj, Vector2 tile)
+		public void Handle(SObject obj)
 		{
 			// Check Hoe requirement
 			if (Config.RequireHoe && !Context.PlayerHasTool<Hoe>())

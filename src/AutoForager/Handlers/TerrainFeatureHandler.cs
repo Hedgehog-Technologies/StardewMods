@@ -106,20 +106,7 @@ namespace AutoForager.Handlers
 		/// </summary>
 		private void ForageItem(SObject obj, Vector2 vec, Random random, int xpGained = 0)
 		{
-			var foragingLevel = (float)Context.Player.ForagingLevel;
-			var professions = Context.Player.professions;
-
-			if (professions.Contains(Farmer.botanist))
-			{
-				obj.Quality = 4; // Iridium quality
-			}
-			else
-			{
-				obj.Quality = DetermineForageQuality(random);
-			}
-
-			vec *= 64.0f;
-
+			obj.Quality = DetermineForageQuality(random);
 			Context.Player.gainExperience(Farmer.foragingSkill, xpGained);
 			CreateItemDebris(obj.getOne(), vec);
 		}

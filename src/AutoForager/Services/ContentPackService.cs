@@ -11,10 +11,8 @@ using HedgeTech.Common.Utilities;
 namespace AutoForager.Services
 {
 	/// <summary>
-	/// LEGACY: Manages content packs loading and integration with other mods.
-	/// TECH_DEBT: Remove this class in favor of direct integration with other mods via their APIs
+	/// Manages content packs loading and integration with other mods.
 	/// </summary>
-	[Obsolete("This class is no longer used. Content pack loading and integration is now handled by the respective integration classes.")]
 	internal class ContentPackService
 	{
 		private const string CONTENT_PACK_FILE_NAME = "content.json";

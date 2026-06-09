@@ -383,7 +383,7 @@ namespace AutoForager
 			// Priority order: artifact spots > machines > regular objects
 			if (_artifactSpotHandler.CanHandle(obj))
 			{
-				_artifactSpotHandler.Handle(obj, tile);
+				_artifactSpotHandler.Handle(obj);
 			}
 			else if (_machineHandler.CanHandle(obj))
 			{
