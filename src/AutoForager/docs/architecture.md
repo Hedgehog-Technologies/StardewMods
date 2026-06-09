@@ -507,18 +507,6 @@ Use testing documentation:
 - Update documentation
 - Communicate breaking changes
 
-## Version History
-
-### v2.0.0 (Refactored Architecture)
-- Introduced Handler Pattern
-- Added Service Layer
-- Separated UI into ConfigMenuBuilder
-- Improved testability and maintainability
-
-**Breaking Changes:**
-- Internal architecture completely redesigned
-- No API changes (configuration compatible)
-
 ## Future Improvements
 
 ### Short Term

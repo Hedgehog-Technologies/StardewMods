@@ -2,7 +2,14 @@
 
 ## 3.10.0
 Released TBD
-- Refactored entire mod to be more modular and maintainable
+- Introduced Handler Pattern
+- Added Service Layer
+- Separated UI into ConfigMenuBuilder
+- Improved testability and maintainability
+
+**Breaking Changes:**
+- Internal architecture completely redesigned
+- No API changes (configuration compatible)
 ## 3.9.3
 Released 2026-1-14
 - Fix issue where parsing some items from fruit trees would look for runtime conditionals
