@@ -16,8 +16,6 @@ namespace AutoForager.Handlers
 		private const string ARTIFACT_SPOT_QUALIFIED_ID = "(O)590";
 		private const string SEED_SPOT_QUALIFIED_ID = "(O)SeedSpot";
 
-		public override int Priority => 60; // Check after regular Objects
-
 		/// <summary>
 		/// Determines if this handler can process the given Object.
 		/// </summary>

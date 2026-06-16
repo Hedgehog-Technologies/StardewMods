@@ -32,12 +32,6 @@ namespace AutoForager.Handlers
 		}
 
 		/// <summary>
-		/// Gets the priority of this handler. Lower values are checked first.
-		/// Default is 100. Override to change execution order.
-		/// </summary>
-		public virtual int Priority => 100;
-
-		/// <summary>
 		/// Logs a message at the configured debug level.
 		/// </summary>
 		protected void LogDebug(string message)

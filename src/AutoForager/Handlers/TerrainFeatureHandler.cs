@@ -20,8 +20,6 @@ namespace AutoForager.Handlers
 		private const string SPRING_ONION_QUALIFIED_ID = "(O)399";
 		private const string GINGER_QUALIFIED_ID = "(O)829";
 
-		public override int Priority => 40; // Check after Bushes
-
 		/// <summary>
 		/// Determines if this handler can process the given Hoe Dirt.
 		/// </summary>

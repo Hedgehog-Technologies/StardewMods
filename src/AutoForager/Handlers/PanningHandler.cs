@@ -15,8 +15,6 @@ namespace AutoForager.Handlers
 	{
 		private const string PANNING_SOUND = "coin";
 
-		public override int Priority => 80; // Check panning last (special case)
-
 		/// <summary>
 		/// Checks for and handles panning spots in the current location.
 		/// This is a special case that doesn't follow the tile-by-tile pattern.

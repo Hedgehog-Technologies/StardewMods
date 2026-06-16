@@ -25,8 +25,6 @@ namespace AutoForager.Handlers
 			_mushroomLogTreesLock = mushroomLogTreesLock;
 		}
 
-		public override int Priority => 10; // Check Wild Trees before other terrain features
-
 		/// <summary>
 		/// Determines if this handler can process the given tree.
 		/// </summary>

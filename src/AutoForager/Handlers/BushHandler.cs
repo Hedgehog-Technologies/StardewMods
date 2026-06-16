@@ -10,17 +10,8 @@ namespace AutoForager.Handlers
 	/// <summary>
 	/// Handles foraging from Bushes (berry bushes, tea bushes, walnut bushes, custom bushes).
 	/// </summary>
-	internal class BushHandler : BaseForagingHandler
+	internal class BushHandler(CustomBushWrapper? customBushWrapper) : BaseForagingHandler
 	{
-		private readonly CustomBushWrapper? _customBushWrapper;
-
-		public BushHandler(CustomBushWrapper? customBushWrapper)
-		{
-			_customBushWrapper = customBushWrapper;
-		}
-
-		public override int Priority => 30; // Check Bushes after Trees
-
 		/// <summary>
 		/// Determines if this handler can process the given Bush.
 		/// </summary>
@@ -99,7 +90,7 @@ namespace AutoForager.Handlers
 		private bool HandleTeaBush(Bush bush)
 		{
 			// Check for custom bush
-			if (_customBushWrapper?.IsCustomBush(bush) ?? false)
+			if (customBushWrapper?.IsCustomBush(bush) ?? false)
 			{
 				return HandleCustomBush(bush);
 			}
@@ -120,7 +111,9 @@ namespace AutoForager.Handlers
 		/// </summary>
 		private bool HandleCustomBush(Bush bush)
 		{
-			var shakeOffItem = bush.modData[CustomBushWrapper.ShakeOffItemKey];
+			if (customBushWrapper is null) return false;
+
+			var shakeOffItem = bush.modData[customBushWrapper.ShakeOffItemKey];
 
 			if (!Context.ForageableTracker.BushForageables.TryGetItem(shakeOffItem, out var bItem)
 				|| !(bItem?.IsEnabled ?? false))

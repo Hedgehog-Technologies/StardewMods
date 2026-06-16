@@ -14,8 +14,6 @@ namespace AutoForager.Handlers
 	/// </summary>
 	internal class ObjectHandler : BaseForagingHandler
 	{
-		public override int Priority => 50; // Check objects after terrain features
-
 		/// <summary>
 		/// Determines if this handler can process the given Object.
 		/// </summary>

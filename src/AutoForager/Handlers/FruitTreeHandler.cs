@@ -12,8 +12,6 @@ namespace AutoForager.Handlers
 	/// </summary>
 	internal class FruitTreeHandler : BaseForagingHandler
 	{
-		public override int Priority => 20; // Check Fruit Trees after Wild Trees
-
 		/// <summary>
 		/// Determines if this handler can process the given Fruit Tree.
 		/// </summary>

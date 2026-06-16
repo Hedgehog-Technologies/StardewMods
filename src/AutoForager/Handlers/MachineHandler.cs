@@ -17,8 +17,6 @@ namespace AutoForager.Handlers
 		private const string MUSHROOM_LOG_QUALIFIED_ID = "(BC)MushroomLog";
 		private const string TAPPER_CONTEXT_TAG = "tapper_item";
 
-		public override int Priority => 70; // Check after Artifact / Seed spots
-
 		/// <summary>
 		/// Determines if this handler can process the given Object.
 		/// </summary>
