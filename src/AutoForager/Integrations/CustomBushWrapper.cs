@@ -5,97 +5,56 @@ using StardewModdingAPI;
 using StardewValley.GameData;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using HedgeTech.Common.Extensions;
-using HedgeTech.Common.Interfaces;
 
 namespace AutoForager.Integrations
 {
-	internal class CustomBushWrapper
+	internal class CustomBushWrapper : BaseIntegrationWrapper<ICustomBushApi>
 	{
-		private const string _minVersion = "1.0.4";
-		private const string _cbUniqueId = "furyx639.CustomBush";
-		private const string _cpUniqueId = "Pathoschild.ContentPatcher";
-		private const int _readyRetries = 120;
-		private const int _readyRetryWaitMs = 500;
-
-		public static string ShakeOffItemKey => _cbUniqueId + "/ShakeOff";
-
-		private readonly IMonitor _monitor;
-		private readonly IModHelper _helper;
-
-		private readonly ICustomBushApi? _customBushApi;
-		private readonly IContentPatcherApi? _contentPatcherApi;
-
+		public string ShakeOffItemKey { get; }
 
 		public CustomBushWrapper(IMonitor monitor, IModHelper helper)
+			: base(monitor, helper, "1.0.4", "furyx639.CustomBush", I18n.Category_CustomBushes(), true)
 		{
-			_monitor = monitor;
-			_helper = helper;
-
-			if (helper.ModRegistry.IsLoaded(_cbUniqueId) && helper.ModRegistry.IsLoaded(_cpUniqueId))
-			{
-				var customBush = helper.ModRegistry.Get(_cbUniqueId);
-
-				if (customBush is not null)
-				{
-					var cbName = customBush.Manifest.Name;
-					var cbVersion = customBush.Manifest.Version;
-
-					if (cbVersion.IsEqualToOrNewerThan(_minVersion))
-					{
-						monitor.Log(I18n.Log_Wrapper_ModFound(cbName, I18n.Category_CustomBushes()), LogLevel.Info);
-						_customBushApi = helper.ModRegistry.GetApi<ICustomBushApi>(_cbUniqueId);
-						_contentPatcherApi = helper.ModRegistry.GetApi<IContentPatcherApi>(_cpUniqueId);
-					}
-					else
-					{
-						monitor.Log(I18n.Log_Wrapper_OldVersion(cbName, cbVersion, _minVersion), LogLevel.Warn);
-					}
-				}
-				else
-				{
-					monitor.Log(I18n.Log_Wrapper_ManifestError("Custom Bush"), LogLevel.Warn);
-				}
-			}
+			ShakeOffItemKey = UniqueId + "/ShakeOff";
 		}
 
-		public bool IsCustomBush(Bush bush) => _customBushApi?.IsCustomBush(bush) ?? false;
+		public bool IsCustomBush(Bush bush) => ModApi?.IsCustomBush(bush) ?? false;
 
 		public async Task<IEnumerable<string>> GetDrops()
 		{
 			var customDrops = new List<string>();
 
-			if (_customBushApi is not null && _contentPatcherApi is not null)
+			if (ModApi is not null && ContentPatcherApi is not null)
 			{
-				var remainingRetries = _readyRetries;
+				var remainingRetries = ReadyRetries;
 
-				while (!_contentPatcherApi.IsConditionsApiReady && remainingRetries-- > 0)
+				while (!ContentPatcherApi.IsConditionsApiReady && remainingRetries-- > 0)
 				{
-					await Task.Delay(_readyRetryWaitMs);
+					await Task.Delay(ReadyRetryWaitMs);
 				}
 
 				remainingRetries += 1;
-				var retryTime = (_readyRetries - remainingRetries) * _readyRetryWaitMs;
+				var retryTime = (ReadyRetries - remainingRetries) * ReadyRetryWaitMs;
 
-				_monitor.Log($"Custom Bush status: Content Patcher Ready: {_contentPatcherApi.IsConditionsApiReady} - Remaining Retries: {remainingRetries} / {_readyRetries} - Total time: {retryTime}ms", LogLevel.Debug);
+				Monitor.Log($"Custom Bush status: Content Patcher Ready: {ContentPatcherApi.IsConditionsApiReady} - Remaining Retries: {remainingRetries} / {ReadyRetries} - Total time: {retryTime}ms", LogLevel.Debug);
 
-				if (_contentPatcherApi.IsConditionsApiReady)
+				if (ContentPatcherApi.IsConditionsApiReady)
 				{
-					var bushes = _customBushApi.GetData();
+					var bushes = ModApi.GetData();
 
-					foreach (var bush in bushes)
+					foreach (var (Id, Data) in bushes)
 					{
-						_monitor.Log(bush.Id, LogLevel.Debug);
+						Monitor.Log(Id, LogLevel.Debug);
 
-						if (_customBushApi.TryGetDrops(bush.Id, out var drops))
+						if (ModApi.TryGetDrops(Id, out var drops))
 						{
-							customDrops.AddRange(drops?.Select(d => d.ItemId) ?? new List<string>());
+							customDrops.AddRange(drops?.Select(d => d.ItemId) ?? []);
 						}
 					}
 				}
 				else
 				{
-					_monitor.Log($"Custom Bush or Content Patcher was not ready within {retryTime}ms. Continuing without Custom Bush integration.", LogLevel.Warn);
+					Monitor.Log($"Custom Bush or Content Patcher was not ready within {retryTime}ms. Continuing without Custom Bush integration.", LogLevel.Warn);
 				}
 			}
 

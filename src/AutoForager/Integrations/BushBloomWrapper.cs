@@ -1,90 +1,48 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using HedgeTech.Common.Extensions;
 using StardewModdingAPI;
 using StardewValley;
 
 namespace AutoForager.Integrations
 {
-	internal class BushBloomWrapper
+	internal class BushBloomWrapper(IMonitor monitor, IModHelper helper)
+		: BaseIntegrationWrapper<IBushBloomApi>(monitor, helper, "1.1.9", "NCarigon.BushBloomMod", I18n.Subject_BushBloomSchedules())
 	{
-		private const string _minVersion = "1.1.9";
-		private const string _bbUniqueId = "NCarigon.BushBloomMod";
-		private const int _readyRetries = 120;
-		private const int _readyRetryWaitMs = 500;
-
-		private readonly IMonitor _monitor;
-		private readonly IModHelper _helper;
-
-		private readonly IBushBloomApi? _bushBloomApi;
-
-		private readonly List<BloomSchedule> _schedules;
+		private readonly List<BloomSchedule> _schedules = [];
 		public List<BloomSchedule> Schedules => _schedules;
-
-		public BushBloomWrapper(IMonitor monitor, IModHelper helper)
-		{
-			_monitor = monitor;
-			_helper = helper;
-			_schedules = new();
-
-			if (helper.ModRegistry.IsLoaded(_bbUniqueId))
-			{
-				var bushBloom = helper.ModRegistry.Get(_bbUniqueId);
-
-				if (bushBloom is not null)
-				{
-					var bbName = bushBloom.Manifest.Name;
-					var bbVersion = bushBloom.Manifest.Version;
-
-					if (bbVersion.IsEqualToOrNewerThan(_minVersion))
-					{
-						monitor.Log(I18n.Log_Wrapper_ModFound(bbName, I18n.Subject_BushBloomSchedules()), LogLevel.Info);
-						_bushBloomApi = helper.ModRegistry.GetApi<IBushBloomApi>(_bbUniqueId);
-					}
-					else
-					{
-						monitor.Log(I18n.Log_Wrapper_OldVersion(bbName, bbVersion, _minVersion), LogLevel.Warn);
-					}
-				}
-				else
-				{
-					monitor.Log(I18n.Log_Wrapper_ManifestError("Bush Bloom Mod"), LogLevel.Warn);
-				}
-			}
-		}
 
 		public async Task<List<BloomSchedule>> UpdateSchedules()
 		{
 			var defaultBlooms = new BloomSchedule[]
 			{
-				new BloomSchedule("296", new WorldDate(1, Season.Spring, 15), new WorldDate(1, Season.Spring, 18)),
-				new BloomSchedule("410", new WorldDate(1, Season.Fall, 8), new WorldDate(1, Season.Fall, 11))
+				new("296", new WorldDate(1, Season.Spring, 15), new WorldDate(1, Season.Spring, 18)),
+				new("410", new WorldDate(1, Season.Fall, 8), new WorldDate(1, Season.Fall, 11))
 			};
 
-			if (_bushBloomApi is not null)
+			if (ModApi is not null)
 			{
-				var remainingRetries = _readyRetries;
+				var remainingRetries = ReadyRetries;
 
-				while (!_bushBloomApi.IsReady() && remainingRetries-- > 0)
+				while (!ModApi.IsReady() && remainingRetries-- > 0)
 				{
-					await Task.Delay(_readyRetryWaitMs);
+					await Task.Delay(ReadyRetryWaitMs);
 				}
 
 				remainingRetries += 1;
-				var retryTime = (_readyRetries - remainingRetries) * _readyRetryWaitMs;
+				var retryTime = (ReadyRetries - remainingRetries) * ReadyRetryWaitMs;
 
-				_monitor.Log($"Bush Bloom Mod status: Ready: {_bushBloomApi.IsReady()} - Remaining retries: {remainingRetries} / {_readyRetries} - Total time: {retryTime}ms", LogLevel.Debug);
+				Monitor.Log($"Bush Bloom Mod status: Ready: {ModApi.IsReady()} - Remaining retries: {remainingRetries} / {ReadyRetries} - Total time: {retryTime}ms", LogLevel.Debug);
 
-				if (_bushBloomApi.IsReady())
+				if (ModApi.IsReady())
 				{
-					foreach (var sched in _bushBloomApi.GetAllSchedules())
+					foreach (var sched in ModApi.GetAllSchedules())
 					{
 						_schedules.Add(new BloomSchedule(sched));
 					}
 				}
 				else
 				{
-					_monitor.Log($"Bush Bloom Mod not ready within {retryTime}ms. Continuing with only default bush blooms.", LogLevel.Warn);
+					Monitor.Log($"Bush Bloom Mod not ready within {retryTime}ms. Continuing with only default bush blooms.", LogLevel.Warn);
 				}
 			}
 
@@ -97,18 +55,11 @@ namespace AutoForager.Integrations
 		}
 	}
 
-	public class BloomSchedule
+	public class BloomSchedule(string itemId, WorldDate startDate, WorldDate endDate)
 	{
-		public string ItemId { get; }
-		public WorldDate StartDate { get; }
-		public WorldDate EndDate { get; }
-
-		public BloomSchedule(string itemId, WorldDate startDate, WorldDate endDate)
-		{
-			ItemId = itemId;
-			StartDate = startDate;
-			EndDate = endDate;
-		}
+		public string ItemId { get; } = itemId;
+		public WorldDate StartDate { get; } = startDate;
+		public WorldDate EndDate { get; } = endDate;
 
 		public BloomSchedule((string, WorldDate, WorldDate) schedule)
 			: this(schedule.Item1, schedule.Item2, schedule.Item3)

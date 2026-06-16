@@ -1,64 +1,20 @@
 using System.Collections.Generic;
 using StardewModdingAPI;
-using HedgeTech.Common.Extensions;
 
 namespace AutoForager.Integrations
 {
-	internal class FarmTypeManagerWrapper
+	internal class FarmTypeManagerWrapper(IMonitor monitor, IModHelper helper) : BaseIntegrationWrapper<IFarmTypeManagerApi>(monitor, helper, "1.20.0", "Esca.FarmTypeManager", I18n.Subject_SpawnableForageIds())
 	{
-		private const string _minVersion = "1.20.0";
-		private const string _ftmUniqueId = "Esca.FarmTypeManager";
-		private const int _readyRetries = 120;
-		private const int _readyRetryWaitMs = 500;
-
-		private readonly IMonitor _monitor;
-		private readonly IModHelper _helper;
-
-		private readonly IFarmTypeManagerApi? _ftmApi;
-
-		private IDictionary<string, IEnumerable<string>> _forageIdsPerContentPack;
-		public IDictionary<string, IEnumerable<string>> ForageIdsPerContentPack => _forageIdsPerContentPack;
-
-		public FarmTypeManagerWrapper(IMonitor monitor, IModHelper helper)
-		{
-			_monitor = monitor;
-			_helper = helper;
-			_forageIdsPerContentPack = new Dictionary<string, IEnumerable<string>>();
-
-			if (helper.ModRegistry.IsLoaded(_ftmUniqueId))
-			{
-				var ftm = helper.ModRegistry.Get(_ftmUniqueId);
-
-				if (ftm is not null)
-				{
-					var ftmName = ftm.Manifest.Name;
-					var ftmVersion = ftm.Manifest.Version;
-
-					if (ftmVersion.IsEqualToOrNewerThan(_minVersion))
-					{
-						monitor.Log(I18n.Log_Wrapper_ModFound(ftmName, I18n.Subject_SpawnableForageIds()), LogLevel.Info);
-						_ftmApi = helper.ModRegistry.GetApi<IFarmTypeManagerApi>(_ftmUniqueId);
-					}
-					else
-					{
-						monitor.Log(I18n.Log_Wrapper_OldVersion(ftmName, ftmVersion, _minVersion), LogLevel.Warn);
-					}
-				}
-				else
-				{
-					monitor.Log(I18n.Log_Wrapper_ManifestError("Farm Type Manager"), LogLevel.Warn);
-				}
-			}
-		}
+		public IDictionary<string, IEnumerable<string>> ForageIdsPerContentPack { get; private set; } = new Dictionary<string, IEnumerable<string>>();
 
 		public IDictionary<string, IEnumerable<string>> UpdateForageIds()
 		{
-			if (_ftmApi is not null)
+			if (ModApi is not null)
 			{
-				_forageIdsPerContentPack = _ftmApi.GetForageIDsFromContentPacks();
+				ForageIdsPerContentPack = ModApi.GetForageIDsFromContentPacks();
 			}
 
-			return _forageIdsPerContentPack;
+			return ForageIdsPerContentPack;
 		}
 	}
 
