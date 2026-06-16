@@ -58,7 +58,9 @@ namespace AutoForager
 		// Tracking counts
 		private readonly Dictionary<string, Dictionary<string, int>> _trackingCounts;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 		public ModEntry()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 		{
 			_jsonHelper = new JsonHelper();
 			_forageableTracker = ForageableItemTracker.Instance;
@@ -245,13 +247,13 @@ namespace AutoForager
 				// Handle terrain features
 				if (Game1.currentLocation.terrainFeatures.TryGetValue(vec, out var feature))
 				{
-					HandleTerrainFeature(feature, vec, context);
+					HandleTerrainFeature(feature, vec);
 				}
 
 				// Handle objects
 				if (Game1.currentLocation.Objects.TryGetValue(vec, out var obj))
 				{
-					HandleObject(obj, vec, feature, context);
+					HandleObject(obj, vec, feature);
 				}
 
 				// Handle large terrain features (large bushes)
@@ -344,7 +346,7 @@ namespace AutoForager
 			_panningHandler.Initialize(context);
 		}
 
-		private void HandleTerrainFeature(TerrainFeature feature, Vector2 tile, IForagingContext context)
+		private void HandleTerrainFeature(TerrainFeature feature, Vector2 tile)
 		{
 			switch (feature)
 			{
@@ -378,7 +380,7 @@ namespace AutoForager
 			}
 		}
 
-		private void HandleObject(SObject obj, Vector2 tile, TerrainFeature? terrainFeature, IForagingContext context)
+		private void HandleObject(SObject obj, Vector2 tile, TerrainFeature? terrainFeature)
 		{
 			// Priority order: artifact spots > machines > regular objects
 			if (_artifactSpotHandler.CanHandle(obj))
@@ -430,7 +432,7 @@ namespace AutoForager
 
 			foreach (var obj in objectData.Data)
 			{
-				if (_ignoreItemIds.Any(i => obj.Key.IEquals(i.Substring(3)))) continue;
+				if (_ignoreItemIds.Any(i => obj.Key.IEquals(i[3..]))) continue;
 				if (obj.Value.Category == SObject.litterCategory) continue;
 
 				string? category = null;
@@ -441,7 +443,7 @@ namespace AutoForager
 					category = cpCategory;
 				}
 				else if ((obj.Value.ContextTags?.Contains("forage_item") ?? false)
-					|| _overrideItemIds.Any(i => obj.Key.IEquals(i.Substring(3))))
+					|| _overrideItemIds.Any(i => obj.Key.IEquals(i[3..])))
 				{
 					if (!knownCategory.IsNullOrEmpty())
 					{

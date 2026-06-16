@@ -16,7 +16,9 @@ namespace AutoForager.Handlers
 	{
 		protected const string HARVEST_SOUND_ID = "harvest";
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 		protected IForagingContext Context { get; private set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 		protected IMonitor Monitor => Context.Monitor;
 		protected ModConfig Config => Context.Config;
 
