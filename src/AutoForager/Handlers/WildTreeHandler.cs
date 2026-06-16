@@ -14,16 +14,10 @@ namespace AutoForager.Handlers
 	/// <summary>
 	/// Handles foraging from Wild Trees, including seeds and moss.
 	/// </summary>
-	internal class WildTreeHandler : BaseForagingHandler
+	internal class WildTreeHandler(List<Tree> mushroomLogTrees, object mushroomLogTreesLock) : BaseForagingHandler
 	{
-		private readonly List<Tree> _mushroomLogTrees;
-		private readonly object _mushroomLogTreesLock;
-
-		public WildTreeHandler(List<Tree> mushroomLogTrees, object mushroomLogTreesLock)
-		{
-			_mushroomLogTrees = mushroomLogTrees;
-			_mushroomLogTreesLock = mushroomLogTreesLock;
-		}
+		private readonly List<Tree> _mushroomLogTrees = mushroomLogTrees;
+		private readonly object _mushroomLogTreesLock = mushroomLogTreesLock;
 
 		/// <summary>
 		/// Determines if this handler can process the given tree.

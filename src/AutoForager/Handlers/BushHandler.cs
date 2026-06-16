@@ -51,13 +51,13 @@ namespace AutoForager.Handlers
 				case 0:
 				case 1:
 				case (int)Constants.BushSize.Berry:
-					return HandleBloomingBush(bush);
+					return CheckBloomingBush(bush);
 
 				case (int)Constants.BushSize.Tea:
-					return HandleTeaBush(bush);
+					return CheckTeaBush(bush);
 
 				case (int)Constants.BushSize.Walnut:
-					return HandleWalnutBush(bush);
+					return CheckWalnutBush();
 
 				default:
 					Monitor.Log($"Unknown Bush size: [{bush.size.Value}]", LogLevel.Warn);
@@ -68,7 +68,7 @@ namespace AutoForager.Handlers
 		/// <summary>
 		/// Handles blooming bushes (salmonberry, blackberry, etc.).
 		/// </summary>
-		private bool HandleBloomingBush(Bush bush)
+		private bool CheckBloomingBush(Bush bush)
 		{
 			var bloomItem = bush.GetShakeOffItem();
 			if (bloomItem is null) return false;
@@ -87,12 +87,12 @@ namespace AutoForager.Handlers
 		/// <summary>
 		/// Handles tea bushes (vanilla and custom).
 		/// </summary>
-		private bool HandleTeaBush(Bush bush)
+		private bool CheckTeaBush(Bush bush)
 		{
 			// Check for custom bush
 			if (customBushWrapper?.IsCustomBush(bush) ?? false)
 			{
-				return HandleCustomBush(bush);
+				return CheckCustomBush(bush);
 			}
 
 			// Vanilla tea bush
@@ -109,7 +109,7 @@ namespace AutoForager.Handlers
 		/// <summary>
 		/// Handles custom bushes from the Custom Bush mod.
 		/// </summary>
-		private bool HandleCustomBush(Bush bush)
+		private bool CheckCustomBush(Bush bush)
 		{
 			if (customBushWrapper is null) return false;
 
@@ -129,7 +129,7 @@ namespace AutoForager.Handlers
 		/// <summary>
 		/// Handles walnut bushes (Ginger Island).
 		/// </summary>
-		private bool HandleWalnutBush(Bush bush)
+		private bool CheckWalnutBush()
 		{
 			if (!Config.GetWalnutBushesEnabled())
 			{
