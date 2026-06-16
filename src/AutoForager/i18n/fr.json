@@ -28,16 +28,12 @@
   "Link.FruitTrees.Text": "Paramètres Arbres à Fruit >",
   "Link.WildTrees.Text": "Paramètres Arbres Sauvages >",
 
-  "Log.ContentPack.LoadError": "Impossibe de charger le contenu: {{packPath}}. Vérifiez ce fichier pour des erreurs de syntaxes.",
   "Log.DisabledConfig": "{{subjects}} n'interagit pas car le paramêtre de configuraison [{{configName}}] est actuellement désactivé.",
   "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
   "Log.Eod.TotalStat": "[{{amount}}] Cueillettes totales",
   "Log.FruitNotReady": "Les arbres à fruit ne seront pas secouées jusqu'à ce qu'ils aient {{amount}} fruits de disponible. Ceci peut être mis en place grâce au paramètre de configuraison {{configName}} .",
   "Log.MissingHoe": "{{subject}} ne sera pas cueilli car aucune Houe n'a été trouvé dans l'inventaire du joueur. Ce paramètre peut être éteint en désactivant {{configName}}",
   "Log.MissingToolMoss": "La Mousse ne sera pas ramassé car aucun outil n'a été trouvé dans l'inventaire du joueur. Ce paramètre peut être éteint en désactivant {{configName}}",
-  "Log.Wrapper.ManifestError": "Impossible de récupérer le manifeste {{name}} pour vérifier la version installé. Procéder sans les fonctionnalités {{name}} .",
-  "Log.Wrapper.ModFound": "{{name}} trouvé - Chargement de {{subject}}",
-  "Log.Wrapper.OldVersion": "{{name}} est de la version {{currentVersion}}. Version Minimum {{minimumVersion}} est nécessaire pour les fonctionnalités de {{name}}, veuillez consiérer mettre à jour.",
 
   "Message.AutoForagerToggled": "AutoForager à été {{state}}",
   "Message.MissingHoe": "Manque une houe. Vous ne pourrez pas ramasser {{subject}} sans une.",

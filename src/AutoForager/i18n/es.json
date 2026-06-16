@@ -28,16 +28,12 @@
   "Link.FruitTrees.Text": "Cambio de árboles frutales >",
   "Link.WildTrees.Text": "Cambio de árboles silvestres >",
 
-  "Log.ContentPack.LoadError": "El contenido no ha cargado correctamente: {{packPath}}. Revise el archivo en busca de errores de sintaxis.",
   "Log.DisabledConfig": "No se puede interactuar con {{subjects}} porque la configuración [{{configName}}] está deshabilitada.",
   "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
   "Log.Eod.TotalStat": "[{{amount}}] recolectado en total",
   "Log.FruitNotReady": "Los árboles frutales no se sacudirán hasta que acumulen {{amount}} frutos. Esto puede modificarse en la configuración de {{configName}}.",
   "Log.MissingHoe": "{{subject}} no será recolectada porque no se ha encontrado una azada en el inventario del jugador. Esto puede deshabilitarse en la configuración {{configName}}",
   "Log.MissingToolMoss": "El musgo no será recolectado porque no se ha encontrado ninguna herramienta en el inventario del jugador. Esto puede deshabilitarse en la configuración {{configName}}",
-  "Log.Wrapper.ManifestError": "No se ha podido recuperar el archivo manifest de {{name}} para verificar la versión instalada. Se procederá sin las funcionalidades de {{name}}.",
-  "Log.Wrapper.ModFound": "{{name}} encontrado - Cargando {{subject}}",
-  "Log.Wrapper.OldVersion": "La versión de {{name}} es la {{currentVersion}}. La versión {{minimumVersion}} es la versión mínima permitida para las funcionalidades de {{name}}, por favor, considere actualizar su versión.",
 
   "Message.AutoForagerToggled": "AutoForager ha sido {{state}}",
   "Message.MissingHoe": "Necesitas una azada. No puedes recolectar {{subject}} sin una.",

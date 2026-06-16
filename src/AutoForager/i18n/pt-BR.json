@@ -28,16 +28,12 @@
   "Link.FruitTrees.Text": "Alternadores de árvores frutíferas >",
   "Link.WildTrees.Text": "Alternadores de árvore selvagem >",
 
-  "Log.ContentPack.LoadError": "Não foi possível carregar o pacote de conteúdo: {{packPath}}. Verifique se há erros de sintaxe nesse arquivo.", // Google Translate - Feel free to update
   "Log.DisabledConfig": "{{Subjects}} não estão sendo interagidos porque a configuração [{{configName}}] está atualmente desativada.",
   "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
   "Log.Eod.TotalStat": "[{{amount}}]Forragem Total",
   "Log.FruitNotReady": "As árvores frutíferas não serão abaladas até que tenham {{quantidade}} de frutas disponíveis. Isso pode ser definido com a configuração {{configName}}.",
   "Log.MissingHoe": "{{Subject}} não será forrageado porque nenhuma enxada foi encontrada no inventário do jogador. Esta configuração pode ser desativada desativando {{configName}}",
   "Log.MissingToolMoss": "Musgo não será forrageado porque nenhuma Ferramenta foi encontrada no inventário do jogador. Esta configuração pode ser desativada desativando {{configName}}",
-  "Log.Wrapper.ManifestError": "Não foi possível recuperar o manifesto de {{name}} para verificar a versão instalada. Continuando sem funcionalidades de {{name}}.", // Google Translate - Feel free to update
-  "Log.Wrapper.ModFound": "{{name}} encontrado - Carregando {{subject}}", // Google Translate - Feel free to update
-  "Log.Wrapper.OldVersion": "{{name}} é a versão {{currentVersion}}. A versão mínima {{minimumVersion}} é necessária para os recursos do {{name}}, considere atualizar.", // Google Translate - Feel free to update
 
   "Message.AutoForagerToggled": "AutoForagem tem sido {{state}}",
   "Message.MissingHoe": "Falta uma enxada. Você não pode forragear {{assunto}} sem um.",

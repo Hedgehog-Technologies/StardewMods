@@ -43,7 +43,7 @@ namespace AutoForager.Integrations
 
 					if (modVersion.IsEqualToOrNewerThan(MinVersion))
 					{
-						Monitor.Log(I18n.Log_Wrapper_ModFound(modName, logSubject), LogLevel.Info);
+						Monitor.Log($"{modName} found - Loading {logSubject}", LogLevel.Info);
 						ModApi = Helper.ModRegistry.GetApi<TModInterface>(UniqueId);
 
 						if (verifyContentPatcher)
@@ -53,12 +53,12 @@ namespace AutoForager.Integrations
 					}
 					else
 					{
-						Monitor.Log(I18n.Log_Wrapper_OldVersion(modName, modVersion, MinVersion), LogLevel.Warn);
+						Monitor.Log($"{modName} is version {modVersion}. Minimum version {MinVersion} is needed for {modName} functionalities, please consider updating.", LogLevel.Warn);
 					}
 				}
 				else
 				{
-					Monitor.Log(I18n.Log_Wrapper_ManifestError(UniqueId), LogLevel.Warn);
+					Monitor.Log($"Unable to retrieve manifest for {UniqueId} to verify installed version. Proceeding without {UniqueId} functionalities.", LogLevel.Warn);
 				}
 			}
 		}

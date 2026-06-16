@@ -29,16 +29,12 @@
   "Link.FruitTrees.Text": "Переключатели фруктовых деревьев >",
   "Link.WildTrees.Text": "Переключатели диких деревьев >",
 
-  "Log.ContentPack.LoadError": "Не удалось загрузить пакет контента: {{packPath}}. Проверьте этот файл на наличие синтаксических ошибок.",
   "Log.DisabledConfig": "{{subjects}} не взаимодействуют, так как настройка конфигурации [{{configName}}] в настоящее время отключена.",
   "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
   "Log.Eod.TotalStat": "[{{amount}}] Всего собрано",
   "Log.FruitNotReady": "Фруктовые деревья не будут трястись, пока на них не будет {{amount}} фруктов. Это можно настроить с помощью параметра конфигурации {{configName}}.",
   "Log.MissingHoe": "{{subject}} не будет собираться, так как в инвентаре игрока нет мотыги. Эту настройку можно отключить, отключив {{configName}}",
   "Log.MissingToolMoss": "Мох не будет собираться, так как в инвентаре игрока нет инструмента. Эту настройку можно отключить, отключив {{configName}}",
-  "Log.Wrapper.ManifestError": "Не удалось получить манифест для {{name}}, чтобы проверить установленную версию. Продолжение без функций {{name}}.",
-  "Log.Wrapper.ModFound": "{{name}} найден - Загрузка {{subject}}",
-  "Log.Wrapper.OldVersion": "{{name}} версии {{currentVersion}}. Для функций {{name}} требуется минимальная версия {{minimumVersion}}, пожалуйста, обновитесь.",
 
   "Message.AutoForagerToggled": "Автосборщик был {{state}}",
   "Message.MissingHoe": "Нет мотыги. Вы не можете собирать {{subject}} без нее.",

@@ -109,7 +109,7 @@ namespace AutoForager.Services
 				}
 				catch
 				{
-					_monitor.Log(I18n.Log_ContentPack_LoadError(Path.Combine(pack.DirectoryPath, CONTENT_PACK_FILE_NAME)), LogLevel.Error);
+					_monitor.Log($"Unable to load content pack: {Path.Combine(pack.DirectoryPath, CONTENT_PACK_FILE_NAME)}. Review that file for syntax errors.", LogLevel.Error);
 				}
 			}
 		}

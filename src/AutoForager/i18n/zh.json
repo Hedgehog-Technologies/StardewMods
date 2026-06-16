@@ -29,16 +29,12 @@
   "Link.FruitTrees.Text": "果树设置>",
   "Link.WildTrees.Text": "野树设置>",
 
-  "Log.ContentPack.LoadError": "无法加载内容包: {{packPath}}。请检查该文件是否存在语法错误。",
   "Log.DisabledConfig": "{{subjects}}未被交互，因为 [{{configName}}]配置项当前已禁用。",
   "Log.Eod.Stat": "\t[{{amount}}] {{subjects}}",
   "Log.Eod.TotalStat": "[{{amount}}] 总采集数",
   "Log.FruitNotReady": "果树在有{{amount}}个果实可用之前不会被摇晃。这可以通过{{configName}} 配置项进行设置。",
   "Log.MissingHoe": "{{subject}}不会被采集，因为玩家的物品栏中没有锄头。可以通过禁用{{configName}}来关闭此设置。",
   "Log.MissingToolMoss": "苔藓不会被采集，因为玩家的物品栏中没有工具。可以通过禁用{{configName}}来关闭此设置。",
-  "Log.Wrapper.ManifestError": "无法获取{{name}} 清单以验证已安装的版本。将在不使用{{name}} 功能的情况下继续运行。",
-  "Log.Wrapper.ModFound": "找到{{name}} -正在加载 {{subject}}",
-  "Log.Wrapper.OldVersion": "{{name}}的版本是 {{currentVersion}}。{{minimumVersion}}功能需要最低版本{{name}}，请考虑更新。",
 
   "Message.AutoForagerToggled": "自动采集器 {{state}}",
   "Message.MissingHoe": "缺少锄头。没有锄头，你不能采集{{subject}} 。",
