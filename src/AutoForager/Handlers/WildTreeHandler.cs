@@ -34,7 +34,7 @@ namespace AutoForager.Handlers
 		{
 			if (tree == null) return false;
 			if (tree.stump.Value) return false;
-			if (tree.growthStage.Value < 5) return false;
+			if (tree.growthStage.Value < Constants.WildTreeMatureStage) return false;
 
 			// Must have seeds, moss, or shake items to be harvestable
 			var hasHarvestable = tree.hasSeed.Value
@@ -68,7 +68,7 @@ namespace AutoForager.Handlers
 		private bool ShouldShakeTree(Tree tree)
 		{
 			if (tree.wasShakenToday.Value) return false;
-			if (!Game1.IsMultiplayer && Game1.player.ForagingLevel < 1) return false;
+			if (!Game1.IsMultiplayer && Game1.player.ForagingLevel < Constants.MinimumForagingLevelForTreeShaking) return false;
 			if (!tree.isActionable()) return false;
 
 			// Check if tree has seeds that are enabled in the config

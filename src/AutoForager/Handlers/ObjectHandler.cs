@@ -45,7 +45,7 @@ namespace AutoForager.Handlers
 			}
 
 			// Forage the item with quality calculation
-			ForageItem(obj, tile, Utility.CreateDaySaveRandom(tile.X, tile.Y * 777.0f), 7, true);
+			ForageItem(obj, tile, Utility.CreateDaySaveRandom(tile.X, tile.Y * Constants.ObjectRandomSeedMultiplier), Constants.ObjectForageXp, true);
 
 			// Remove the object from the location
 			if (Context.Location.removeObject(tile, false) == null)
@@ -70,7 +70,6 @@ namespace AutoForager.Handlers
 		private void ForageItem(SObject obj, Vector2 vec, Random random, int xpGained = 0, bool checkGatherer = false)
 		{
 			var player = Context.Player;
-			var foragingLevel = (float)player.ForagingLevel;
 			var professions = player.professions;
 			var isForage = obj.isForage();
 			var skill = obj.isAnimalProduct() ? Farmer.farmingSkill : Farmer.foragingSkill;
@@ -94,7 +93,7 @@ namespace AutoForager.Handlers
 			Game1.createItemDebris(obj.getOne(), vec, -1, null, -1);
 
 			// Check for Gatherer profession (double harvest chance)
-			if (checkGatherer && isForage && professions.Contains(Farmer.gatherer) && random.NextDouble() < 0.2)
+			if (checkGatherer && isForage && professions.Contains(Farmer.gatherer) && random.NextDouble() < Constants.GathererDoubleCropChance)
 			{
 				player.gainExperience(Farmer.foragingSkill, xpGained); // Extra XP for double harvest
 				Game1.createItemDebris(obj.getOne(), vec, -1, null, -1);

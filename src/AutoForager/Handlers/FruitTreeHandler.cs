@@ -21,7 +21,7 @@ namespace AutoForager.Handlers
 		{
 			if (fruitTree == null) return false;
 			if (fruitTree.stump.Value) return false;
-			if (fruitTree.growthStage.Value < 4) return false;
+			if (fruitTree.growthStage.Value < Constants.FruitTreeMatureStage) return false;
 
 			var fruitCount = fruitTree.fruit.Count;
 			if (fruitCount <= 0 || fruitCount < Config.FruitsReadyToShake) return false;

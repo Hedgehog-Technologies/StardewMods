@@ -1,9 +1,10 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using AutoForager.Services;
+
+using Constants = AutoForager.Helpers.Constants;
 
 namespace AutoForager.Handlers
 {
@@ -65,7 +66,7 @@ namespace AutoForager.Handlers
 		/// </summary>
 		protected void CreateItemDebris(Item item, Vector2 tile, int direction = -1)
 		{
-			var position = tile * 64.0f;
+			var position = tile * Constants.TileSize;
 			Game1.createItemDebris(item, position, direction, null, -1);
 		}
 
@@ -90,22 +91,22 @@ namespace AutoForager.Handlers
 			// Botanist profession (always iridium quality)
 			if (player.professions.Contains(Farmer.botanist))
 			{
-				return 4;
+				return (int)Constants.ItemQuality.Iridium;
 			}
 
 			// Gold quality (foraging level / 30 chance)
-			if (random.NextDouble() < (double)(foragingLevel / 30.0f))
+			if (random.NextDouble() < (double)(foragingLevel / Constants.GoldQualityChanceDivisor))
 			{
-				return 2;
+				return (int)Constants.ItemQuality.Gold;
 			}
 
 			// Silver quality (foraging level / 15 chance)
-			if (random.NextDouble() < (double)(foragingLevel / 15.0f))
+			if (random.NextDouble() < (double)(foragingLevel / Constants.SilverQualityChanceDivisor))
 			{
-				return 1;
+				return (int)Constants.ItemQuality.Silver;
 			}
 
-			return 0; // Normal quality
+			return (int)Constants.ItemQuality.Normal; // Normal quality
 		}
 	}
 }

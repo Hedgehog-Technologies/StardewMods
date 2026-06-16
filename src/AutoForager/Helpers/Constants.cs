@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace AutoForager.Helpers
@@ -148,6 +149,54 @@ namespace AutoForager.Helpers
 
 		private const int _maxFruitsReady = 3;
 		public static int MaxFruitsReady => _maxFruitsReady;
+
+		#endregion
+
+		#region Gameplay Constants
+
+		// Quality Values
+		public const float SilverQualityChanceDivisor = 15.0f;
+		public const float GoldQualityChanceDivisor = 30.0f;
+		public enum ItemQuality
+		{
+			Normal = 0,
+			Silver,
+			Gold,
+			Iridium = 4
+		}
+
+		// Experience rewards
+		public const int ObjectForageXp = 7;
+		public const int SpringOnionForageXp = 3;
+
+		// Profession chances
+		public const double GathererDoubleCropChance = 0.2;
+
+		// Random seed multipliers
+		public const float ObjectRandomSeedMultiplier = 777.0f;
+		public const int SpringOnionRandomSeedMultiplier = 2000;
+
+		// Tree/Bush stages and sizes
+		public const int MinimumForagingLevelForTreeShaking = 1;
+		public const int FruitTreeMatureStage = 4;
+		public const int WildTreeMatureStage = 5;
+		public const int BushActionableTileSheetOffset = 1;
+		public enum BushSize
+		{
+			Berry = 2,
+			Tea,
+			Walnut
+		}
+
+		// Tile/position constants
+		public const float TileSize = 64.0f;
+
+		// Panning
+		public const double AdditionalPanningSpotChance = 0.5;
+
+		// Integration timing
+		public const int IntegrationReadyRetries = 120;
+		public const int IntegrationReadyRetryWaitMs = 500;
 
 		#endregion
 

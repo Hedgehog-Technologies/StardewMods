@@ -70,7 +70,11 @@ namespace AutoForager.Handlers
 			var x = (int)tile.X;
 			var y = (int)tile.Y;
 
-			ForageItem(ItemRegistry.Create<SObject>(SPRING_ONION_QUALIFIED_ID), tile, Utility.CreateDaySaveRandom(x * 2000, y * 2000), 3);
+			ForageItem(
+				ItemRegistry.Create<SObject>(SPRING_ONION_QUALIFIED_ID),
+				tile,
+				Utility.CreateDaySaveRandom(x * Constants.SpringOnionRandomSeedMultiplier, y * Constants.SpringOnionRandomSeedMultiplier),
+				Constants.SpringOnionForageXp);
 			hoeDirt.destroyCrop(false);
 			PlaySound(HARVEST_SOUND_ID);
 

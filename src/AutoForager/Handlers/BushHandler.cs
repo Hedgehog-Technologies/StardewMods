@@ -30,7 +30,7 @@ namespace AutoForager.Handlers
 			if (!Config.AnyBushEnabled()) return false;
 			if (bush.townBush.Value) return false;
 			if (!bush.inBloom()) return false;
-			if (bush.tileSheetOffset.Value != 1) return false;
+			if (bush.tileSheetOffset.Value != Constants.BushActionableTileSheetOffset) return false;
 
 			if (!bush.isActionable())
 			{
@@ -59,13 +59,13 @@ namespace AutoForager.Handlers
 			{
 				case 0:
 				case 1:
-				case 2:
+				case (int)Constants.BushSize.Berry:
 					return HandleBloomingBush(bush);
 
-				case 3:
+				case (int)Constants.BushSize.Tea:
 					return HandleTeaBush(bush);
 
-				case 4:
+				case (int)Constants.BushSize.Walnut:
 					return HandleWalnutBush(bush);
 
 				default:

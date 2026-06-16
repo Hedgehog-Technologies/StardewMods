@@ -80,7 +80,7 @@ namespace AutoForager.Handlers
 					}
 
 					// Play sound and clear panning spot
-					Context.Location.localSound(PANNING_SOUND, orePanVector / 64.0f);
+					Context.Location.localSound(PANNING_SOUND, orePanVector / Constants.TileSize);
 					Context.Location.orePanPoint!.Value = Point.Zero;
 
 					// Spawn additional panning spots based on pan upgrade level
@@ -104,7 +104,7 @@ namespace AutoForager.Handlers
 				}
 
 				// 50% chance for additional spot (except Island North)
-				if (Game1.random.NextDouble() < 0.5
+				if (Game1.random.NextDouble() < Constants.AdditionalPanningSpotChance
 					&& Context.Location.performOrePanTenMinuteUpdate(Game1.random)
 					&& Context.Location is not IslandNorth)
 				{
