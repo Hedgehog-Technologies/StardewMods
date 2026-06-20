@@ -31,7 +31,7 @@ namespace AutoForager.Handlers
 			// Must have seeds, moss, or shake items to be harvestable
 			var hasHarvestable = tree.hasSeed.Value
 				|| tree.hasMoss.Value
-				|| (tree.GetData().ShakeItems?.Any() ?? false);
+				|| (tree.GetData()?.ShakeItems?.Any() ?? false);
 
 			return hasHarvestable;
 		}
@@ -74,7 +74,7 @@ namespace AutoForager.Handlers
 			}
 
 			// Check if tree has shake items that are enabled in the config
-			var shakeItems = tree.GetData().ShakeItems;
+			var shakeItems = tree.GetData()?.ShakeItems;
 			if (shakeItems?.Any(s =>
 				Context.ForageableTracker.WildTreeForageables.Any(i =>
 					(s.ItemId.Contains(i.QualifiedItemId) || s.ItemId.Contains(i.ItemId))
@@ -94,7 +94,7 @@ namespace AutoForager.Handlers
 			tree.performUseAction(tree.Tile);
 
 			var seedItemIds = tree.GetSeedAndSeedItemIds();
-			LogDebug($"Tree shaken: Seeds: {string.Join(", ", seedItemIds)}; Items: {string.Join(", ", tree.GetData().ShakeItems?.Select(s => s.ItemId) ?? [])}");
+			LogDebug($"Tree shaken: Seeds: {string.Join(", ", seedItemIds)}; Items: {string.Join(", ", tree.GetData()?.ShakeItems?.Select(s => s.ItemId) ?? [])}");
 
 			// Track all seed items
 			foreach (var id in seedItemIds)

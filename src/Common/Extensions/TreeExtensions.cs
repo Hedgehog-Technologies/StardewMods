@@ -10,12 +10,12 @@ namespace HedgeTech.Common.Extensions
 			var itemIds = new List<string>();
 			var treeData = tree.GetData();
 
-			if (treeData.SeedItemId is not null)
+			if (treeData?.SeedItemId is not null)
 			{
 				itemIds.Add(treeData.SeedItemId);
 			}
 
-			if (treeData.SeedDropItems is not null)
+			if (treeData?.SeedDropItems is not null)
 			{
 				foreach (var item in treeData.SeedDropItems)
 				{
