@@ -86,7 +86,7 @@ namespace AutoForager.Classes
 							else if (fruitQueryData.Count == 0)
 							{
 								monitor?.LogOnce($"Failed to retrieve data for fruit tree fruit entry [{id}] in tree: {kvp.Key}.{Environment.NewLine}" +
-									$"\tThis is likely due to a misconfiguration from the mod that tree is added by.{Environment.NewLine}" +
+									$"\tThis may be due to a misconfiguration from the mod that tree is added by.{Environment.NewLine}" +
 									$"\tPlease reach out to that tree mod author with this information to get it fixed.{Environment.NewLine}" +
 									$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Warn);
 								continue;
@@ -173,7 +173,7 @@ namespace AutoForager.Classes
 						else if (seedQueryResult.Count == 0)
 						{
 							monitor?.LogOnce($"Failed to retrieve data for wild tree seed/shake entry [{seedItem.ItemId ?? seedItem.Id}] in tree: {kvp.Key}.{Environment.NewLine}" +
-								$"\tThis is likely due to a misconfiguration from the mod that tree is added by.{Environment.NewLine}" +
+								$"\tThis may be due to a misconfiguration from the mod that tree is added by.{Environment.NewLine}" +
 								$"\tPlease reach out to that tree mod author with this information to get it fixed.{Environment.NewLine}" +
 								$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Warn);
 							continue;
@@ -297,7 +297,7 @@ namespace AutoForager.Classes
 					else if (itemQueryResult.Count == 0)
 					{
 						monitor?.LogOnce($"Failed to retrieve data for forage entry [{forageObj.ItemId ?? forageObj.Id}] in location: {TokenParser.ParseText(location.DisplayName)}.{Environment.NewLine}" +
-							$"\tThis is likely due to a misconfiguration from the mod that location is added by.{Environment.NewLine}" +
+							$"\tThis is may be due to a misconfiguration from the mod that location is added by.{Environment.NewLine}" +
 							$"\tPlease reach out to that location mod author with this information to get it fixed.{Environment.NewLine}" +
 							$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Warn);
 						continue;
