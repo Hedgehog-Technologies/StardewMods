@@ -2,10 +2,8 @@
 
 ## 3.10.0
 Released TBD
-- Introduced Handler Pattern
-- Added Service Layer
-- Separated UI into ConfigMenuBuilder
-- Improved testability and maintainability
+- Fix NullReferenceException error when parsing some trees
+- Limit log spam during parsing with item queries
 
 **Breaking Changes:**
 - Internal architecture completely redesigned
