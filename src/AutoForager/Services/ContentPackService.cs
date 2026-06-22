@@ -31,6 +31,7 @@ namespace AutoForager.Services
 		private BushBloomWrapper? _bushBloomWrapper;
 		private CustomBushWrapper? _customBushWrapper;
 		private FarmTypeManagerWrapper? _ftmWrapper;
+		private WildFlowersReimaginedWrapper? _wfrWrapper;
 
 		public Dictionary<string, string> CPForageables => _cpForageables;
 		public Dictionary<string, string> CPFruitTrees => _cpFruitTrees;
@@ -42,6 +43,8 @@ namespace AutoForager.Services
 		public BushBloomWrapper? BushBloomWrapper => _bushBloomWrapper;
 		public CustomBushWrapper? CustomBushWrapper => _customBushWrapper;
 		public FarmTypeManagerWrapper? FtmWrapper => _ftmWrapper;
+
+		public WildFlowersReimaginedWrapper? WfrWrapper => _wfrWrapper;
 
 		public ContentPackService(IMonitor monitor, IModHelper helper, ModConfig config)
 		{
@@ -71,6 +74,7 @@ namespace AutoForager.Services
 			await InitializeBushBloomAsync();
 			await InitializeCustomBushAsync();
 			InitializeFarmTypeManager();
+			InitializeWildFlowersReimaginedManager();
 		}
 
 		/// <summary>
@@ -279,6 +283,11 @@ namespace AutoForager.Services
 					}
 				}
 			}
+		}
+
+		private void InitializeWildFlowersReimaginedManager()
+		{
+			_wfrWrapper = new WildFlowersReimaginedWrapper(_monitor, _helper);
 		}
 	}
 }
