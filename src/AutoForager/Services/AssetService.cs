@@ -10,6 +10,7 @@ using AutoForager.Extensions;
 using HedgeTech.Common.Extensions;
 
 using Constants = AutoForager.Helpers.Constants;
+using StardewValley.ItemTypeDefinitions;
 
 namespace AutoForager.Services
 {
@@ -61,6 +62,18 @@ namespace AutoForager.Services
 			UpdateWildTreeCache(DataLoader.WildTrees(Game1.content));
 			UpdateObjectCache(DataLoader.Objects(Game1.content));
 			UpdateLocationCache(DataLoader.Locations(Game1.content));
+		}
+
+		/// <summary>
+		/// Load the Flower data from Wild Flowers Reimagined
+		/// </summary>
+		/// <param name="flowerData">List if ItemMetadata flowers</param>
+		public void LoadFlowerData(List<ItemMetadata> flowerData)
+		{
+			// This should be a no op, but kept for consistency
+			_forageableTracker.FlowersForageables.Clear();
+			_forageableTracker.FlowersForageables.AddRange(ForageableItem.ParseFlowerData(flowerData));
+			_forageableTracker.FlowersForageables.SortByDisplayName();
 		}
 
 		/// <summary>

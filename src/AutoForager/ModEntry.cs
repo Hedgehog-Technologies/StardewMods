@@ -145,6 +145,7 @@ namespace AutoForager
 			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
 			helper.Events.Player.Warped += OnPlayerWarped;
 			helper.Events.World.ObjectListChanged += OnObjectListChanged;
+			helper.Events.GameLoop.SaveLoaded += onSaveLoaded;
 
 			if (_config.AutoForagingEnabled)
 			{
@@ -313,6 +314,15 @@ namespace AutoForager
 
 			CheckForMushroomLogTrees(e.Location);
 		}
+
+		[EventPriority(EventPriority.Low)]
+		private void onSaveLoaded(object? sender, EventArgs e)
+		{
+			var knownFlowers = _contentPackService.WfrWrapper.GetKnownFlowers();
+			_assetService.LoadFlowerData(knownFlowers);
+			_configService.RegisterConfigMenu(_forageableTracker, new CategoryComparer(Helper.ContentPacks.GetOwned()));
+		}
+
 
 		#endregion Event Handlers
 

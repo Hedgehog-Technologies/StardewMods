@@ -63,7 +63,8 @@ namespace AutoForager
 				{ Constants.BushToggleKey, new() },
 				{ Constants.ForagingToggleKey, new() },
 				{ Constants.FruitTreeToggleKey, new() },
-				{ Constants.WildTreeToggleKey, new() }
+				{ Constants.WildTreeToggleKey, new() },
+				{ Constants.FlowerGrassToggleKey, new() }
 			};
 
 			ResetToDefault();
@@ -122,6 +123,10 @@ namespace AutoForager
 					else if (toggleDict.Key.Equals(Constants.WildTreeToggleKey))
 					{
 						ResetTracker(_forageableTracker?.WildTreeForageables, toggleDict.Value);
+					}
+					else if (toggleDict.Key.Equals(Constants.FlowerGrassToggleKey))
+					{
+						ResetTracker(_forageableTracker?.FlowersForageables, toggleDict.Value);
 					}
 				}
 			}
@@ -186,6 +191,10 @@ namespace AutoForager
 					else if (toggleDict.Key.Equals(Constants.WildTreeToggleKey))
 					{
 						UpdateTrackerEnables(_forageableTracker.WildTreeForageables, toggleDict.Value);
+					}
+					else if (toggleDict.Key.Equals(Constants.FlowerGrassToggleKey))
+					{
+						UpdateTrackerEnables(_forageableTracker.FlowersForageables, toggleDict.Value);
 					}
 				}
 			}

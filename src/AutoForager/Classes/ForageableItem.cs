@@ -1,4 +1,5 @@
 using AutoForager.Extensions;
+using AutoForager.Integrations;
 using HedgeTech.Common.Extensions;
 using StardewModdingAPI;
 using StardewValley;
@@ -323,6 +324,24 @@ namespace AutoForager.Classes
 				}
 			}
 
+			return forageItems;
+		}
+
+		public static IEnumerable<ForageableItem> ParseFlowerData(List<ItemMetadata> data, IDictionary<string, bool>? configValues = null, IMonitor? monitor = null)
+		{
+			var forageItems = new List<ForageableItem>();
+			foreach (var flowerItemData in data)
+			{
+				var enabled = true;
+				if (flowerItemData == null) continue;
+				if (configValues is not null && configValues.TryGetValue(flowerItemData.QualifiedItemId, out var configEnabled))
+				{
+					enabled = configEnabled;
+				}
+				// There is no custom metadata to track at this point
+				forageItems.AddDistinct(new ForageableItem(flowerItemData.GetParsedData(), [], enabled));
+
+			}
 			return forageItems;
 		}
 
