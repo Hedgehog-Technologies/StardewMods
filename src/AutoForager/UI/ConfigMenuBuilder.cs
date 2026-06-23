@@ -553,6 +553,11 @@ namespace AutoForager.UI
 				getValue: () => _config.ForagePanningSpots,
 				setValue: val => _config.ForagePanningSpots = val);
 		}
+
+		/// <summary>
+		/// Builds the WildFlowersReimagined Flower section
+		/// </summary>
+		/// <param name="gmcmApi"></param>
 		private void BuildWildFlowersReimaginedPage(IGenericModConfigMenu gmcmApi)
 		{
 			gmcmApi.AddPage(
