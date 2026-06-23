@@ -32,7 +32,9 @@ namespace AutoForager.Handlers
 			if (flowerGrass == null) return false;
 			// Crop is a from a NetAttribute, to keep the behaviors the same as the source code the type is marked as Crop instead of Crop?.
 			if (flowerGrass.Crop == null) return false;
-			return true;
+			var harvestId = flowerGrass.Crop.GetData().HarvestItemId;
+			return Context.ForageableTracker.FlowersForageables.Any(i => harvestId == i.ItemId && i.IsEnabled);
+			
 		}
 
 		/// <summary>
