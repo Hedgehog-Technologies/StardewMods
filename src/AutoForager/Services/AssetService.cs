@@ -72,7 +72,10 @@ namespace AutoForager.Services
 		{
 			// This should be a no op, but kept for consistency
 			_forageableTracker.FlowersForageables.Clear();
-			_forageableTracker.FlowersForageables.AddRange(ForageableItem.ParseFlowerData(flowerData));
+			_forageableTracker.FlowersForageables.AddRange(ForageableItem.ParseFlowerData(flowerData,
+				_config?.ForageToggles[Constants.FlowerGrassToggleKey],
+				_monitor
+			));
 			_forageableTracker.FlowersForageables.SortByDisplayName();
 		}
 

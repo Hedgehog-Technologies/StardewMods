@@ -334,12 +334,14 @@ namespace AutoForager.Classes
 			{
 				var enabled = true;
 				if (flowerItemData == null) continue;
-				if (configValues is not null && configValues.TryGetValue(flowerItemData.QualifiedItemId, out var configEnabled))
+				var parsedData = flowerItemData.GetParsedData();
+				if (parsedData == null) continue;
+				if (configValues is not null && configValues.TryGetValue(parsedData.InternalName, out var configEnabled))
 				{
 					enabled = configEnabled;
 				}
 				// There is no custom metadata to track at this point
-				forageItems.AddDistinct(new ForageableItem(flowerItemData.GetParsedData(), [], enabled));
+				forageItems.AddDistinct(new ForageableItem(parsedData, [], enabled));
 
 			}
 			return forageItems;
