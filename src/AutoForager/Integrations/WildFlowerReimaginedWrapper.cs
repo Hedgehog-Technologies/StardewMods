@@ -1,15 +1,8 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Netcode;
+using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.TerrainFeatures;
-using StardewValley.Tools;
-using System;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Xml.Serialization;
 
 
 namespace AutoForager.Integrations
@@ -17,23 +10,15 @@ namespace AutoForager.Integrations
 	/// <summary>
 	/// Integration with the WildFlowersReimagined mod.
 	/// </summary>
-	/// <param name="monitor"></param>
-	/// <param name="helper"></param>
 	internal class WildFlowersReimaginedWrapper(IMonitor monitor, IModHelper helper) : BaseIntegrationWrapper<IWildFlowersReimaginedApi>(monitor, helper, "3.3.3", "jpp.WildFlowersReimagined", I18n.Category_WildFlowerReimagined())
 	{
-
 		/// <summary>
 		/// Get the list of known flowers.
 		/// </summary>
 		/// <returns>List of object data.</returns>
 		public List<ItemMetadata> GetKnownFlowers()
 		{
-			List < ItemMetadata > flowerList = new();
-			if (ModApi is not null)
-			{
-				flowerList = ModApi.GetKnownFlowers();
-			}
-			return flowerList;
+			return ModApi?.GetKnownFlowers() ?? [];
 		}
 
 		/// <summary>
@@ -43,14 +28,8 @@ namespace AutoForager.Integrations
 		/// <returns>FlowerGrass if the cast is successful, null otherwise.</returns>
 		public IFlowerGrass? AsFlowerGrass(Grass candidate)
 		{
-			if (ModApi is not null)
-			{
-				return ModApi.AsFlowerGrass(candidate);
-			}
-			return null;
+			return ModApi?.AsFlowerGrass(candidate) ?? null;
 		}
-
-
 	}
 
 	/// <summary>
@@ -67,7 +46,7 @@ namespace AutoForager.Integrations
 		/// <summary>
 		/// Cast a Grass TerrainFeature and attempts to down cast it to the GrassFlower IGrassFlower interface.
 		/// </summary>
-		/// <param name="candidate"></param>
+		/// <param name="candidate">Grass to check</param>
 		/// <returns>IFlowerGrass if it's a FlowerGrass, null otherwise.</returns>
 		public IFlowerGrass? AsFlowerGrass(Grass candidate);
 	}

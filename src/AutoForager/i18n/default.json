@@ -79,7 +79,7 @@
   "Page.WildTrees.Description": "Whether or not the following items should be shaken from Wild Trees:",
   "Page.WildFlowersReimagined.Title": "Wild Flowers Reimagined",
   "Page.WildFlowersReimagined.Description": "Whether or not the following flowers should be picked from the grass:",
-  "Page.WildFlowersReimagined.EarlyFallbackDescription": "This options will appeared once you load your save file",
+  "Page.WildFlowersReimagined.EarlyFallbackDescription": "These options will appear once you load your save file",
 
   "Reward.Blackberries": "Blackberries",
   "Reward.Buried.Items": "Buried Items",

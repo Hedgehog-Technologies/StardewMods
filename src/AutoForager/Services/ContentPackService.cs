@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -43,7 +42,6 @@ namespace AutoForager.Services
 		public BushBloomWrapper? BushBloomWrapper => _bushBloomWrapper;
 		public CustomBushWrapper? CustomBushWrapper => _customBushWrapper;
 		public FarmTypeManagerWrapper? FtmWrapper => _ftmWrapper;
-
 		public WildFlowersReimaginedWrapper? WfrWrapper => _wfrWrapper;
 
 		public ContentPackService(IMonitor monitor, IModHelper helper, ModConfig config)

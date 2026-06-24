@@ -19,7 +19,6 @@ using HedgeTech.Common.Helpers;
 
 using Constants = AutoForager.Helpers.Constants;
 using SObject = StardewValley.Object;
-using AutoForager.Integrations;
 
 namespace AutoForager
 {
@@ -145,7 +144,7 @@ namespace AutoForager
 			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
 			helper.Events.Player.Warped += OnPlayerWarped;
 			helper.Events.World.ObjectListChanged += OnObjectListChanged;
-			helper.Events.GameLoop.SaveLoaded += onSaveLoaded;
+			helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
 
 			if (_config.AutoForagingEnabled)
 			{
@@ -316,13 +315,14 @@ namespace AutoForager
 		}
 
 		[EventPriority(EventPriority.Low)]
-		private void onSaveLoaded(object? sender, EventArgs e)
+		private void OnSaveLoaded(object? sender, EventArgs e)
 		{
+			if (_contentPackService.WfrWrapper is null) return;
+
 			var knownFlowers = _contentPackService.WfrWrapper.GetKnownFlowers();
 			_assetService.LoadFlowerData(knownFlowers);
 			_configService.RegisterConfigMenu(_forageableTracker, new CategoryComparer(Helper.ContentPacks.GetOwned()));
 		}
-
 
 		#endregion Event Handlers
 
@@ -392,6 +392,7 @@ namespace AutoForager
 						_terrainFeatureHandler.Handle(hoeDirt, tile);
 					}
 					break;
+
 				case Grass grass:
 					if (_wildFlowersReimaginedHandler.CanHandle(grass))
 					{

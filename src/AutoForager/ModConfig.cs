@@ -126,7 +126,7 @@ namespace AutoForager
 					}
 					else if (toggleDict.Key.Equals(Constants.FlowerGrassToggleKey))
 					{
-						ResetTracker(_forageableTracker?.FlowersForageables, toggleDict.Value);
+						ResetTracker(_forageableTracker?.FlowerForageables, toggleDict.Value);
 					}
 				}
 			}
@@ -194,7 +194,7 @@ namespace AutoForager
 					}
 					else if (toggleDict.Key.Equals(Constants.FlowerGrassToggleKey))
 					{
-						UpdateTrackerEnables(_forageableTracker.FlowersForageables, toggleDict.Value);
+						UpdateTrackerEnables(_forageableTracker.FlowerForageables, toggleDict.Value);
 					}
 				}
 			}

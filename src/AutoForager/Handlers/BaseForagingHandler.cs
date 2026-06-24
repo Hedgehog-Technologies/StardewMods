@@ -26,8 +26,6 @@ namespace AutoForager.Handlers
 		/// Initializes the handler with the foraging context.
 		/// Called once when the handler is registered.
 		/// </summary>
-		/// <param name="context"></param>
-		/// <exception cref="ArgumentNullException"></exception>
 		public virtual void Initialize(IForagingContext context)
 		{
 			Context = context ?? throw new ArgumentNullException(nameof(context));

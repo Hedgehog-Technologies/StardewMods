@@ -5,12 +5,12 @@ using StardewValley.GameData.FruitTrees;
 using StardewValley.GameData.Locations;
 using StardewValley.GameData.Objects;
 using StardewValley.GameData.WildTrees;
+using StardewValley.ItemTypeDefinitions;
 using AutoForager.Classes;
 using AutoForager.Extensions;
 using HedgeTech.Common.Extensions;
 
 using Constants = AutoForager.Helpers.Constants;
-using StardewValley.ItemTypeDefinitions;
 
 namespace AutoForager.Services
 {
@@ -71,12 +71,12 @@ namespace AutoForager.Services
 		public void LoadFlowerData(List<ItemMetadata> flowerData)
 		{
 			// This should be a no op, but kept for consistency
-			_forageableTracker.FlowersForageables.Clear();
-			_forageableTracker.FlowersForageables.AddRange(ForageableItem.ParseFlowerData(flowerData,
+			_forageableTracker.FlowerForageables.Clear();
+			_forageableTracker.FlowerForageables.AddRange(ForageableItem.ParseFlowerData(flowerData,
 				_config?.ForageToggles[Constants.FlowerGrassToggleKey],
 				_monitor
 			));
-			_forageableTracker.FlowersForageables.SortByDisplayName();
+			_forageableTracker.FlowerForageables.SortByDisplayName();
 		}
 
 		/// <summary>

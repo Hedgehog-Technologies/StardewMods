@@ -27,20 +27,19 @@ namespace AutoForager.Classes
 		private readonly List<ForageableItem> _wildTreeForageables;
 		public List<ForageableItem> WildTreeForageables => _wildTreeForageables;
 
-		private readonly List<ForageableItem> _flowersForageables;
-
-		public List<ForageableItem> FlowersForageables => _flowersForageables;
+		private readonly List<ForageableItem> _flowerForageables;
+		public List<ForageableItem> FlowerForageables => _flowerForageables;
 
 		// ---------- Constructor ---------- //
 
 		private ForageableItemTracker()
 		{
-			_bushForageables = new();
-			_caveForageables = new();
-			_fruitTreeForageables = new();
-			_objectForageables = new();
-			_wildTreeForageables = new();
-			_flowersForageables = new();
+			_bushForageables = [];
+			_caveForageables = [];
+			_fruitTreeForageables = [];
+			_objectForageables = [];
+			_wildTreeForageables = [];
+			_flowerForageables = [];
 		}
 	}
 }

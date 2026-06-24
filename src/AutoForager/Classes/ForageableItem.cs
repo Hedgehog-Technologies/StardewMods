@@ -1,6 +1,6 @@
-using AutoForager.Extensions;
-using AutoForager.Integrations;
-using HedgeTech.Common.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.GameData;
@@ -11,9 +11,8 @@ using StardewValley.GameData.WildTrees;
 using StardewValley.Internal;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.TokenizableStrings;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using AutoForager.Extensions;
+using HedgeTech.Common.Extensions;
 
 using Constants = AutoForager.Helpers.Constants;
 using SObject = StardewValley.Object;
@@ -330,20 +329,31 @@ namespace AutoForager.Classes
 		public static IEnumerable<ForageableItem> ParseFlowerData(List<ItemMetadata> data, IDictionary<string, bool>? configValues = null, IMonitor? monitor = null)
 		{
 			var forageItems = new List<ForageableItem>();
+
 			foreach (var flowerItemData in data)
 			{
-				var enabled = true;
-				if (flowerItemData == null) continue;
+				if (flowerItemData is null) continue;
+
 				var parsedData = flowerItemData.GetParsedData();
-				if (parsedData == null) continue;
+				if (parsedData is null)
+				{
+					monitor?.LogOnce($"Failed to parse flower item data for item [{flowerItemData.QualifiedItemId}].{Environment.NewLine}" +
+						$"\tThis is may be due to a misconfiguration from the mod that location is added by.{Environment.NewLine}" +
+						$"\tPlease reach out to that location mod author with this information to get it fixed.{Environment.NewLine}" +
+						$"\tParsing will continue, this should not impact the rest of your gameplay experience.", LogLevel.Warn);
+					continue;
+				}
+
+				var enabled = true;
 				if (configValues is not null && configValues.TryGetValue(parsedData.InternalName, out var configEnabled))
 				{
 					enabled = configEnabled;
 				}
+
 				// There is no custom metadata to track at this point
 				forageItems.AddDistinct(new ForageableItem(parsedData, [], enabled));
-
 			}
+
 			return forageItems;
 		}
 

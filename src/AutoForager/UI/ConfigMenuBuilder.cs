@@ -72,7 +72,6 @@ namespace AutoForager.UI
 			BuildWildFlowersReimaginedPage(gmcmApi);
 		}
 
-
 		/// <summary>
 		/// Builds the general settings section.
 		/// </summary>
@@ -184,13 +183,13 @@ namespace AutoForager.UI
 				pageId: Constants.WildTreesPageId,
 				text: I18n.Link_WildTrees_Text);
 
-			// Only load Wild Flower config page is the mod is present, skip otherwise
+			// Only load Wild Flower config page if the mod is present, skip otherwise
 			if (_helper.ModRegistry.IsLoaded(WFR_UNIQUE_ID))
 			{
 				gmcmApi.AddPageLink(
-				mod: _manifest,
-				pageId: Constants.WildFlowersReimaginedPageId,
-				text: I18n.Link_WildFlowersReimagine_Text);
+					mod: _manifest,
+					pageId: Constants.WildFlowersReimaginedPageId,
+					text: I18n.Link_WildFlowersReimagine_Text);
 			}
 		}
 
@@ -557,7 +556,6 @@ namespace AutoForager.UI
 		/// <summary>
 		/// Builds the WildFlowersReimagined Flower section
 		/// </summary>
-		/// <param name="gmcmApi"></param>
 		private void BuildWildFlowersReimaginedPage(IGenericModConfigMenu gmcmApi)
 		{
 			gmcmApi.AddPage(
@@ -565,15 +563,14 @@ namespace AutoForager.UI
 				pageId: Constants.WildFlowersReimaginedPageId,
 				pageTitle: I18n.Page_WildFlowersReimagined_Title);
 
-			var paragraphText = _forageableTracker.FlowersForageables.Count > 0 ? I18n.Page_WildFlowersReimagined_Description() : I18n.Page_WildFlowersReimagined_EarlyFallbackDescription();
+			var paragraphText = _forageableTracker.FlowerForageables.Count > 0 ? I18n.Page_WildFlowersReimagined_Description() : I18n.Page_WildFlowersReimagined_EarlyFallbackDescription();
 
 			gmcmApi.AddParagraph(
 				mod: _manifest,
 				text: () => paragraphText);
 
-			foreach (var item in _forageableTracker.FlowersForageables)
+			foreach (var item in _forageableTracker.FlowerForageables)
 			{
-
 				gmcmApi.AddBoolOption(
 					mod: _manifest,
 					name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
