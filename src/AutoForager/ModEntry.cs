@@ -19,6 +19,7 @@ using HedgeTech.Common.Helpers;
 
 using Constants = AutoForager.Helpers.Constants;
 using SObject = StardewValley.Object;
+using AutoForager.Integrations;
 
 namespace AutoForager
 {
@@ -38,6 +39,7 @@ namespace AutoForager
 		private ArtifactSpotHandler _artifactSpotHandler;
 		private MachineHandler _machineHandler;
 		private PanningHandler _panningHandler;
+		private WildFlowersReimaginedHandler _wildFlowersReimaginedHandler;
 
 		// State
 		private ModConfig _config;
@@ -143,6 +145,7 @@ namespace AutoForager
 			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
 			helper.Events.Player.Warped += OnPlayerWarped;
 			helper.Events.World.ObjectListChanged += OnObjectListChanged;
+			helper.Events.GameLoop.SaveLoaded += onSaveLoaded;
 
 			if (_config.AutoForagingEnabled)
 			{
@@ -312,6 +315,15 @@ namespace AutoForager
 			CheckForMushroomLogTrees(e.Location);
 		}
 
+		[EventPriority(EventPriority.Low)]
+		private void onSaveLoaded(object? sender, EventArgs e)
+		{
+			var knownFlowers = _contentPackService.WfrWrapper.GetKnownFlowers();
+			_assetService.LoadFlowerData(knownFlowers);
+			_configService.RegisterConfigMenu(_forageableTracker, new CategoryComparer(Helper.ContentPacks.GetOwned()));
+		}
+
+
 		#endregion Event Handlers
 
 		#region Handler Management
@@ -344,6 +356,9 @@ namespace AutoForager
 
 			_panningHandler = new PanningHandler();
 			_panningHandler.Initialize(context);
+
+			_wildFlowersReimaginedHandler = new WildFlowersReimaginedHandler(_contentPackService.WfrWrapper);
+			_wildFlowersReimaginedHandler.Initialize(context);
 		}
 
 		private void HandleTerrainFeature(TerrainFeature feature, Vector2 tile)
@@ -377,7 +392,14 @@ namespace AutoForager
 						_terrainFeatureHandler.Handle(hoeDirt, tile);
 					}
 					break;
+				case Grass grass:
+					if (_wildFlowersReimaginedHandler.CanHandle(grass))
+					{
+						_wildFlowersReimaginedHandler.Handle(grass);
+					}
+					break;
 			}
+			
 		}
 
 		private void HandleObject(SObject obj, Vector2 tile, TerrainFeature? terrainFeature)

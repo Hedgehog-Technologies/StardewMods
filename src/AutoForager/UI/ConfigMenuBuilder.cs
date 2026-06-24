@@ -16,6 +16,7 @@ namespace AutoForager.UI
 	internal class ConfigMenuBuilder
 	{
 		private const string GMCM_UNIQUE_ID = "spacechase0.GenericModConfigMenu";
+		private const string WFR_UNIQUE_ID = "jpp.WildFlowersReimagined";
 
 		private readonly IModHelper _helper;
 		private readonly IManifest _manifest;
@@ -68,7 +69,9 @@ namespace AutoForager.UI
 			BuildFruitTreesPage(gmcmApi);
 			BuildBushesPage(gmcmApi);
 			BuildForageablesPage(gmcmApi);
+			BuildWildFlowersReimaginedPage(gmcmApi);
 		}
+
 
 		/// <summary>
 		/// Builds the general settings section.
@@ -180,6 +183,15 @@ namespace AutoForager.UI
 				mod: _manifest,
 				pageId: Constants.WildTreesPageId,
 				text: I18n.Link_WildTrees_Text);
+
+			// Only load Wild Flower config page is the mod is present, skip otherwise
+			if (_helper.ModRegistry.IsLoaded(WFR_UNIQUE_ID))
+			{
+				gmcmApi.AddPageLink(
+				mod: _manifest,
+				pageId: Constants.WildFlowersReimaginedPageId,
+				text: I18n.Link_WildFlowersReimagine_Text);
+			}
 		}
 
 		/// <summary>
@@ -540,6 +552,40 @@ namespace AutoForager.UI
 					I18n.Reward_Ores()),
 				getValue: () => _config.ForagePanningSpots,
 				setValue: val => _config.ForagePanningSpots = val);
+		}
+
+		/// <summary>
+		/// Builds the WildFlowersReimagined Flower section
+		/// </summary>
+		/// <param name="gmcmApi"></param>
+		private void BuildWildFlowersReimaginedPage(IGenericModConfigMenu gmcmApi)
+		{
+			gmcmApi.AddPage(
+				mod: _manifest,
+				pageId: Constants.WildFlowersReimaginedPageId,
+				pageTitle: I18n.Page_WildFlowersReimagined_Title);
+
+			var paragraphText = _forageableTracker.FlowersForageables.Count > 0 ? I18n.Page_WildFlowersReimagined_Description() : I18n.Page_WildFlowersReimagined_EarlyFallbackDescription();
+
+			gmcmApi.AddParagraph(
+				mod: _manifest,
+				text: () => paragraphText);
+
+			foreach (var item in _forageableTracker.FlowersForageables)
+			{
+
+				gmcmApi.AddBoolOption(
+					mod: _manifest,
+					name: () => I18n.Option_ToggleAction_Name(item.DisplayName),
+					tooltip: () => $"{item. ItemId} - {item.InternalName}",
+					getValue: () => item.IsEnabled,
+					setValue: val => 
+					{
+						item.IsEnabled = val;
+						_config.ForageToggles[Constants.FlowerGrassToggleKey].AddOrUpdate(item.InternalName, val);
+						_config.UpdateEnabled();
+					});
+			}
 		}
 	}
 }

@@ -79,6 +79,9 @@ namespace AutoForager.Helpers
 		private const string _wildTreeToggleKey = "WildTree" + _togglesSuffix;
 		public static string WildTreeToggleKey => _wildTreeToggleKey;
 
+		private const string _flowerGrassToggleKey = "FlowerGrass" + _togglesSuffix;
+		public static string FlowerGrassToggleKey => _flowerGrassToggleKey;
+
 		private const string _salmonberryBushKey = "Salmonberry";
 		public static string SalmonBerryBushKey => _salmonberryBushKey;
 
@@ -128,6 +131,9 @@ namespace AutoForager.Helpers
 
 		private const string _wildTreesPageId = _fieldIdPrefix + "WildTreesPage";
 		public static string WildTreesPageId => _wildTreesPageId;
+
+		private const string _wildFlowersReimaginedPageId = _fieldIdPrefix + "WildFlowersReimaginedPage";
+		public static string WildFlowersReimaginedPageId => _wildFlowersReimaginedPageId;
 
 		private const string _fruitsReadyToShakeId = _fieldIdPrefix + "FruitsReadyToShake";
 		public static string FruitsReadyToShakeId => _fruitsReadyToShakeId;
