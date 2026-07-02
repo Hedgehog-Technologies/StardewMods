@@ -47,21 +47,17 @@ jobs:
         run: dotnet build --force ${{ steps.split.outputs._0 }} -c Release -p:BuildConfig=GITHUB
         working-directory: src
 
-      # - name: Test output
-      #   run: |
-      #     echo 'src/${{ steps.split.outputs._0 }}/bin/Release/net6.0/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip'
-
-      # - name: Bundle Content Packs
-      #   if: ${{ steps.split.outputs._0 == 'AutoForager' }}
-      #   run: |
-      #     cd "src/Content Packs"
-      #     for i in */; do cd "$i"; for j in */; do zip -r "${j%/}.zip" "$j"; done; cd ..; done
-      #     cd ../..
-
       - name: Rename build zip
         shell: pwsh
         run: |
           mv "src/_releases/${{ steps.split.outputs._0 }} ${{ steps.split.outputs._1 }}.zip" "src/_releases/${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}.zip"
+
+      - name: Generate attestations
+        uses: actions/attest-build-provenance@v2
+        id: attestation-step
+        with:
+          subject-path: |
+            src/_releases/${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}.zip
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
@@ -70,23 +66,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.split.outputs._1 }}+${{ steps.split.outputs._0 }}
           name: '${{ steps.split.outputs._0 }} @ v${{ steps.split.outputs._1 }}'
-
-      # - name: Create GitHub Release
-      #   uses: 'marvinpinto/action-automatic-releases@v1.2.1'
-      #   id: auto_release
-      #   with:
-      #     repo_token: '${{ secrets.GITHUB_TOKEN }}'
-      #     title: '${{ steps.split.outputs._0 }} @ v${{ steps.split.outputs._1 }}'
-      #     prerelease: false
-      #     automatic_release_tag: ${{ steps.split.outputs._1 }}+${{ steps.split.outputs._0 }}
-      #     files: 'src/_releases/${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}.zip'
-
-      - name: Generate attestations
-        uses: actions/attest-build-provenance@v2
-        id: attestation-step
-        with:
-          subject-path: |
-            src/_releases/${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}.zip
+          body: |
+            Provenance Attestation: [View Attestation](${{ steps.attestation-step.outputs.attestation-url }})
 
         env:
           CI: false
