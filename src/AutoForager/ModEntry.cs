@@ -44,6 +44,7 @@ namespace AutoForager
 		private ModConfig _config;
 		private readonly JsonHelper _jsonHelper;
 		private readonly ForageableItemTracker _forageableTracker;
+		private readonly DailyInteractionTracker _dailyTracker;
 
 		private bool _gameStarted = false;
 		private Vector2 _previousTilePosition;
@@ -65,6 +66,7 @@ namespace AutoForager
 		{
 			_jsonHelper = new JsonHelper();
 			_forageableTracker = ForageableItemTracker.Instance;
+			_dailyTracker = new DailyInteractionTracker();
 			_gameStarted = false;
 
 			_mushroomLogTrees = [];
@@ -196,6 +198,14 @@ namespace AutoForager
 		private void OnDayStarted(object? sender, DayStartedEventArgs e)
 		{
 			_previousTilePosition = Game1.player.Tile;
+
+			// Reset daily interaction tracking
+			_dailyTracker.Reset();
+
+			if (_config.ElevateDebugLogs)
+			{
+				Monitor.Log("Daily interaction tracker reset for new day", LogLevel.Debug);
+			}
 		}
 
 		private async void InitializeMod(object? sender, UpdateTickedEventArgs e)
@@ -234,6 +244,7 @@ namespace AutoForager
 
 		private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
 		{
+			// Phase 1: Early exit checks
 			if (!Context.IsPlayerFree) return;
 			if (Game1.currentLocation is null || Game1.player is null) return;
 			if (Game1.player.Tile.Equals(_previousTilePosition)) return;
@@ -244,29 +255,86 @@ namespace AutoForager
 			var playerTilePoint = context.PlayerTilePoint;
 			var radius = context.ForagingRadius;
 
+			// Phase 2: Collect all eligible interactions
+			var pendingInteractions = new List<PendingInteraction>();
+
 			foreach (var vec in GetTilesToCheck(playerTilePoint, radius))
 			{
+				// Skip tiles already processed today
+				if (_dailyTracker.WasProcessedToday(vec))
+				{
+					continue;
+				}
+
 				// Handle terrain features
 				if (Game1.currentLocation.terrainFeatures.TryGetValue(vec, out var feature))
 				{
-					HandleTerrainFeature(feature, vec);
+					// Skip if object was already processed today
+					if (_dailyTracker.WasProcessedToday(feature))
+					{
+						continue;
+					}
+
+					var interaction = CreatePendingInteractionForTerrainFeature(feature, vec, playerTilePoint);
+					if (interaction is not null)
+					{
+						pendingInteractions.Add(interaction);
+					}
 				}
 
 				// Handle objects
 				if (Game1.currentLocation.Objects.TryGetValue(vec, out var obj))
 				{
-					HandleObject(obj, vec, feature);
+					// Skip if object was already processed today
+					if (_dailyTracker.WasProcessedToday(obj))
+					{
+						continue;
+					}
+
+					var interaction = CreatePendingInteractionForObject(obj, vec, playerTilePoint, feature);
+					if (interaction != null)
+					{
+						pendingInteractions.Add(interaction);
+					}
 				}
 
 				// Handle large terrain features (large bushes)
 				var largeTerrainFeature = Game1.currentLocation.getLargeTerrainFeatureAt((int)vec.X, (int)vec.Y);
 				if (largeTerrainFeature is Bush largeBush)
 				{
+					// Skip if already processed today
+					if (_dailyTracker.WasProcessedToday(largeBush))
+					{
+						continue;
+					}
+
 					if (_bushHandler.CanHandle(largeBush))
 					{
-						_bushHandler.Handle(largeBush);
+						var interaction = new PendingInteraction(InteractionType.LargeBush, largeBush, vec, playerTilePoint);
+						pendingInteractions.Add(interaction);
 					}
 				}
+			}
+
+			// Phase 3: Sort by distance and apply limit
+			pendingInteractions.Sort();
+			int maxInteractions = Constants.CalculateMaxInteractions(radius, _config.MaxInteractionsPerMove);
+			var toProcess = pendingInteractions.Take(maxInteractions).ToList();
+
+			// Debug logging
+			if (_config.ElevateDebugLogs && pendingInteractions.Count > 0)
+			{
+				Monitor.Log($"Found {pendingInteractions.Count} eligible interactions, processing closest {toProcess.Count} (limit: {maxInteractions})", LogLevel.Debug);
+			}
+
+			// Phase 4: Process and track
+			foreach (var interaction in toProcess)
+			{
+				ProcessInteraction(interaction);
+
+				// Mark as processed
+				_dailyTracker.MarkProcessed(interaction.Tile);
+				_dailyTracker.MarkProcessed(interaction.Target);
 			}
 
 			// Handle panning (special case - location-based, not tile-based)
@@ -423,6 +491,111 @@ namespace AutoForager
 		private IForagingContext CreateForagingContext()
 		{
 			return new ForagingContext(_config, Monitor, _forageableTracker, _trackingCounts);
+		}
+
+		/// <summary>
+		/// Creates a PendingInteraction for a terrain feature if it can be handled.
+		/// </summary>
+		private PendingInteraction? CreatePendingInteractionForTerrainFeature(TerrainFeature feature, Vector2 tile, Point playerPosition)
+		{
+			switch (feature)
+			{
+				case Tree tree when _wildTreeHandler.CanHandle(tree):
+					return new PendingInteraction(InteractionType.WildTree, tree, tile, playerPosition);
+
+				case FruitTree fruitTree when _fruitTreeHandler.CanHandle(fruitTree):
+					return new PendingInteraction(InteractionType.FruitTree, fruitTree, tile, playerPosition);
+
+				case Bush bush when _bushHandler.CanHandle(bush):
+					return new PendingInteraction(InteractionType.Bush, bush, tile, playerPosition);
+
+				case HoeDirt hoeDirt when _terrainFeatureHandler.CanHandle(hoeDirt):
+					return new PendingInteraction(InteractionType.TerrainFeature, hoeDirt, tile, playerPosition);
+
+				case Grass grass when _wildFlowersReimaginedHandler.CanHandle(grass):
+					return new PendingInteraction(InteractionType.TerrainFeature, grass, tile, playerPosition);
+
+				default:
+					return null;
+			}
+		}
+
+		/// <summary>
+		/// Creates a PendingInteraction for an object if it can be handled.
+		/// </summary>
+		private PendingInteraction? CreatePendingInteractionForObject(SObject obj, Vector2 tile, Point playerPosition, TerrainFeature? terrainFeature)
+		{
+			// Priority order: artifact spots > machines > regular objects
+			if (_artifactSpotHandler.CanHandle(obj))
+			{
+				return new PendingInteraction(InteractionType.Object, obj, tile, playerPosition);
+			}
+			else if (_machineHandler.CanHandle(obj))
+			{
+				return new PendingInteraction(InteractionType.Object, obj, tile, playerPosition);
+			}
+			else if (_objectHandler.CanHandle(obj))
+			{
+				return new PendingInteraction(InteractionType.Object, obj, tile, playerPosition);
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// Processes a pending interaction by dispatching to the appropriate handler.
+		/// </summary>
+		private void ProcessInteraction(PendingInteraction interaction)
+		{
+			switch (interaction.Type)
+			{
+				case InteractionType.WildTree:
+					if (interaction.Target is Tree tree)
+					{
+						_wildTreeHandler.Handle(tree);
+					}
+					break;
+
+				case InteractionType.FruitTree:
+					if (interaction.Target is FruitTree fruitTree)
+					{
+						_fruitTreeHandler.Handle(fruitTree);
+					}
+					break;
+
+				case InteractionType.Bush:
+					if (interaction.Target is Bush bush)
+					{
+						_bushHandler.Handle(bush);
+					}
+					break;
+
+				case InteractionType.LargeBush:
+					if (interaction.Target is Bush largeBush)
+					{
+						_bushHandler.Handle(largeBush);
+					}
+					break;
+
+				case InteractionType.TerrainFeature:
+					if (interaction.Target is HoeDirt hoeDirt)
+					{
+						_terrainFeatureHandler.Handle(hoeDirt, interaction.Tile);
+					}
+					else if (interaction.Target is Grass grass)
+					{
+						_wildFlowersReimaginedHandler.Handle(grass);
+					}
+					break;
+
+				case InteractionType.Object:
+					if (interaction.Target is SObject obj)
+					{
+						// Use the original HandleObject logic to maintain priority
+						HandleObject(obj, interaction.Tile, null);
+					}
+					break;
+			}
 		}
 
 		#endregion Handler Management

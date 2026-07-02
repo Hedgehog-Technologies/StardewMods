@@ -34,6 +34,30 @@ namespace AutoForager
 			set => _fruitsReadyToShake = Math.Clamp(value, Constants.MinFruitsReady, Constants.MaxFruitsReady);
 		}
 
+		/// <summary>
+		/// Maximum number of foraging interactions per player movement.
+		/// Leave null (0 in config menu) to use automatic radius-based scaling: 30 - (ShakeDistance × 2).
+		/// Valid range: 5-50. Higher values may cause lag with many trees/bushes.
+		/// Examples: Radius 2 → 26, Radius 5 → 20, Radius 10 → 10
+		/// </summary>
+		private int? _maxInteractionsPerMove;
+		public int? MaxInteractionsPerMove
+		{
+			get => _maxInteractionsPerMove;
+			set
+			{
+				// null means use automatic scaling
+				if (!value.HasValue || value.Value == 0)
+				{
+					_maxInteractionsPerMove = null;
+					return;
+				}
+
+				// Validate range
+				_maxInteractionsPerMove = Math.Clamp(value.Value, Constants.MinMaxInteractions, Constants.AbsoluteMaxInteractions);
+			}
+		}
+
 		public bool ForageArtifactSpots { get; set; }
 		public bool ForageSeedSpots { get; set; }
 		public bool ForageMushroomBoxes { get; set; }
@@ -95,6 +119,7 @@ namespace AutoForager
 			IgnoreMushroomLogTrees = true;
 			ElevateDebugLogs = false;
 			FruitsReadyToShake = Constants.MinFruitsReady;
+			MaxInteractionsPerMove = null;
 
 			ForageArtifactSpots = true;
 			ForageSeedSpots = true;

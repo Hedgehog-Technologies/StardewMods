@@ -1,6 +1,6 @@
 ﻿# Release Notes
 
-## 3.10.0
+## 4.0.0
 Released TBD
 - Fix NullReferenceException error when parsing some trees
 - Limit log spam during parsing with item queries

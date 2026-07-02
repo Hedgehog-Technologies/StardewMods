@@ -117,6 +117,17 @@ namespace AutoForager.UI
 				getValue: () => _config.ShakeDistance,
 				setValue: val => _config.ShakeDistance = val);
 
+			// MaxInteractionsPerMove
+			gmcmApi.AddNumberOption(
+				mod: _manifest,
+				fieldId: Constants.MaxInteractionsPerMoveId,
+				name: I18n.Option_MaxInteractionsPerMove_Name,
+				tooltip: I18n.Option_MaxInteractionsPerMove_Tooltip,
+				getValue: () => _config.MaxInteractionsPerMove ?? 0,
+				setValue: val => _config.MaxInteractionsPerMove = val == 0 ? null : val,
+				min: 0,
+				max: Constants.AbsoluteMaxInteractions);
+
 			// RequireHoe
 			gmcmApi.AddBoolOption(
 				mod: _manifest,

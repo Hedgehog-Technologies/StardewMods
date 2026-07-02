@@ -107,6 +107,9 @@ namespace AutoForager.Helpers
 		private const string _shakeDistanceId = _fieldIdPrefix + "ShakeDistance";
 		public static string ShakeDistanceId => _shakeDistanceId;
 
+		private const string _maxInteractionsPerMoveId = _fieldIdPrefix + "MaxInteractionsPerMove";
+		public static string MaxInteractionsPerMoveId => _maxInteractionsPerMoveId;
+
 		private const string _requireHoeId = _fieldIdPrefix + "RequireHoe";
 		public static string RequireHoeId => _requireHoeId;
 
@@ -207,6 +210,34 @@ namespace AutoForager.Helpers
 
 		public const int MinForageRadius = 2;
 		public const int MaxForageRadius = 10;
+
+		// Performance throttling constants
+		public const int DefaultMaxInteractionsBase = 30;
+		public const int InteractionsPerRadiusUnit = 2;
+		public const int MinMaxInteractions = 5;
+		public const int AbsoluteMaxInteractions = 50;
+
+		/// <summary>
+		/// Calculates the maximum number of interactions allowed per player movement.
+		/// Uses the formula: 30 - (radius * 2), clamped to safe bounds.
+		/// </summary>
+		/// <param name="radius">The current foraging radius.</param>
+		/// <param name="configOverride">Optional user-specified override value.</param>
+		/// <returns>The calculated maximum interactions (between MinMaxInteractions and AbsoluteMaxInteractions).</returns>
+		public static int CalculateMaxInteractions(int radius, int? configOverride)
+		{
+			// If user specified an override, use it (already validated in config)
+			if (configOverride.HasValue && configOverride.Value > 0)
+			{
+				return configOverride.Value;
+			}
+
+			// Calculate based on radius: 30 - (radius * 2)
+			int calculated = DefaultMaxInteractionsBase - (radius * InteractionsPerRadiusUnit);
+
+			// Clamp to safe bounds
+			return System.Math.Clamp(calculated, MinMaxInteractions, AbsoluteMaxInteractions);
+		}
 
 		private static readonly Dictionary<string, string> _knownCategoryLookup = new()
 		{
