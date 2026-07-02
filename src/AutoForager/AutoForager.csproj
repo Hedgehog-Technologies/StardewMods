@@ -24,6 +24,7 @@
     <SMAPIDependency Include="Pathoschild.ContentPatcher" Required="false" Version="2.0" />
     <SMAPIDependency Include="furyx639.CustomBush" Required="false" Version="1.0.4" />
     <SMAPIDependency Include="Esca.FarmTypeManager" Required="false" Version="1.20" />
+    <SMAPIDependency Include="jpp.WildFlowersReimagined" Required="false" Version="3.3.3" />
   </ItemGroup>
 
   <Import Project="..\Common\Common.projitems" Label="Shared" />

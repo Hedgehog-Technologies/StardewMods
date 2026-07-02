@@ -60,6 +60,8 @@ Ukrainian  | ✔              | ❌                   | ❌                | n/a
     - Minimum version: **1.0.4**
   - [Farm Type Manager](https://www.nexusmods.com/stardewvalley/mods/3231)
     - Minimum version: **1.20.0**
+  - [Wild Flowers Reimagined](https://www.nexusmods.com/stardewvalley/mods/21498)
+    - Minimum version: **3.3.3**
 - No known mod conflicts
   - If you find one, please feel free to notify me here on Github, on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/7736) site, or on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-forager) site.
 
