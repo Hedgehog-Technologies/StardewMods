@@ -1,22 +1,22 @@
 ﻿# Release Notes
 
 ## 4.0.0
-Released TBD
-- Fix NullReferenceException error when parsing some trees
-- Limit log spam during parsing with item queries
-
-**Breaking Changes:**
-- Internal architecture completely redesigned
-- No API changes (configuration compatible)
+Released 2026-07-02
+- Added native support for [Wild Flowers Reimagined](https://www.nexusmods.com/stardewvalley/mods/21498), allowing Auto Forager to automatically harvest the wild flowers
+  - Thanks to [jpparajeles](https://github.com/jpparajeles) for the contribution
+- Added a new Max Interactions Per Move configuration option to fine-tune performance
+- Improved interaction handling by prioritizing nearby forageable objects and spreading interactions across game ticks
+- Reduced unnecessary console log spam
+- Improved overall stability and maintainability
 ## 3.9.3
-Released 2026-1-14
+Released 2026-01-14
 - Fix issue where parsing some items from fruit trees would look for runtime conditionals
 ## 3.9.2
-Released 2026-1-11
+Released 2026-01-11
 - Fix issue where sometimes custom forage objects would be missing an ItemId when parsed from locations
 - Refactor forageable parsing to be more robust
 ## 3.9.1
-Released 2026-1-11
+Released 2026-01-11
 - Fix issue where some log messages weren't being detokenized properly
 - Ignore "RANDOM (O)" item id when parsing forageables
 ## 3.9.0
