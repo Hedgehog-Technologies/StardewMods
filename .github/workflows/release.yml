@@ -34,6 +34,41 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.events.repository.default_branch }}
 
+      - name: Generate changelog
+        id: changelog
+        shell: bash
+        run: |
+          PROJECT_NAME="${{ steps.split.outputs._0 }}"
+          CURRENT_TAG="${{ github.ref_name }}"
+
+          PREVIOUS_TAG=$(git tag --sort=-v:refname | grep "^${PROJECT_NAME}/" | grep -v "^${CURRENT_TAG}$" | head -n 1)
+
+          if [ -z "$PREVIOUS_TAG"] ]; then
+            echo "No previous tag found for ${PROJECT_NAME}"
+            COMMIT_RANGE=""
+          else
+            echo "Previous tag: ${PREVIOUS_TAG}"
+            COMMIT_RANGE="${PREVIOUS_TAG}..${CURRENT_TAG}"
+          fi
+
+          PROJECT_LOWER=$(echo "${RPOJECT_NAME}" | tr '[:upper:]' '[:lower:]')
+
+          if [ -z "$COMMIT_RANGE"] ]; then
+            CHANGELOG=$(git log --pretty=format:"%s" | grep -iE "^[a-z]+(\(${PROJECT_LOWER}\))?:" | grep -iE "^[a-z]+\(${PROJECT_LOWER}\):")
+          else
+            CHANGELOG=$(git log --pretty=format:"%s" "${COMMIT_RANGE} | grep -iE "^[a-z]+(\(${PROJECT_LOWER}\))?:" | grep -iE "^[a-z]+\(${PROJECT_LOWER}\):")
+          fi
+
+          if [ -z "$CHANGELOG" ]; then
+            FORMATTED_CHANGELOG="No changes found for ${PROJECT_NAME}"
+          else
+            FORMATTED_CHANGELOG=$(echo "$CHANGELOG" | sed 's/^/- /')
+          fi
+
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$FORMATTED_CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Setup dotnet 9.0.x
         uses: actions/setup-dotnet@v4.0.0
         with:
@@ -67,6 +102,12 @@ jobs:
           tag: ${{ steps.split.outputs._1 }}+${{ steps.split.outputs._0 }}
           name: '${{ steps.split.outputs._0 }} @ v${{ steps.split.outputs._1 }}'
           body: |
+            ## What's Changed
+
+            ${{ steps.changelog.outputs.changelog }}
+
+            ---
+
             Provenance Attestation: [View Attestation](${{ steps.attestation-step.outputs.attestation-url }})
 
         env:
