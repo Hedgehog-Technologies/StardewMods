@@ -133,7 +133,7 @@ namespace AutoForager
 			_configService = new ConfigurationService(helper, ModManifest, Monitor, _jsonHelper);
 			_config = _configService.LoadConfiguration();
 
-			_assetService = new AssetService(Monitor, _config, _forageableTracker);
+			_assetService = new AssetService(Monitor, Helper, _config, _forageableTracker);
 			_contentPackService = new ContentPackService(Monitor, helper, _config);
 
 			// Register event handlers

@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.GameData.FruitTrees;
@@ -17,11 +19,8 @@ namespace AutoForager.Services
 	/// <summary>
 	/// Manages asset loading, caching, and parsing for forageable items.
 	/// </summary>
-	internal class AssetService
+	internal class AssetService(IMonitor monitor, IModHelper helper, ModConfig config, ForageableItemTracker forageableTracker)
 	{
-		private readonly IMonitor _monitor;
-		private readonly ModConfig _config;
-		private readonly ForageableItemTracker _forageableTracker;
 
 		// Asset caches
 		private Dictionary<string, FruitTreeData> _fruitTreeCache = [];
@@ -29,19 +28,12 @@ namespace AutoForager.Services
 		private Dictionary<string, ObjectData> _objectCache = [];
 		private Dictionary<string, WildTreeData> _wildTreeCache = [];
 
-		public AssetService(IMonitor monitor, ModConfig config, ForageableItemTracker forageableTracker)
-		{
-			_monitor = monitor;
-			_config = config;
-			_forageableTracker = forageableTracker;
-		}
-
 		/// <summary>
 		/// Loads all initial asset data from the game content.
 		/// </summary>
 		public void LoadInitialAssets()
 		{
-			_monitor.Log("Loading initial asset data", _config.DebugLogLevel());
+			monitor.Log("Loading initial asset data", config.DebugLogLevel());
 
 			UpdateFruitTreeCache(DataLoader.FruitTrees(Game1.content));
 			UpdateWildTreeCache(DataLoader.WildTrees(Game1.content));
@@ -54,7 +46,7 @@ namespace AutoForager.Services
 		/// </summary>
 		public void ReloadAllAssets()
 		{
-			_monitor.Log("Reloading all assets", _config.DebugLogLevel());
+			monitor.Log("Reloading all assets", config.DebugLogLevel());
 
 			ItemRegistry.ResetCache();
 
@@ -71,12 +63,12 @@ namespace AutoForager.Services
 		public void LoadFlowerData(List<ItemMetadata> flowerData)
 		{
 			// This should be a no op, but kept for consistency
-			_forageableTracker.FlowerForageables.Clear();
-			_forageableTracker.FlowerForageables.AddRange(ForageableItem.ParseFlowerData(flowerData,
-				_config?.ForageToggles[Constants.FlowerGrassToggleKey],
-				_monitor
+			forageableTracker.FlowerForageables.Clear();
+			forageableTracker.FlowerForageables.AddRange(ForageableItem.ParseFlowerData(flowerData,
+				config?.ForageToggles[Constants.FlowerGrassToggleKey],
+				monitor
 			));
-			_forageableTracker.FlowerForageables.SortByDisplayName();
+			forageableTracker.FlowerForageables.SortByDisplayName();
 		}
 
 		/// <summary>
@@ -99,6 +91,10 @@ namespace AutoForager.Services
 			else if (assetName.IEquals(Constants.LocationsAssetName))
 			{
 				UpdateLocationCache(DataLoader.Locations(Game1.content));
+			}
+			else if (assetName.IEquals(Constants.SpaceCoreSpawnableAssetName))
+			{
+				HandleSpaceCoreSpawnables();
 			}
 		}
 
@@ -144,15 +140,15 @@ namespace AutoForager.Services
 		/// <param name="data"></param>
 		private void ParseFruitTreeData(Dictionary<string, FruitTreeData> data)
 		{
-			_monitor.Log("Parsing Fruit Tree data", _config.DebugLogLevel());
+			monitor.Log("Parsing Fruit Tree data", config.DebugLogLevel());
 
-			_forageableTracker.FruitTreeForageables.Clear();
-			_forageableTracker.FruitTreeForageables.AddRange(
+			forageableTracker.FruitTreeForageables.Clear();
+			forageableTracker.FruitTreeForageables.AddRange(
 				ForageableItem.ParseFruitTreeData(
 					data,
-					_config?.ForageToggles[Constants.FruitTreeToggleKey],
-					_monitor));
-			_forageableTracker.FruitTreeForageables.SortByDisplayName();
+					config?.ForageToggles[Constants.FruitTreeToggleKey],
+					monitor));
+			forageableTracker.FruitTreeForageables.SortByDisplayName();
 		}
 
 		/// <summary>
@@ -160,15 +156,15 @@ namespace AutoForager.Services
 		/// </summary>
 		private void ParseWildTreeData(Dictionary<string, WildTreeData> data)
 		{
-			_monitor.Log("Parsing Wild Tree data", _config.DebugLogLevel());
+			monitor.Log("Parsing Wild Tree data", config.DebugLogLevel());
 
-			_forageableTracker.WildTreeForageables.Clear();
-			_forageableTracker.WildTreeForageables.AddRange(
+			forageableTracker.WildTreeForageables.Clear();
+			forageableTracker.WildTreeForageables.AddRange(
 				ForageableItem.ParseWildTreeData(
 				data,
-				_config?.ForageToggles[Constants.WildTreeToggleKey],
-				_monitor));
-			_forageableTracker.WildTreeForageables.SortByDisplayName();
+				config?.ForageToggles[Constants.WildTreeToggleKey],
+				monitor));
+			forageableTracker.WildTreeForageables.SortByDisplayName();
 		}
 
 		/// <summary>
@@ -176,28 +172,28 @@ namespace AutoForager.Services
 		/// </summary>
 		private void ParseObjectData(Dictionary<string, ObjectData> data)
 		{
-			var parsedObjectForageableItems = ForageableItem.ParseObjectData(data, _config, _monitor);
+			var parsedObjectForageableItems = ForageableItem.ParseObjectData(data, config, monitor);
 
-			_monitor.Log("Parsing Object data", _config.DebugLogLevel());
+			monitor.Log("Parsing Object data", config.DebugLogLevel());
 
-			_forageableTracker.ObjectForageables.Clear();
-			_forageableTracker.ObjectForageables.AddRange(parsedObjectForageableItems.Item1);
-			_forageableTracker.ObjectForageables.SortByDisplayName();
+			forageableTracker.ObjectForageables.Clear();
+			forageableTracker.ObjectForageables.AddRange(parsedObjectForageableItems.Item1);
+			forageableTracker.ObjectForageables.SortByDisplayName();
 
-			_forageableTracker.BushForageables.Clear();
-			_forageableTracker.BushForageables.AddRange(parsedObjectForageableItems.Item2);
-			_forageableTracker.BushForageables.SortByDisplayName();
+			forageableTracker.BushForageables.Clear();
+			forageableTracker.BushForageables.AddRange(parsedObjectForageableItems.Item2);
+			forageableTracker.BushForageables.SortByDisplayName();
 
 			if (_locationCache is not null && _locationCache.Count > 0)
 			{
-				_monitor.Log("Sub-Object: Parsing Location data", _config.DebugLogLevel());
+				monitor.Log("Sub-Object: Parsing Location data", config.DebugLogLevel());
 
-				_forageableTracker.ObjectForageables.AddOrMergeCustomFieldsRange(
+				forageableTracker.ObjectForageables.AddOrMergeCustomFieldsRange(
 					ForageableItem.ParseLocationData(
 						_locationCache,
-						_config?.ForageToggles[Constants.ForagingToggleKey],
-						_monitor));
-				_forageableTracker.ObjectForageables.SortByDisplayName();
+						config?.ForageToggles[Constants.ForagingToggleKey],
+						monitor));
+				forageableTracker.ObjectForageables.SortByDisplayName();
 			}
 		}
 
@@ -208,18 +204,76 @@ namespace AutoForager.Services
 		{
 			if (_objectCache is null || _objectCache.Count == 0)
 			{
-				_monitor.Log("Sub-Location: Grabbing Object data", _config.DebugLogLevel());
+				monitor.Log("Sub-Location: Grabbing Object data", config.DebugLogLevel());
 				_objectCache = DataLoader.Objects(Game1.content);
 			}
 
-			_monitor.Log("Parsing Location data", _config.DebugLogLevel());
+			monitor.Log("Parsing Location data", config.DebugLogLevel());
 
-			_forageableTracker.ObjectForageables.AddOrMergeCustomFieldsRange(
+			forageableTracker.ObjectForageables.AddOrMergeCustomFieldsRange(
 				ForageableItem.ParseLocationData(
 					data,
-					_config?.ForageToggles[Constants.ForagingToggleKey],
-					_monitor));
-			_forageableTracker.ObjectForageables.SortByDisplayName();
+					config?.ForageToggles[Constants.ForagingToggleKey],
+					monitor));
+			forageableTracker.ObjectForageables.SortByDisplayName();
+		}
+
+		private void HandleSpaceCoreSpawnables()
+		{
+			try
+			{
+				var rawDict = helper.GameContent.Load<IDictionary>(Constants.SpaceCoreSpawnableAssetName);
+				var forageables = new Dictionary<string, SpaceCoreSpawnableDefinition>();
+
+				monitor.Log($"{rawDict.Count} spacecore forageables", LogLevel.Info);
+
+				foreach (DictionaryEntry entry in rawDict)
+				{
+					if (entry.Value == null || entry.Key == null) continue;
+
+					var model = JObject.FromObject(entry.Value).ToObject<SpaceCoreSpawnableDefinition>();
+					if (model != null && model.Type == 1)
+					{
+						forageables[entry.Key.ToString()!] = model;
+					}
+				}
+
+				monitor.Log($"Loaded {forageables.Count} forageable definitions.", config.DebugLogLevel());
+
+				foreach (var (key, def) in forageables)
+				{
+					foreach (var weightedData in def.ForageableItemData)
+					{
+						var forageableData = weightedData.Value;
+						if (forageableData is null) continue;
+
+						var itemData = ItemRegistry.GetData(forageableData.ItemId)
+							?? ItemRegistry.GetData("(O)" + forageableData.ItemId)
+							?? null;
+						if (itemData is null) continue;
+
+						var enabled = true;
+						if (config.ForageToggles[Constants.ForagingToggleKey]?.TryGetValue(itemData.InternalName, out var configEnabled) ?? false)
+						{
+							enabled = configEnabled;
+						}
+
+						var forageableItem = new ForageableItem(itemData, [], enabled);
+						forageableTracker.ObjectForageables.AddDistinct(forageableItem);
+					}
+
+					monitor.Log($"[{key}] Item: {def.ForageableItemData} | Chance: {def.Chance * 100}% | Seasons: {string.Join(", ", def.Seasons)}", config.DebugLogLevel());
+
+					if (def.AdditionalData.Count > 0)
+					{
+						monitor.Log($"\t-> Contains extra properties: {string.Join(", ", def.AdditionalData.Keys)}", config.DebugLogLevel());
+					}
+				}
+			}
+			catch (System.Exception ex)
+			{
+				monitor.Log($"Failed to load SpaceCore spawnables: {ex.Message}", LogLevel.Error);
+			}
 		}
 	}
 }

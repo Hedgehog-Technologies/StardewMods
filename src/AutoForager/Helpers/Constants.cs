@@ -42,6 +42,9 @@ namespace AutoForager.Helpers
 		private const string _wildTreesAssetName = "Data/WildTrees";
 		public static string WildTreesAssetName => _wildTreesAssetName;
 
+		private const string _spacecoreSpawnableAssetName = "spacechase0.SpaceCore/SpawnableDefinitions";
+		public static string SpaceCoreSpawnableAssetName => _spacecoreSpawnableAssetName;
+
 		#endregion Asset Properties
 
 		#region Tracker Key Properties
