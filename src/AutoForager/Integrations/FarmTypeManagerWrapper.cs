@@ -3,7 +3,8 @@ using StardewModdingAPI;
 
 namespace AutoForager.Integrations
 {
-	internal class FarmTypeManagerWrapper(IMonitor monitor, IModHelper helper) : BaseIntegrationWrapper<IFarmTypeManagerApi>(monitor, helper, "1.20.0", "Esca.FarmTypeManager", I18n.Subject_SpawnableForageIds())
+	internal class FarmTypeManagerWrapper(IMonitor monitor, IModHelper helper)
+		: BaseIntegrationWrapper<IFarmTypeManagerApi>(monitor, helper, "1.20.0", "Esca.FarmTypeManager", I18n.Subject_SpawnableForageIds())
 	{
 		public IDictionary<string, IEnumerable<string>> ForageIdsPerContentPack { get; private set; } = new Dictionary<string, IEnumerable<string>>();
 

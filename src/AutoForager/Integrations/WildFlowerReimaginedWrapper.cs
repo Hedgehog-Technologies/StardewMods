@@ -10,7 +10,8 @@ namespace AutoForager.Integrations
 	/// <summary>
 	/// Integration with the WildFlowersReimagined mod.
 	/// </summary>
-	internal class WildFlowersReimaginedWrapper(IMonitor monitor, IModHelper helper) : BaseIntegrationWrapper<IWildFlowersReimaginedApi>(monitor, helper, "3.3.3", "jpp.WildFlowersReimagined", I18n.Category_WildFlowerReimagined())
+	internal class WildFlowersReimaginedWrapper(IMonitor monitor, IModHelper helper)
+		: BaseIntegrationWrapper<IWildFlowersReimaginedApi>(monitor, helper, "3.3.3", "jpp.WildFlowersReimagined", I18n.Category_WildFlowerReimagined())
 	{
 		/// <summary>
 		/// Get the list of known flowers.
