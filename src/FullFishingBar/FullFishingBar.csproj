@@ -7,7 +7,7 @@
     <Name>Full Fishing Bar</Name>
     <Authors>Jag3Dagster</Authors>
     <Description>Resize the fishing bobber bar to your desired size</Description>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <UpdateKeys>Nexus:23006</UpdateKeys>
 
     <MinimumApiVersion>auto</MinimumApiVersion>
@@ -17,6 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Required="false" Version="1.16" />
+    <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Required="false" Version="1.15" />
   </ItemGroup>
 </Project>

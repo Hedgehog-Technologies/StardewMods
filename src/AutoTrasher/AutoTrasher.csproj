@@ -7,7 +7,7 @@
     <Name>Auto Trasher</Name>
     <Authors>Jag3Dagster</Authors>
     <Description>Specify items to be automatically sent to the Trash</Description>
-    <Version>1.2.1</Version>
+    <Version>1.2.2</Version>
     <UpdateKeys>Nexus:23663</UpdateKeys>
 
     <MinimumApiVersion>auto</MinimumApiVersion>
@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Required="false" Version="1.16" />
+    <SMAPIDependency Include="spacechase0.GenericModConfigMenu" Required="false" Version="1.15" />
   </ItemGroup>
 
   <Import Project="..\Common\Common.projitems" Label="Shared" />
