@@ -79,6 +79,7 @@ Ukrainian  | ✔              | ✔                   | 🤖                | n/
 Releases can be found on [GitHub](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/23006) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/full-fishing-bar) site.
 ### 1.2.1
 - Minor optimizations
+- Refactor to use common GMCM api interface
 - Downgraded optional GMCM dependency version to 1.15
 ### 1.2.0
 - Add option to automatically hook a fish when it nibbles

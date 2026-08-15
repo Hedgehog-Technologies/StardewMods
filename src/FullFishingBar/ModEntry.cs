@@ -12,6 +12,8 @@ namespace FullFishingBar
 	/// </summary>
 	public class ModEntry : Mod
 	{
+		const string CORK_BOBBER_ID = "(O)695";
+
 		private ModConfig _config = new();
 
 		public override void Entry(IModHelper helper)
@@ -36,7 +38,7 @@ namespace FullFishingBar
 				if (bobberBarMenu is not null)
 				{
 					if (_config.ExceptBossFish && bobberBarMenu.bossFish) return;
-					if (_config.OnlyCorkBobber && !bobberBarMenu.bobbers.Contains("(O)695")) return;
+					if (_config.OnlyCorkBobber && !bobberBarMenu.bobbers.Contains(CORK_BOBBER_ID)) return;
 
 					bobberBarMenu.bobberBarHeight = GetBobberBarSize();
 				}
@@ -58,10 +60,10 @@ namespace FullFishingBar
 			if (rod.hasEnchantmentOfType<AutoHookEnchantment>()) return;
 			if (!rod.isFishing || !rod.isNibbling || rod.hit || rod.isReeling || rod.pullingOutOfWater || rod.fishCaught) return;
 
-			rod.timePerBobberBob = 1f;
+			rod.timePerBobberBob = 1F;
 			rod.timeUntilFishingNibbleDone = FishingRod.maxTimeToNibble;
 			rod.DoFunction(Game1.player.currentLocation, (int)rod.bobber.X, (int)rod.bobber.Y, 1, Game1.player);
-			Rumble.rumble(0.95f, 200f);
+			Rumble.rumble(0.95F, 200F);
 		}
 
 		private int GetBobberBarSize()
