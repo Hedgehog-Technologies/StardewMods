@@ -1,14 +1,16 @@
+using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Utilities;
 using StardewModdingAPI;
 using StardewValley;
-using System;
-using Microsoft.Xna.Framework;
 
 namespace HedgeTech.Common.Interfaces
 {
 	public interface IGenericModConfigMenu
 	{
+		const string UniqueId = "spacechase0.GenericModConfigMenu";
+
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 		/*********
 		** Methods
