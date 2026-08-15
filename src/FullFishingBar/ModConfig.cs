@@ -11,11 +11,11 @@ namespace FullFishingBar
 		public bool IsEnabled { get; set; }
 		public bool OnlyCorkBobber { get; set; }
 
-		private double _barSizePercentage;
+		private float _barSizePercentage;
 		public int BarSizePercentageInt
 		{
 			get => (int)Math.Clamp(_barSizePercentage * 100, 10.0, 100.0);
-			set => _barSizePercentage = Math.Clamp(value / 100.0, 0.1, 1.0);
+			set => _barSizePercentage = Math.Clamp(value / 100.0F, 0.1F, 1.0F);
 		}
 
 		public bool ExceptBossFish { get; set; }
@@ -30,7 +30,7 @@ namespace FullFishingBar
 		{
 			IsEnabled = true;
 			OnlyCorkBobber = false;
-			_barSizePercentage = 1.0;
+			_barSizePercentage = 1.0F;
 			ExceptBossFish = false;
 			AutoHook = false;
 		}
@@ -101,7 +101,7 @@ namespace FullFishingBar
 				setValue: (val) => AutoHook = val);
 		}
 
-		public double GetBarSizePercentage() => Math.Clamp(_barSizePercentage, 0.1, 1.0);
+		public float GetBarSizePercentage() => Math.Clamp(_barSizePercentage, 0.1F, 1.0F);
 	}
 
 	public interface IGenericModConfigMenu
