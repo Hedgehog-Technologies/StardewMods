@@ -15,7 +15,6 @@ namespace AutoForager.UI
 	/// </summary>
 	internal class ConfigMenuBuilder
 	{
-		private const string GMCM_UNIQUE_ID = "spacechase0.GenericModConfigMenu";
 		private const string WFR_UNIQUE_ID = "jpp.WildFlowersReimagined";
 
 		private readonly IModHelper _helper;
@@ -43,9 +42,9 @@ namespace AutoForager.UI
 		/// </summary>
 		public void RegisterMenu()
 		{
-			if (!_helper.ModRegistry.IsLoaded(GMCM_UNIQUE_ID)) return;
+			if (!_helper.ModRegistry.IsLoaded(IGenericModConfigMenu.UniqueId)) return;
 
-			var gmcmApi = _helper.ModRegistry.GetApi<IGenericModConfigMenu>(GMCM_UNIQUE_ID);
+			var gmcmApi = _helper.ModRegistry.GetApi<IGenericModConfigMenu>(IGenericModConfigMenu.UniqueId);
 			if (gmcmApi is null) return;
 
 			// Unregister if already registered
