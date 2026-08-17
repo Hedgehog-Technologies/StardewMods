@@ -71,6 +71,9 @@ Ukrainian  | ✔              | ✔                   | 🤖                | n/
 
 ## Releases
 Releases can be found [Github](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/23663) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-trasher) site.
+### 1.2.2
+- Refactor to use common GMCM api interface
+- Downgrade Generic Mod Config Menu dependency to 1.15
 ### 1.2.1
 - Fix issue with default unqualified item ids
   - Quick mitigation would be to remove the config to get the proper default values back
