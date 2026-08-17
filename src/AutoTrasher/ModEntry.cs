@@ -17,7 +17,7 @@ namespace AutoTrasher
 		private const string _trasherMessageType = "autotrash_{0}";
 
 		private readonly LimitedList<Item> _reclaimList = new(10);
-		private readonly List<Item> _ignoreItems = new();
+		private readonly List<Item> _ignoreItems = [];
 
 		private ModConfig _config = new();
 		private bool _isTrasherActive = true;

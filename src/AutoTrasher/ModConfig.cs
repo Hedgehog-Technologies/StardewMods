@@ -11,8 +11,6 @@ namespace AutoTrasher
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 	public class ModConfig
 	{
-		private const string _gmcmUniqueId = "spacechase0.GenericModConfigMenu";
-
 		private const int _minReclaimItems = 5;
 		private const int _maxReclaimItems = 100;
 
@@ -36,8 +34,8 @@ namespace AutoTrasher
 		{
 			ResetToDefault();
 
-			TrashList = new List<string>
-			{
+			TrashList =
+			[
 				"(O)168", // Trash
 				"(O)169", // Driftwood
 				"(O)170", // Broken Glasses
@@ -45,7 +43,7 @@ namespace AutoTrasher
 				"(O)172", // Soggy Newspaper
 				"(O)747", // Rotten Plant
 				"(O)748" // Rotten Plant
-			};
+			];
 		}
 
 		private void ResetToDefault()
@@ -96,9 +94,9 @@ namespace AutoTrasher
 
 		public void RegisterModConfigMenu(IModHelper helper, IManifest manifest, LimitedList<Item> reclaimItems)
 		{
-			if (!helper.ModRegistry.IsLoaded(_gmcmUniqueId)) return;
+			if (!helper.ModRegistry.IsLoaded(IGenericModConfigMenu.UniqueId)) return;
 
-			var gmcmApi = helper.ModRegistry.GetApi<IGenericModConfigMenu>(_gmcmUniqueId);
+			var gmcmApi = helper.ModRegistry.GetApi<IGenericModConfigMenu>(IGenericModConfigMenu.UniqueId);
 			if (gmcmApi is null) return;
 
 			try

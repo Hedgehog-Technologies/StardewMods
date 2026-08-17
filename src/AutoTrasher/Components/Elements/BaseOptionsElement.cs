@@ -14,7 +14,7 @@ namespace AutoTrasher.Components.Elements
 			: base(label, x, y, width, height, whichOption)
 		{ }
 
-		protected int GetOffsetX()
+		protected static int GetOffsetX()
 		{
 			return 0;
 		}
