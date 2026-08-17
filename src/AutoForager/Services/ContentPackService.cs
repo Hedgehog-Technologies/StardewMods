@@ -12,20 +12,16 @@ namespace AutoForager.Services
 	/// <summary>
 	/// Manages content packs loading and integration with other mods.
 	/// </summary>
-	internal class ContentPackService
+	internal class ContentPackService(IMonitor monitor, IModHelper helper, ModConfig config)
 	{
 		private const string CONTENT_PACK_FILE_NAME = "content.json";
 
-		private readonly IMonitor _monitor;
-		private readonly IModHelper _helper;
-		private readonly ModConfig _config;
-
-		private readonly Dictionary<string, string> _cpForageables;
-		private readonly Dictionary<string, string> _cpFruitTrees;
-		private readonly Dictionary<string, string> _cpWildTrees;
-		private readonly Dictionary<string, string> _bushBloomItems;
-		private readonly Dictionary<string, string> _customTeaBushItems;
-		private readonly Dictionary<string, string> _ftmForageables;
+		private readonly Dictionary<string, string> _cpForageables = [];
+		private readonly Dictionary<string, string> _cpFruitTrees = [];
+		private readonly Dictionary<string, string> _cpWildTrees = [];
+		private readonly Dictionary<string, string> _bushBloomItems = [];
+		private readonly Dictionary<string, string> _customTeaBushItems = [];
+		private readonly Dictionary<string, string> _ftmForageables = [];
 
 		private BushBloomWrapper? _bushBloomWrapper;
 		private CustomBushWrapper? _customBushWrapper;
@@ -44,26 +40,12 @@ namespace AutoForager.Services
 		public FarmTypeManagerWrapper? FtmWrapper => _ftmWrapper;
 		public WildFlowersReimaginedWrapper? WfrWrapper => _wfrWrapper;
 
-		public ContentPackService(IMonitor monitor, IModHelper helper, ModConfig config)
-		{
-			_monitor = monitor;
-			_helper = helper;
-			_config = config;
-
-			_cpForageables = [];
-			_cpFruitTrees = [];
-			_cpWildTrees = [];
-			_bushBloomItems = [];
-			_customTeaBushItems = [];
-			_ftmForageables = [];
-		}
-
 		/// <summary>
 		/// Loads all content packs and initalizes integrations.
 		/// </summary>
 		public async Task LoadAllContentAsync(List<string> ignoreItemIds)
 		{
-			var packs = _helper.ContentPacks.GetOwned();
+			var packs = helper.ContentPacks.GetOwned();
 
 			// Parse content packs
 			ParseContentPacks(packs, ignoreItemIds);
@@ -87,7 +69,7 @@ namespace AutoForager.Services
 				try
 				{
 					var content = pack.ReadJsonFile<ContentEntry>(CONTENT_PACK_FILE_NAME);
-					_monitor.LogOnce($"Found content pack: {pack.DirectoryPath}", _config.DebugLogLevel());
+					monitor.LogOnce($"Found content pack: {pack.DirectoryPath}", config.DebugLogLevel());
 
 					if (content?.Forageables is not null)
 					{
@@ -111,7 +93,7 @@ namespace AutoForager.Services
 				}
 				catch
 				{
-					_monitor.Log($"Unable to load content pack: {Path.Combine(pack.DirectoryPath, CONTENT_PACK_FILE_NAME)}. Review that file for syntax errors.", LogLevel.Error);
+					monitor.Log($"Unable to load content pack: {Path.Combine(pack.DirectoryPath, CONTENT_PACK_FILE_NAME)}. Review that file for syntax errors.", LogLevel.Error);
 				}
 			}
 		}
@@ -125,11 +107,11 @@ namespace AutoForager.Services
 			{
 				if (_cpForageables.ContainsKey(itemId))
 				{
-					_monitor.LogOnce($"Already found an item with ItemId [{itemId}] with category [{_cpForageables[itemId]}] when trying to add category [{category}].", LogLevel.Trace);
+					monitor.LogOnce($"Already found an item with ItemId [{itemId}] with category [{_cpForageables[itemId]}] when trying to add category [{category}].", LogLevel.Trace);
 				}
 				else
 				{
-					_monitor.LogOnce($"Found content pack forageable: {itemId} - {category}", LogLevel.Trace);
+					monitor.LogOnce($"Found content pack forageable: {itemId} - {category}", LogLevel.Trace);
 					_cpForageables.Add(itemId, category);
 				}
 			}
@@ -144,7 +126,7 @@ namespace AutoForager.Services
 			{
 				if (_cpFruitTrees.ContainsKey(treeId))
 				{
-					_monitor.LogOnce($"Already found a Fruit Tree with Id [{treeId}] with category [{_cpFruitTrees[treeId]}] when trying to add category [{category}].", LogLevel.Trace);
+					monitor.LogOnce($"Already found a Fruit Tree with Id [{treeId}] with category [{_cpFruitTrees[treeId]}] when trying to add category [{category}].", LogLevel.Trace);
 				}
 				else
 				{
@@ -162,7 +144,7 @@ namespace AutoForager.Services
 			{
 				if (_cpWildTrees.ContainsKey(treeId))
 				{
-					_monitor.LogOnce($"Already found a Wild Tree with Id [{treeId}] with category [{_cpWildTrees[treeId]}] when trying to add category [{category}].", LogLevel.Trace);
+					monitor.LogOnce($"Already found a Wild Tree with Id [{treeId}] with category [{_cpWildTrees[treeId]}] when trying to add category [{category}].", LogLevel.Trace);
 				}
 				else
 				{
@@ -174,7 +156,7 @@ namespace AutoForager.Services
 		/// <summary>
 		/// Processes ignored items from content packs.
 		/// </summary>
-		private void ProcessIgnoredItems(List<string> ignoredItems, List<string> ignoreItemIds)
+		private static void ProcessIgnoredItems(List<string> ignoredItems, List<string> ignoreItemIds)
 		{
 			foreach (var itemId in ignoredItems)
 			{
@@ -195,7 +177,7 @@ namespace AutoForager.Services
 		/// <returns></returns>
 		private async Task InitializeBushBloomAsync()
 		{
-			_bushBloomWrapper = new BushBloomWrapper(_monitor, _helper);
+			_bushBloomWrapper = new BushBloomWrapper(monitor, helper);
 			var schedules = await _bushBloomWrapper.UpdateSchedules();
 
 			foreach (var sched in schedules)
@@ -206,11 +188,11 @@ namespace AutoForager.Services
 				{
 					if (_bushBloomItems.ContainsKey(itemId))
 					{
-						_monitor.LogOnce($"Already found an item with ItemId [{itemId}] with category [{_bushBloomItems[itemId]}] when trying to add category [{I18n.Category_BushBlooms()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Info);
+						monitor.LogOnce($"Already found an item with ItemId [{itemId}] with category [{_bushBloomItems[itemId]}] when trying to add category [{I18n.Category_BushBlooms()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Info);
 					}
 					else
 					{
-						_monitor.LogOnce($"Found Bush Bloom Schedule for: [{itemId}]", _config.DebugLogLevel());
+						monitor.LogOnce($"Found Bush Bloom Schedule for: [{itemId}]", config.DebugLogLevel());
 						_bushBloomItems.Add(itemId, "Category.BushBlooms");
 					}
 				}
@@ -222,7 +204,7 @@ namespace AutoForager.Services
 		/// </summary>
 		private async Task InitializeCustomBushAsync()
 		{
-			_customBushWrapper = new CustomBushWrapper(_monitor, _helper);
+			_customBushWrapper = new CustomBushWrapper(monitor, helper);
 			var customBushDrops = await _customBushWrapper.GetDrops();
 
 			foreach (var drop in customBushDrops)
@@ -233,11 +215,11 @@ namespace AutoForager.Services
 				{
 					if (_customTeaBushItems.ContainsKey(itemId))
 					{
-						_monitor.LogOnce($"Already found an item with ItemID [{itemId}] with category [{_customTeaBushItems[itemId]}] when trying to add category [{I18n.Category_CustomBushes()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Info);
+						monitor.LogOnce($"Already found an item with ItemID [{itemId}] with category [{_customTeaBushItems[itemId]}] when trying to add category [{I18n.Category_CustomBushes()}]. Please verify you don't have duplicate or conflicting content packs.", LogLevel.Info);
 					}
 					else
 					{
-						_monitor.LogOnce($"Found Custom Bush for: [{itemId}]", _config.DebugLogLevel());
+						monitor.LogOnce($"Found Custom Bush for: [{itemId}]", config.DebugLogLevel());
 						_customTeaBushItems.Add(itemId, "Category.Custombushes");
 					}
 				}
@@ -249,22 +231,22 @@ namespace AutoForager.Services
 		/// </summary>
 		private void InitializeFarmTypeManager()
 		{
-			_ftmWrapper = new FarmTypeManagerWrapper(_monitor, _helper);
+			_ftmWrapper = new FarmTypeManagerWrapper(monitor, helper);
 			var ftmForageables = _ftmWrapper.UpdateForageIds();
-			var logLevel = _config.DebugLogLevel();
+			var logLevel = config.DebugLogLevel();
 
 			foreach (var kvp in ftmForageables)
 			{
 				var cpUniqueName = kvp.Key;
 				var cpName = kvp.Key;
-				var cpMod = _helper.ModRegistry.Get(cpUniqueName);
+				var cpMod = helper.ModRegistry.Get(cpUniqueName);
 
 				if (cpMod is not null)
 				{
 					cpName = cpMod.Manifest.Name;
 				}
 
-				_monitor.Log($"{cpName} - {cpUniqueName}", logLevel);
+				monitor.Log($"{cpName} - {cpUniqueName}", logLevel);
 
 				foreach (var value in kvp.Value)
 				{
@@ -272,11 +254,11 @@ namespace AutoForager.Services
 
 					if (_ftmForageables.ContainsKey(itemId))
 					{
-						_monitor.Log($"\tFound repeat forageable: {itemId}", logLevel);
+						monitor.Log($"\tFound repeat forageable: {itemId}", logLevel);
 					}
 					else
 					{
-						_monitor.Log($"\tFound new forageable: {itemId}", logLevel);
+						monitor.Log($"\tFound new forageable: {itemId}", logLevel);
 						_ftmForageables.Add(itemId, cpName);
 					}
 				}
@@ -285,7 +267,7 @@ namespace AutoForager.Services
 
 		private void InitializeWildFlowersReimaginedManager()
 		{
-			_wfrWrapper = new WildFlowersReimaginedWrapper(_monitor, _helper);
+			_wfrWrapper = new WildFlowersReimaginedWrapper(monitor, helper);
 		}
 	}
 }

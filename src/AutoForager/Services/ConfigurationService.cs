@@ -10,37 +10,23 @@ namespace AutoForager.Services
 	/// <summary>
 	/// Manages configuration state, loading, saving, and UI registration.
 	/// </summary>
-	internal class ConfigurationService
+	internal class ConfigurationService(
+		IModHelper helper,
+		IManifest manifest,
+		IMonitor monitor,
+		JsonHelper jsonHelper)
 	{
-		private readonly IModHelper _helper;
-		private readonly IManifest _manifest;
-		private readonly IMonitor _monitor;
-		private readonly JsonHelper _jsonHelper;
-
-		private ModConfig _config;
+		private readonly ModConfig _config = new();
 		private ConfigMenuBuilder? _menuBuilder;
 
 		public ModConfig Config => _config;
-
-		public ConfigurationService(
-			IModHelper helper,
-			IManifest manifest,
-			IMonitor monitor,
-			JsonHelper jsonHelper)
-		{
-			_helper = helper;
-			_manifest = manifest;
-			_monitor = monitor;
-			_jsonHelper = jsonHelper;
-			_config = new ModConfig();
-		}
 
 		/// <summary>
 		/// Loads configuration from disk and merges with defaults.
 		/// </summary>
 		public ModConfig LoadConfiguration()
 		{
-			var savedConfig = _helper.ReadConfig<ModConfig>();
+			var savedConfig = helper.ReadConfig<ModConfig>();
 			_config.Merge(savedConfig);
 			return _config;
 		}
@@ -50,8 +36,8 @@ namespace AutoForager.Services
 		/// </summary>
 		public void SaveConfiguration()
 		{
-			_helper.WriteConfig(_config);
-			_monitor.Log(_jsonHelper.Serialize(_config), LogLevel.Trace);
+			helper.WriteConfig(_config);
+			monitor.Log(jsonHelper.Serialize(_config), LogLevel.Trace);
 		}
 
 		/// <summary>
@@ -83,7 +69,7 @@ namespace AutoForager.Services
 		/// </summary>
 		public void UpdateEnabled()
 		{
-			_config.UpdateEnabled(_helper);
+			_config.UpdateEnabled(helper);
 		}
 
 		/// <summary>
@@ -94,8 +80,8 @@ namespace AutoForager.Services
 			CategoryComparer comparer)
 		{
 			_menuBuilder = new ConfigMenuBuilder(
-				_helper,
-				_manifest,
+				helper,
+				manifest,
 				_config,
 				forageableTracker,
 				comparer);
@@ -114,7 +100,7 @@ namespace AutoForager.Services
 			await saveTask;
 
 			var success = saveTask.Status == TaskStatus.RanToCompletion;
-			_monitor.Log(
+			monitor.Log(
 				success ? "Config saved successfully!" : $"Saving config unsuccessful {saveTask.Status}",
 				_config.DebugLogLevel());
 

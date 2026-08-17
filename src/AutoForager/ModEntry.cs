@@ -291,7 +291,7 @@ namespace AutoForager
 						continue;
 					}
 
-					var interaction = CreatePendingInteractionForObject(obj, vec, playerTilePoint, feature);
+					var interaction = CreatePendingInteractionForObject(obj, vec, playerTilePoint);
 					if (interaction != null)
 					{
 						pendingInteractions.Add(interaction);
@@ -498,32 +498,21 @@ namespace AutoForager
 		/// </summary>
 		private PendingInteraction? CreatePendingInteractionForTerrainFeature(TerrainFeature feature, Vector2 tile, Point playerPosition)
 		{
-			switch (feature)
+			return feature switch
 			{
-				case Tree tree when _wildTreeHandler.CanHandle(tree):
-					return new PendingInteraction(InteractionType.WildTree, tree, tile, playerPosition);
-
-				case FruitTree fruitTree when _fruitTreeHandler.CanHandle(fruitTree):
-					return new PendingInteraction(InteractionType.FruitTree, fruitTree, tile, playerPosition);
-
-				case Bush bush when _bushHandler.CanHandle(bush):
-					return new PendingInteraction(InteractionType.Bush, bush, tile, playerPosition);
-
-				case HoeDirt hoeDirt when _terrainFeatureHandler.CanHandle(hoeDirt):
-					return new PendingInteraction(InteractionType.TerrainFeature, hoeDirt, tile, playerPosition);
-
-				case Grass grass when _wildFlowersReimaginedHandler.CanHandle(grass):
-					return new PendingInteraction(InteractionType.TerrainFeature, grass, tile, playerPosition);
-
-				default:
-					return null;
-			}
+				Tree tree when _wildTreeHandler.CanHandle(tree) => new PendingInteraction(InteractionType.WildTree, tree, tile, playerPosition),
+				FruitTree fruitTree when _fruitTreeHandler.CanHandle(fruitTree) => new PendingInteraction(InteractionType.FruitTree, fruitTree, tile, playerPosition),
+				Bush bush when _bushHandler.CanHandle(bush) => new PendingInteraction(InteractionType.Bush, bush, tile, playerPosition),
+				HoeDirt hoeDirt when _terrainFeatureHandler.CanHandle(hoeDirt) => new PendingInteraction(InteractionType.TerrainFeature, hoeDirt, tile, playerPosition),
+				Grass grass when _wildFlowersReimaginedHandler.CanHandle(grass) => new PendingInteraction(InteractionType.TerrainFeature, grass, tile, playerPosition),
+				_ => null,
+			};
 		}
 
 		/// <summary>
 		/// Creates a PendingInteraction for an object if it can be handled.
 		/// </summary>
-		private PendingInteraction? CreatePendingInteractionForObject(SObject obj, Vector2 tile, Point playerPosition, TerrainFeature? terrainFeature)
+		private PendingInteraction? CreatePendingInteractionForObject(SObject obj, Vector2 tile, Point playerPosition)
 		{
 			// Priority order: artifact spots > machines > regular objects
 			if (_artifactSpotHandler.CanHandle(obj))

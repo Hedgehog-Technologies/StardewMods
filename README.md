@@ -36,7 +36,7 @@ on the wiki for help contributing translations.
 :--------: | :-------------------------------------------: | :--------------------------------------: | :-------------------------------------: | :-----------------------------------:
 Chinese    | [🤖](./src/AllowBeachSprinklers/i18n/zh.json) | [❔](./src/AutoForager/i18n/zh.json)    | [🤖](./src/FullFishingBar/i18n/zh.json) | [✔](./src/AutoTrasher/i18n/zh.json)
 French     | [🤖](./src/AllowBeachSprinklers/i18n/fr.json) | [✔](./src/AutoForager/i18n/fr.json)     | [🤖](./src/FullFishingBar/i18n/fr.json) | [🤖](./src/AutoTrasher/i18n/fr.json)
-German     | [🤖](./src/AllowBeachSprinklers/i18n/de.json) | [❌](./src/AutoForager/i18n)            | [🤖](./src/FullFishingBar/i18n/de.json) | [🤖](./src/AutoTrasher/i18n/de.json)
+German     | [🤖](./src/AllowBeachSprinklers/i18n/de.json) | [✔](./src/AutoForager/i18n/de.json)     | [🤖](./src/FullFishingBar/i18n/de.json) | [🤖](./src/AutoTrasher/i18n/de.json)
 Hungarian  | [🤖](./src/AllowBeachSprinklers/i18n/hu.json) | [❌](./src/AutoForager/i18n)            | [🤖](./src/FullFishingBar/i18n/hu.json) | [🤖](./src/AutoTrasher/i18n/hu.json)
 Italian    | [🤖](./src/AllowBeachSprinklers/i18n/it.json) | [❌](./src/AutoForager/i18n)            | [🤖](./src/FullFishingBar/i18n/it.json) | [🤖](./src/AutoTrasher/i18n/it.json)
 Japanese   | [🤖](./src/AllowBeachSprinklers/i18n/ja.json) | [❌](./src/AutoForager/i18n)            | [🤖](./src/FullFishingBar/i18n/ja.json) | [🤖](./src/AutoTrasher/i18n/ja.json)

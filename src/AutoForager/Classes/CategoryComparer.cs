@@ -8,8 +8,8 @@ namespace AutoForager.Classes
 {
 	internal class CategoryComparer : IComparer<string>
 	{
-		private readonly List<string> _packCategories = new();
-		private readonly List<string> _ftmCategories = new();
+		private readonly List<string> _packCategories = [];
+		private readonly List<string> _ftmCategories = [];
 
 		int IComparer<string>.Compare(string? x, string? y)
 		{

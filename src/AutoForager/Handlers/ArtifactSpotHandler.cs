@@ -1,4 +1,3 @@
-using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley.Tools;
 using HedgeTech.Common.Extensions;
