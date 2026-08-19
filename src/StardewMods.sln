@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34202.233
+# Visual Studio Version 18
+VisualStudioVersion = 18.7.11911.148 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root_docs", "root_docs", "{FE6E2A1B-718A-4B10-B91F-B472C235825F}"
 	ProjectSection(SolutionItems) = preProject
@@ -234,6 +234,7 @@ Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Common\Common.projitems*{2be17999-92fc-4439-91a3-7a150463d8bc}*SharedItemsImports = 5
 		Common\Common.projitems*{3a354bb2-6364-4caa-a320-3c9b8674b759}*SharedItemsImports = 13
+		Common\Common.projitems*{711d9d67-8fa2-4a27-9387-ca6e279074eb}*SharedItemsImports = 5
 		Common\Common.projitems*{e2e65ba0-edf0-4dd1-bcf1-524b92c2377c}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

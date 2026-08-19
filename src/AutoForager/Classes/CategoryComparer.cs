@@ -62,9 +62,7 @@ namespace AutoForager.Classes
 
 		public CategoryComparer(IEnumerable<IContentPack> packs)
 		{
-			_packCategories = packs.Select(p => p?.ReadJsonFile<ContentEntry>("content.json"))
-				.Select(e => e?.Category ?? I18n.Category_Unknown())
-				.ToList();
+			_packCategories = [.. packs.Select(p => p?.ReadJsonFile<ContentEntry>("content.json")).Select(e => e?.Category ?? I18n.Category_Unknown())];
 
 			_packCategories.Sort();
 		}
