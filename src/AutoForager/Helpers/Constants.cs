@@ -317,8 +317,8 @@ namespace AutoForager.Helpers
 		};
 		public static Dictionary<string, string> KnownCategoryLookup => _knownCategoryLookup;
 
-		private static readonly List<string> _vanillaFruitTrees = new()
-		{
+		private static readonly List<string> _vanillaFruitTrees =
+		[
 			"628", // Cherry
 			"629", // Apricot
 			"630", // Orange
@@ -327,11 +327,11 @@ namespace AutoForager.Helpers
 			"633", // Apple
 			"69",  // Banana
 			"835", // Mango
-		};
+		];
 		public static List<string> VanillaFruitTrees => _vanillaFruitTrees;
 
-		private static readonly List<string> _vanillaWildTrees = new()
-		{
+		private static readonly List<string> _vanillaWildTrees =
+		[
 			"1",  // Acorn
 			"2",  // Maple
 			"3",  // Pine
@@ -343,14 +343,14 @@ namespace AutoForager.Helpers
 			"11", // Mossy
 			"12", // Mossy
 			"13"  // Mystic
-		};
+		];
 		public static List<string> VanillaWildTrees => _vanillaWildTrees;
 
-		private static readonly List<string> _vanillaBushBlooms = new()
-		{
+		private static readonly List<string> _vanillaBushBlooms =
+		[
 			"296", // Salmonberry
 			"410"  // Blackberry
-		};
+		];
 		public static List<string> VanillaBushBlooms => _vanillaBushBlooms;
 
 		private static readonly Dictionary<string, int> _bigCraftableXpLookup = new()

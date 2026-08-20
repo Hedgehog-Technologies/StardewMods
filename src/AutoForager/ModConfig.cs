@@ -242,10 +242,7 @@ namespace AutoForager
 			{
 				var item = items.FirstOrDefault(f => f?.InternalName.Equals(toggle.Key) ?? false, null);
 
-				if (item is not null)
-				{
-					item.IsEnabled = toggle.Value;
-				}
+				item?.IsEnabled = toggle.Value;
 			}
 
 			foreach (var item in items)

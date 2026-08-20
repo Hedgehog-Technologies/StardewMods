@@ -350,11 +350,11 @@ namespace AutoTrasher.Components
 				var labelHeight = (int)(Game1.tileSize * 0.9F);
 
 				_tabs.Clear();
-				_tabs.AddRange(new[]
-				{
+				_tabs.AddRange(
+				[
 					new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i++, Game1.tileSize * 5, Game1.tileSize), MenuTab.TrashList.ToString(), I18n.UI_Tabs_TrashList()),
 					new ClickableComponent(new Rectangle(labelX, labelY + labelHeight * i++ + (int)(labelHeight * 0.5), Game1.tileSize * 5, Game1.tileSize), MenuTab.ReclaimList.ToString(), I18n.UI_Tabs_ReclaimList())
-				});
+				]);
 			}
 
 			// SCROLL UI
@@ -395,8 +395,8 @@ namespace AutoTrasher.Components
 								{
 									var confDialog = new ConfirmationDialog(
 										I18n.Confirm_Remove(itemName),
-										(Farmer _) => RemoveTrashItem(item),
-										(Farmer _) => CloseConfirmationDialog());
+										_ => RemoveTrashItem(item),
+										_ => CloseConfirmationDialog());
 
 									SetChildMenu(confDialog);
 								}));
@@ -421,8 +421,8 @@ namespace AutoTrasher.Components
 								{
 									var confDialog = new ConfirmationDialog(
 										I18n.Confirm_Reclaim(item.DisplayName),
-										(Farmer _) => ReclaimTrashItem(item),
-										(Farmer _) => CloseConfirmationDialog());
+										_ => ReclaimTrashItem(item),
+										_ => CloseConfirmationDialog());
 
 									SetChildMenu(confDialog);
 								}));
@@ -542,7 +542,7 @@ namespace AutoTrasher.Components
 			SetScrollbarToCurrentIndex();
 		}
 
-		private MenuTab GetTabId(ClickableComponent tab)
+		private static MenuTab GetTabId(ClickableComponent tab)
 		{
 			if (!Enum.TryParse(tab.name, out MenuTab tabId))
 			{

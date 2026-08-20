@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace AutoForager.Classes
 {
@@ -13,10 +13,10 @@ namespace AutoForager.Classes
 		public ContentEntry()
 		{
 			Category = string.Empty;
-			Forageables = new();
-			FruitTrees = new();
-			WildTrees = new();
-			IgnoredItems = new();
+			Forageables = [];
+			FruitTrees = [];
+			WildTrees = [];
+			IgnoredItems = [];
 		}
 	}
 }

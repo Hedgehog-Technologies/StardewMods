@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using StardewValley.Enchantments;
 using StardewValley.GameData;
 
 namespace AutoForager.Classes
@@ -41,7 +40,7 @@ namespace AutoForager.Classes
 		/// Optional Stardew Valley 1.6 Game State Query (GSQ) that must evaluate to true for spawning.
 		/// </summary>
 		[JsonProperty(nameof(Condition))]
-		public string Condition { get; set; }
+		public string? Condition { get; set; }
 
 		/// <summary>
 		/// Optional: Minimum quantity or stack size when spawned.
@@ -63,10 +62,10 @@ namespace AutoForager.Classes
 		public IDictionary<string, object> AdditionalData { get; set; } = new Dictionary<string, object>();
 	}
 
-	public class Weighted<T>
+	public class Weighted<T>(double weight, T? value)
 	{
-		public double Weight { get; set; }
-		public T? Value { get; set; }
+		public double Weight { get; set; } = weight;
+		public T? Value { get; set; } = value;
 
 		public Weighted()
 			: this(1.0D, default)
@@ -75,11 +74,5 @@ namespace AutoForager.Classes
 		public Weighted(T value)
 			: this(1.0D, value)
 		{ }
-
-		public Weighted(double weight, T? value)
-		{
-			this.Weight = weight;
-			this.Value = value;
-		}
 	}
 }

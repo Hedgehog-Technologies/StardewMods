@@ -1,5 +1,12 @@
 ﻿# Release Notes
 
+## 4.1.1
+Released TBD
+- Add German translations
+  - Thanks to [red-panda-codes](https://github.com/red-panda-codes) for the contribution
+- Fixed english typo
+- Refactor to use common GMCM api interface
+- Downgraded optional GMCM dependency version to 1.15
 ## 4.1.0
 Released 2026-07-09
 - Add native support for forageables added via spacechase0's SpaceCore via the `SpawnableDefinitions` asset

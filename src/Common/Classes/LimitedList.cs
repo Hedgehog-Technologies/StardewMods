@@ -12,7 +12,7 @@ namespace HedgeTech.Common.Classes
 		public LimitedList(int maxSize)
 		{
 			_maxSize = maxSize;
-			_items = new();
+			_items = [];
 		}
 
 		public void UpdateMaxSize(int newMaxSize)

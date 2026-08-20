@@ -58,7 +58,7 @@ namespace AutoForager.Handlers
 		/// <summary>
 		/// Creates item debris at the specified location.
 		/// </summary>
-		protected void CreateItemDebris(Item item, Vector2 tile, int direction = -1)
+		protected static void CreateItemDebris(Item item, Vector2 tile, int direction = -1)
 		{
 			var position = tile * Constants.TileSize;
 			Game1.createItemDebris(item, position, direction, null, -1);
@@ -67,7 +67,7 @@ namespace AutoForager.Handlers
 		/// <summary>
 		/// Plays a sound effect at the player's location.
 		/// </summary>
-		protected void PlaySound(string soundName)
+		protected static void PlaySound(string soundName)
 		{
 			Game1.playSound(soundName);
 		}

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Newtonsoft.Json;
@@ -19,10 +18,7 @@ namespace HedgeTech.Common.Helpers
 			{
 				Formatting = Formatting.Indented,
 				ObjectCreationHandling = ObjectCreationHandling.Replace,
-				Converters = new List<JsonConverter>
-				{
-					new StringEnumConverter()
-				}
+				Converters = [ new StringEnumConverter() ]
 			};
 		}
 
@@ -54,7 +50,7 @@ namespace HedgeTech.Common.Helpers
 				if (ex is JsonReaderException)
 				{
 					error += " This doesn't seem to be valid JSON.";
-					if (json.Contains("“") || json.Contains("”"))
+					if (json.Contains('“') || json.Contains('”'))
 						error += " Found curly quotes in the text; note that only straight quotes are allowed in JSON.";
 				}
 
@@ -69,9 +65,7 @@ namespace HedgeTech.Common.Helpers
 			if (string.IsNullOrWhiteSpace(fullPath))
 				throw new ArgumentException("The file path is empty or invalid.", nameof(fullPath));
 
-			string dir = Path.GetDirectoryName(fullPath)!;
-			if (dir is null)
-				throw new ArgumentException("The file path is invalid.", nameof(fullPath));
+			string dir = Path.GetDirectoryName(fullPath) ?? throw new ArgumentException("The file path is invalid.", nameof(fullPath));
 			if (!Directory.Exists(dir))
 				Directory.CreateDirectory(dir);
 
@@ -87,7 +81,7 @@ namespace HedgeTech.Common.Helpers
 			}
 			catch (JsonReaderException)
 			{
-				if (json.Contains("“") || json.Contains("”"))
+				if (json.Contains('“') || json.Contains('”'))
 				{
 					try
 					{

@@ -9,18 +9,20 @@ using HedgeTech.Common.Extensions;
 
 namespace AutoForager.Services
 {
-	internal class ForagingContext : IForagingContext
+	internal class ForagingContext(
+		ModConfig config,
+		IMonitor monitor,
+		ForageableItemTracker forageableTracker,
+		Dictionary<string, Dictionary<string, int>> trackingCounts) : IForagingContext
 	{
 		private const int ERROR_MESSAGE_THROTTLE_SECONDS = 10;
-
-		private readonly Dictionary<string, Dictionary<string, int>> _trackingCounts;
-		private DateTime _nextErrorMessage;
+		private DateTime _nextErrorMessage = DateTime.MinValue;
 
 		public Farmer Player => Game1.player;
 		public GameLocation Location => Game1.currentLocation;
-		public ModConfig Config { get; }
-		public IMonitor Monitor { get; }
-		public ForageableItemTracker ForageableTracker { get; }
+		public ModConfig Config { get; } = config;
+		public IMonitor Monitor { get; } = monitor;
+		public ForageableItemTracker ForageableTracker { get; } = forageableTracker;
 
 		public Point PlayerTilePoint => Player.TilePoint;
 
@@ -36,22 +38,9 @@ namespace AutoForager.Services
 			}
 		}
 
-		public ForagingContext(
-			ModConfig config,
-			IMonitor monitor,
-			ForageableItemTracker forageableTracker,
-			Dictionary<string, Dictionary<string, int>> trackingCounts)
-		{
-			Config = config;
-			Monitor = monitor;
-			ForageableTracker = forageableTracker;
-			_trackingCounts = trackingCounts;
-			_nextErrorMessage = DateTime.MinValue;
-		}
-
 		public void TrackForagedItem(string category, string displayName)
 		{
-			if (_trackingCounts.TryGetValue(category, out var categoryDict))
+			if (trackingCounts.TryGetValue(category, out var categoryDict))
 			{
 				categoryDict.AddOrIncrement(displayName);
 			}
