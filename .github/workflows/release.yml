@@ -54,9 +54,9 @@ jobs:
           PROJECT_LOWER=$(echo "${PROJECT_NAME}" | tr '[:upper:]' '[:lower:]')
 
           if [ -z "$COMMIT_RANGE" ]; then
-            CHANGELOG=$(git log --pretty=format:"%s" | grep -iE "^[a-z]+(\(${PROJECT_LOWER}\))?:" | grep -iE "^[a-z]+\(${PROJECT_LOWER}\):")
+            CHANGELOG=$(git log --pretty=format:"%s" | grep -iE "^[a-z]+(\(${PROJECT_LOWER}\)|\(shared\))?:")
           else
-            CHANGELOG=$(git log --pretty=format:"%s" "${COMMIT_RANGE}" | grep -iE "^[a-z]+(\(${PROJECT_LOWER}\))?:" | grep -iE "^[a-z]+\(${PROJECT_LOWER}\):")
+            CHANGELOG=$(git log --pretty=format:"%s" "${COMMIT_RANGE}" | grep -iE "^[a-z]+(\(${PROJECT_LOWER}\)|\(shared\))?:")
           fi
 
           if [ -z "$CHANGELOG" ]; then
