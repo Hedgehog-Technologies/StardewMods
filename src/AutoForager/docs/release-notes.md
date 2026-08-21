@@ -1,7 +1,7 @@
 ﻿# Release Notes
 
 ## 4.1.1
-Released TBD
+Released 2026-08-20
 - Add German translations
   - Thanks to [red-panda-codes](https://github.com/red-panda-codes) for the contribution
 - Fixed english typo
