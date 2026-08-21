@@ -4,7 +4,7 @@
 Released 2026-08-20
 - Add German translations
   - Thanks to [red-panda-codes](https://github.com/red-panda-codes) for the contribution
-- Fixed english typo
+- Fixed English typo
 - Refactor to use common GMCM api interface
 - Downgraded optional GMCM dependency version to 1.15
 ## 4.1.0
