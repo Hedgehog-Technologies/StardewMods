@@ -20,7 +20,6 @@ namespace AutoTrasher
 		private readonly List<Item> _ignoreItems = [];
 
 		private ModConfig _config = new();
-		private bool _isTrasherActive = true;
 
 		public override void Entry(IModHelper helper)
 		{
@@ -34,7 +33,18 @@ namespace AutoTrasher
 			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 			helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
 			helper.Events.Input.ButtonsChanged += OnButtonsChanged;
-			helper.Events.Player.InventoryChanged += OnInventoryChanged;
+
+			UpdateInventoryChangedSubscription();
+		}
+
+		private void UpdateInventoryChangedSubscription()
+		{
+			Helper.Events.Player.InventoryChanged -= OnInventoryChanged;
+
+			if (_config.AutoTrasherEnabled)
+			{
+				Helper.Events.Player.InventoryChanged += OnInventoryChanged;
+			}
 		}
 
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
@@ -44,7 +54,6 @@ namespace AutoTrasher
 
 		private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
 		{
-
 			if (Game1.activeClickableMenu is not null && _config.AddTrashKeybind.JustPressed())
 			{
 				if (Game1.activeClickableMenu is GameMenu menu && menu?.GetCurrentPage() is InventoryPage page)
@@ -99,18 +108,13 @@ namespace AutoTrasher
 					if (_config.ToggleTrasherKeybind.JustPressed())
 					{
 						var message = string.Empty;
-						_isTrasherActive = !_isTrasherActive;
+						_config.ToggleAutoTrasher();
 
-						if (_isTrasherActive)
-						{
-							Helper.Events.Player.InventoryChanged += OnInventoryChanged;
-							message = I18n.Notification_State(I18n.State_Activated());
-						}
-						else
-						{
-							Helper.Events.Player.InventoryChanged -= OnInventoryChanged;
-							message = I18n.Notification_State(I18n.State_Deactivated());
-						}
+						UpdateInventoryChangedSubscription();
+
+						message = _config.AutoTrasherEnabled
+							? I18n.Notification_State(I18n.State_Activated())
+							: I18n.Notification_State(I18n.State_Deactivated());
 
 						Game1.addHUDMessage(new HUDMessage(message) { noIcon = true });
 					}
@@ -151,8 +155,14 @@ namespace AutoTrasher
 
 		private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
 		{
+			if (_config.IsDirty())
+			{
+				UpdateInventoryChangedSubscription();
+				_config.MarkClean();
+			}
+
 			if (!Context.IsPlayerFree) return;
-			if (!_isTrasherActive) return;
+			if (!_config.AutoTrasherEnabled) return;
 
 			var localMessages = Game1.hudMessages.ToList();
 

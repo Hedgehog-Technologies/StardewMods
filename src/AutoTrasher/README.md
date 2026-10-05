@@ -7,6 +7,9 @@
 This mod allows users to specify items that they would like to automatically be sent to their trash bin as soon as they enter their inventory
 
 ### Config
+- `EnableAutoTrasher`
+  - Whether or not the Auto Trasher functionality is enabled
+  - *Default:* `true`
 - `ToggleTrasherKeybind`
   - Keybind(s) that are used to toggle the Auto Trasher functionality.
   - *Default:* `LeftAlt + R, RightAlt + R`
@@ -71,6 +74,8 @@ Ukrainian  | ✔              | ✔                   | 🤖                | n/
 
 ## Releases
 Releases can be found [Github](https://github.com/Hedgehog-Technologies/StardewMods/releases), on the [Nexus Mod](https://www.nexusmods.com/stardewvalley/mods/23663) site, and on the [CurseForge](https://www.curseforge.com/stardewvalley/mods/auto-trasher) site.
+### 1.3.0
+- Moved Auto Trasher toggle state to the config to allow for saving the state between game sessions
 ### 1.2.2
 - Refactor to use common GMCM api interface
 - Downgrade Generic Mod Config Menu dependency to 1.15

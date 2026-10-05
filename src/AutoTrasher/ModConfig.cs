@@ -15,7 +15,9 @@ namespace AutoTrasher
 		private const int _maxReclaimItems = 100;
 
 		private IModHelper? _helper;
+		private bool _isDirty = false;
 
+		public bool AutoTrasherEnabled { get; set; }
 		public KeybindList ToggleTrasherKeybind { get; set; }
 		public KeybindList OpenTrashMenuKeybind { get; set; }
 		public KeybindList AddTrashKeybind { get; set; }
@@ -48,6 +50,8 @@ namespace AutoTrasher
 
 		private void ResetToDefault()
 		{
+			AutoTrasherEnabled = true;
+
 			ToggleTrasherKeybind = new KeybindList(
 				new Keybind(SButton.LeftAlt, SButton.R),
 				new Keybind(SButton.RightAlt, SButton.R));
@@ -92,6 +96,22 @@ namespace AutoTrasher
 			_helper?.WriteConfig(this);
 		}
 
+		public void ToggleAutoTrasher()
+		{
+			AutoTrasherEnabled = !AutoTrasherEnabled;
+			_helper?.WriteConfig(this);
+		}
+
+		public bool IsDirty()
+		{
+			return _isDirty;
+		}
+
+		public void MarkClean()
+		{
+			_isDirty = false;
+		}
+
 		public void RegisterModConfigMenu(IModHelper helper, IManifest manifest, LimitedList<Item> reclaimItems)
 		{
 			if (!helper.ModRegistry.IsLoaded(IGenericModConfigMenu.UniqueId)) return;
@@ -113,6 +133,16 @@ namespace AutoTrasher
 			gmcmApi.AddSectionTitle(
 				mod: manifest,
 				text: () => "General");
+
+			gmcmApi.AddBoolOption(
+				mod: manifest,
+				name: I18n.Option_AutoTrasherEnabled_Name,
+				tooltip: I18n.Option_AutoTrasherEnabled_Tooltip,
+				getValue: () => AutoTrasherEnabled,
+				setValue: (val) => {
+					AutoTrasherEnabled = val;
+					_isDirty = true;
+				});
 
 			gmcmApi.AddKeybindList(
 				mod: manifest,
