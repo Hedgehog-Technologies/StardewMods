@@ -429,48 +429,6 @@ namespace AutoForager
 			_wildFlowersReimaginedHandler.Initialize(context);
 		}
 
-		private void HandleTerrainFeature(TerrainFeature feature, Vector2 tile)
-		{
-			switch (feature)
-			{
-				case Tree tree:
-					if (_wildTreeHandler.CanHandle(tree))
-					{
-						_wildTreeHandler.Handle(tree);
-					}
-					break;
-
-				case FruitTree fruitTree:
-					if (_fruitTreeHandler.CanHandle(fruitTree))
-					{
-						_fruitTreeHandler.Handle(fruitTree);
-					}
-					break;
-
-				case Bush bush:
-					if (_bushHandler.CanHandle(bush))
-					{
-						_bushHandler.Handle(bush);
-					}
-					break;
-
-				case HoeDirt hoeDirt:
-					if (_terrainFeatureHandler.CanHandle(hoeDirt))
-					{
-						_terrainFeatureHandler.Handle(hoeDirt, tile);
-					}
-					break;
-
-				case Grass grass:
-					if (_wildFlowersReimaginedHandler.CanHandle(grass))
-					{
-						_wildFlowersReimaginedHandler.Handle(grass);
-					}
-					break;
-			}
-			
-		}
-
 		private void HandleObject(SObject obj, Vector2 tile, TerrainFeature? terrainFeature)
 		{
 			// Priority order: artifact spots > machines > regular objects
