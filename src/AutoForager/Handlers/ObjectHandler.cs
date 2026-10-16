@@ -72,15 +72,7 @@ namespace AutoForager.Handlers
 			var isForage = obj.isForage();
 			var skill = obj.isAnimalProduct() ? Farmer.farmingSkill : Farmer.foragingSkill;
 
-			// Determine quality
-			if (professions.Contains(Farmer.botanist) && isForage)
-			{
-				obj.Quality = 4; // Iridium quality for botanist profession
-			}
-			else if (isForage)
-			{
-				obj.Quality = DetermineForageQuality(random);
-			}
+			obj.Quality = player.currentLocation.GetHarvestSpawnedObjectQuality(player, isForage, vec, random);
 
 			vec *= 64.0f;
 
@@ -89,6 +81,9 @@ namespace AutoForager.Handlers
 
 			// Create item debris
 			Game1.createItemDebris(obj.getOne(), vec, -1, null, -1);
+
+			// Update stat
+			Game1.stats.ItemsForaged++;
 
 			// Check for Gatherer profession (double harvest chance)
 			if (checkGatherer && isForage && professions.Contains(Farmer.gatherer) && random.NextDouble() < Constants.GathererDoubleCropChance)

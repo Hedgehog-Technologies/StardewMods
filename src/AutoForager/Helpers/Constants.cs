@@ -185,7 +185,8 @@ namespace AutoForager.Helpers
 
 		// Random seed multipliers
 		public const float ObjectRandomSeedMultiplier = 777.0f;
-		public const int SpringOnionRandomSeedMultiplier = 2000;
+		public const int SpringOnionRandomSeedXMultiplier = 1000;
+		public const int SpringOnionRandomSeedYMultiplier = 2000;
 
 		// Tree/Bush stages and sizes
 		public const int MinimumForagingLevelForTreeShaking = 1;

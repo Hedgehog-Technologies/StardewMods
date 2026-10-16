@@ -1,4 +1,5 @@
 using StardewModdingAPI;
+using StardewValley;
 using StardewValley.Tools;
 using HedgeTech.Common.Extensions;
 
@@ -50,6 +51,9 @@ namespace AutoForager.Handlers
 			// Perform the dig action
 			tool.lastUser = Context.Player;
 			obj.performToolAction(tool);
+
+			// Update stat
+			Game1.stats.DirtHoed++;
 
 			TrackItem(Constants.ForageableKey, obj.DisplayName);
 		}

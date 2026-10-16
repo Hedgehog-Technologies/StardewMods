@@ -71,7 +71,7 @@ namespace AutoForager.Handlers
 			ForageItem(
 				ItemRegistry.Create<SObject>(SPRING_ONION_QUALIFIED_ID),
 				tile,
-				Utility.CreateDaySaveRandom(x * Constants.SpringOnionRandomSeedMultiplier, y * Constants.SpringOnionRandomSeedMultiplier),
+				Utility.CreateDaySaveRandom(x * Constants.SpringOnionRandomSeedXMultiplier, y * Constants.SpringOnionRandomSeedYMultiplier),
 				Constants.SpringOnionForageXp);
 			hoeDirt.destroyCrop(false);
 			PlaySound(HARVEST_SOUND_ID);
@@ -108,9 +108,12 @@ namespace AutoForager.Handlers
 		/// </summary>
 		private void ForageItem(SObject obj, Vector2 vec, Random random, int xpGained = 0)
 		{
-			obj.Quality = DetermineForageQuality(random);
+			var player = Game1.player;
+			obj.Quality = player.currentLocation.GetHarvestSpawnedObjectQuality(player, true, vec, random);
 			Context.Player.gainExperience(Farmer.foragingSkill, xpGained);
 			CreateItemDebris(obj.getOne(), vec);
+			// Update stat
+			Game1.stats.ItemsForaged += (uint)obj.Stack;
 		}
 	}
 }
