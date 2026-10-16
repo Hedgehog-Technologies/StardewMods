@@ -1,5 +1,10 @@
 ﻿# Release Notes
 
+## 4.1.2
+Released 2026-10-15
+- Adds in missing stat increases when foraging certain objects
+- Aligned Spring Onion random seed values with base game code
+- Cleaned up old code
 ## 4.1.1
 Released 2026-08-20
 - Add German translations
